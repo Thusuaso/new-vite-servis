@@ -9,14 +9,14 @@ class SiparisKayitIslem(Resource):
 
     def post(self):
         data = request.get_json()
-      
         siparisGiris = SiparisGiris()
         siparis = data['siparis']
         urunler = data['siparisUrunler']
-        
-        result = siparisGiris.siparisKaydet(urunler,siparis,)
-
-        return jsonify(result)
+        status = siparisGiris.siparisKaydet(urunler,siparis,)
+        data = {
+            'status':status
+        }
+        return jsonify(data)
 
     def put(self):
 

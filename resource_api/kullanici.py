@@ -12,7 +12,7 @@ class Kullanici(Resource):
 
         username = user['username']
         password = user['password']
-        
+        print(user)
         data = SqlConnect().data
         result = data.getStoreList('Select count(*) as Durum from KullaniciTB where KullaniciAdi=? and YSifre=?',(username,password))
         username = username.capitalize()

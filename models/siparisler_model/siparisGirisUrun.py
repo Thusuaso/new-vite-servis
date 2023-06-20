@@ -37,6 +37,5 @@ class SiparisGirisUrunModel(SiparisUrunModel):
     isChange = False
     
     
-    
 
 

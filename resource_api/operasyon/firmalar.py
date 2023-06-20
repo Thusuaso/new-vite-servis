@@ -46,7 +46,6 @@ class Listeler:
 
 
     def firmaKaydet(self,item):
-     
         try:
             self.data.update_insert(
                 """

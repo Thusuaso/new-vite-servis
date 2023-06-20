@@ -1,5 +1,8 @@
 from resource_api.musteriler.musteri_liste import *
 from resource_api.musteriler.musteri_detay import MusteriDetayIslem
+from models.musteriler_model.musteri import TeklifMusterilerModel,TeklifMusterilerSchema,BgpMusterilerModel,BgpMusterilerSchema,FuarMusterilerModel,FuarMusterilerSchema
+from models.musteriler_model.musteri_liste import CustomersSurfaceListModel,CustomersSurfaceListSchema
+from views.shared import Ulkeler
 from flask_restful import Resource
 from flask import jsonify,request,send_file
 
@@ -34,14 +37,14 @@ class MusteriDetayApi(Resource):
     def get(self,id):
         islem = MusteriDetayIslem()
 
-        musteri_detay = islem.getMusteriDetay(id)
+        musteri_model = islem.getMusteriDetay(id)
         siparis_ozet  = islem.getSiparisBedeliDetay(id)
         temsilci_list = islem.getTemsilciList()
         ulke_list  = islem.getUlkeList()
 
         data = {
 
-            "musteri_detay" : musteri_detay,
+            "musteri_model" : musteri_model,
             "siparis_ozet" : siparis_ozet ,
             "temsilci_list" : temsilci_list,
             "ulke_list" : ulke_list
@@ -78,12 +81,13 @@ class MusteriYeniModelApi(Resource):
 
         temsilci_list = islem.getTemsilciList()
         ulke_list  = islem.getUlkeList()
-
+        siparis_ozet = []
         data = {
 
             "musteri_model" : musteri_model,
             "temsilci_list" : temsilci_list,
-            "ulke_list" : ulke_list
+            "ulke_list" : ulke_list,
+            "siparis_ozet":siparis_ozet
         }
 
 
@@ -173,7 +177,42 @@ class CustomersSurfaceSaveApi(Resource):
         }
         return jsonify(data)
  
- 
+class CustomersModelApi(Resource):
+    def get(self,user_id):
+        model = CustomersSurfaceListModel()
+        schema = CustomersSurfaceListSchema()
+        modelAct = schema.dump(model)
+        islem = MusteriIslem()
+        country = Ulkeler()
+        countryList = country.getUlkeList()
+
+        customerList = islem.getCustomerSurfaceList(user_id)
+        surfaceList = islem.getSurfaceList(user_id)
+        data = {
+            'model':modelAct,
+            'customer':customerList,
+            'country':countryList,
+            'surface':surfaceList,
+        }
+        return data
+    
+class CustomersDetailApi(Resource):
+    def get(self,user_id,id):
+        islem = MusteriIslem()
+        country = Ulkeler()
+        modelAct = islem.getCustomerSurfaceDetail(id)[0]
+        countryList = country.getUlkeList()
+        customerList = islem.getCustomerSurfaceList(user_id)
+        surfaceList = islem.getSurfaceList(user_id)
+        data = {
+            'model':modelAct,
+            'customer':customerList,
+            'country':countryList,
+            'surface':surfaceList,
+        }
+        return data
+        
+
 
     
 class CustomersSurfaceDeleteApi(Resource):
@@ -228,41 +267,55 @@ class TeklifMusterilerApi(Resource):
 class TeklifMusterilerAyrintiApi(Resource):
     def get(self,id):
         islem = TeklifMusteriler()
-        result = islem.getTeklifMusterilerAyrinti(id)
-        return jsonify(result)
-    
-class TeklifMusterilerAyrintiGuncelleApi(Resource):
-    def post(self):
-        data = request.get_json()
-        islem = TeklifMusteriler()
-        status = islem.setTeklifMusteriler(data)
-        result = islem.getTeklifMusteriler()
+        ulkeler = Ulkeler()
+        model = islem.getTeklifMusterilerAyrinti(id)[0]
+        ulkelerList = ulkeler.getUlkeList()
         data = {
-            'status':status,
-            'result':result
+            'model':model,
+            'ulkeler':ulkelerList
         }
         return jsonify(data)
+    
+    
+class TeklifMusteriModelApi(Resource):
+    def get(self):
+        model = TeklifMusterilerModel()
+        schema = TeklifMusterilerSchema()
+        modelAct = schema.dump(model)
+        ulkeler = Ulkeler()
+        ulkelerList = ulkeler.getUlkeList()
+        data = {
+            'model':modelAct,
+            'ulkeler':ulkelerList
+        }
+        return jsonify(data)
+    
     
 class TeklifMusterilerYeniKayitApi(Resource):
     def post(self):
         data = request.get_json()
         islem = TeklifMusteriler()
         status = islem.setTeklifMusterilerKayit(data)
-        result = islem.getTeklifMusteriler()
+        data = {
+            'status':status
+        }
+        return jsonify(data)
+    
+    def put(self):
+        data = request.get_json()
+        islem = TeklifMusteriler()
+        status = islem.setTeklifMusteriler(data)
         data = {
             'status':status,
-            'result':result
         }
         return jsonify(data)
     
 class TeklifMusterilerSilApi(Resource):
-    def get(self,id):
+    def delete(self,id):
         islem = TeklifMusteriler()
         status = islem.setTeklifMusterilerSil(id)
-        result = islem.getTeklifMusteriler()
         data = {
             'status':status,
-            'result':result
         }
         return jsonify(data)
     
@@ -279,24 +332,21 @@ class FuarMusterilerYeniKayitApi(Resource):
         data = request.get_json()
         islem = FuarMusteriler()
         status = islem.setFuarMusterilerKayit(data)
-        liste = islem.getFuarMusterileriList()
         data = {
             'status':status,
-            'liste':liste
         }
         return jsonify(data)
     
-class FuarMusterilerGuncelleApi(Resource):
-    def post(self):
+    def put(self):
         data = request.get_json()
         islem = FuarMusteriler()
         status = islem.setFuarMusterilerGuncelle(data)
-        liste = islem.getFuarMusterileriList()
         data = {
             'status':status,
-            'liste':liste
         }
         return jsonify(data)
+    
+
     
 class FuarMusterilerListApi(Resource):
     def get(self):
@@ -307,33 +357,70 @@ class FuarMusterilerListApi(Resource):
 class FuarMusterilerListAyrintiApi(Resource):
     def get(self,id):
         islem = FuarMusteriler()
-        result = islem.getFuarMusterileriListAyrinti(id)
-        return jsonify(result)
-    
-class FuarMusterilerSilApi(Resource):
-    def get(self,id):
-        islem = FuarMusteriler()
-        status = islem.getFuarMusterileriListSil(id)
-        liste = islem.getFuarMusterileriList()
+        country = Ulkeler()
+        model = islem.getFuarMusterileriListAyrinti(id)[0]
+        countryList = country.getUlkeList()
         data = {
-            'status':status,
-            'liste':liste
+            'model':model,
+            'country':countryList,
         }
         return jsonify(data)
     
+class FuarMusterilerSilApi(Resource):
+    def delete(self,id):
+        islem = FuarMusteriler()
+        status = islem.getFuarMusterileriListSil(id)
+        data = {
+            'status':status,
+        }
+        return jsonify(data)
+
+class FuarMusterilerModelApi(Resource):
+    def get(self):
+        country = Ulkeler()
+        model = FuarMusterilerModel()
+        schema = FuarMusterilerSchema()
+        modelAct = schema.dump(model)
+        countryList = country.getUlkeList()
+        data = {
+            'model':modelAct,
+            'country':countryList
+        }
+        return data
+            
     
 class BgpMusterilerYeniKayitApi(Resource):
     def post(self):
         data = request.get_json()
         islem = BgpMusteriler()
         status = islem.setBgpMusterilerKayit(data)
-        liste = islem.getBgpMusterileriList()
         data = {
             'status':status,
-            'liste':liste
         }
         return jsonify(data)
     
+    def put(self):
+        data = request.get_json()
+        islem = BgpMusteriler()
+        status = islem.setBgpMusterilerGuncelle(data)
+        data = {
+            'status':status,
+        }
+        return jsonify(data)
+
+class BgpMusterilerModelApi(Resource):
+    def get(self):
+        country = Ulkeler()
+        model = BgpMusterilerModel()
+        schema = BgpMusterilerSchema()
+        modelAct = schema.dump(model)
+        countryList = country.getUlkeList()
+        data = {
+            'model':modelAct,
+            'country':countryList,
+        }
+        return data
+
 class BgpMusterilerGuncelleApi(Resource):
     def post(self):
         data = request.get_json()
@@ -355,17 +442,22 @@ class BgpMusterilerListApi(Resource):
 class BgpMusterilerListAyrintiApi(Resource):
     def get(self,id):
         islem = BgpMusteriler()
-        result = islem.getBgpMusterileriListAyrinti(id)
-        return jsonify(result)
+        country = Ulkeler()
+        
+        model = islem.getBgpMusterileriListAyrinti(id)[0]
+        countryList = country.getUlkeList()
+        data = {
+            'model':model,
+            'country':countryList,
+        }
+        return data
     
 class BgpMusterilerSilApi(Resource):
-    def get(self,id):
+    def delete(self,id):
         islem = BgpMusteriler()
         status = islem.getBgpMusterileriListSil(id)
-        liste = islem.getBgpMusterileriList()
         data = {
             'status':status,
-            'liste':liste
         }
         return jsonify(data)
    

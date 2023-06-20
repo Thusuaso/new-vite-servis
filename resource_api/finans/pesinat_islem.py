@@ -10,18 +10,9 @@ class FinansPesinatIslem:
     
     def pesinat_kaydet(self,_item):
         try:
-            kullaniciid = self.data.getStoreList(
-                """
-                Select ID from KullaniciTB
-                where KullaniciAdi=?
-                """,(_item['kullaniciadi'])
-            )[0].ID
-
             item = _item['pesinat_model']
             item['tarih'] = _item['tarih']
             
-           
-
             self.data.update_insert(
                """
                 insert into OdemelerTB (
@@ -33,7 +24,7 @@ class FinansPesinatIslem:
                 """,
                (
                     item['tarih'],item['musteri_id'],item['siparis_no'],
-                    1,item['aciklama'],item['tutar'],item['masraf'],item['kur'],kullaniciid
+                    1,item['aciklama'],item['tutar'],item['masraf'],item['kur'],item['kullanici_id']
                 )
             )
 
@@ -46,7 +37,6 @@ class FinansPesinatIslem:
              """
            
             info =_item['kullaniciadi'].capitalize() + ', ' + item['siparis_no'] + ' $' + str(item['tutar']) + ' Peşinat Girişi Yaptı'
-            DegisiklikMain().setYapilanDegisiklikBilgisi(_item['kullaniciadi'].capitalize(),info)
             yukleme_tarihi=""
             DegisiklikMain().setMaliyetDegisiklik(info,_item['kullaniciadi'].capitalize(),item['siparis_no'],yukleme_tarihi)
             MailService('Peşinat Tahsilat Bildirimi ',"huseyin@mekmarmarble.com",mail_konu)

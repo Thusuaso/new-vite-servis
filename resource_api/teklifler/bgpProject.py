@@ -1,19 +1,24 @@
 from flask_restful import Resource
 from views.teklifler.bgpProject import BgpProjects
 from flask import jsonify,request
+from views.shared import Ulkeler
 class BgpProjectApi(Resource):
-    def get(self,projectName,temsilci,bgpUlkeAdi,ulkeLogo):
+    def post(self):
+        data = request.get_json()
         islem = BgpProjects()
-        status,result = islem.setBgpProjectsName(projectName,temsilci,bgpUlkeAdi,ulkeLogo)
+        status = islem.setBgpProjectsName(data)
         
-        return {'status':status,'result':result}
+        return {'status':status}
     
 class BgpProjectApiList(Resource):
     def get(self,temsilci):
         islem = BgpProjects()
         result = islem.getBgpProjectList(temsilci)
-        ulkeler = islem.getUlkeList(temsilci)
-        return {'result':result,'ulkeler':ulkeler}
+        bgpulkeler = islem.getUlkeList(temsilci)
+        statistic = islem.getBgpProjectCompanyStatus(temsilci)
+        ulkelerListDrop = islem.getCountryList()
+        representiveCountry = islem.getBgpProjectCountryandReseptation()
+        return {'result':result,'bgpulkeler':bgpulkeler,'statistic':statistic,'ulkelerListDrop':ulkelerListDrop,'representiveCountry':representiveCountry}
     
 class BgpProjectAyrintiApi(Resource):
     def get(self,projectName):
@@ -21,12 +26,24 @@ class BgpProjectAyrintiApi(Resource):
         result = islem.getBgpProjectListAyrinti(projectName)
         return result
     
+class BgpDetailModelApi(Resource):
+    def get(self):
+        islem = BgpProjects()
+        result = islem.getBgpDetailModel()
+        return result
+    
 class BgpProjectAyrintiSave(Resource):
     def post(self):
         data = request.get_json()
         islem = BgpProjects()
-        status,result = islem.setBgpProjectListDetail(data)
-        return {'status':status,'result':result}
+        status = islem.setBgpProjectListDetail(data)
+        return {'status':status}
+    def put(self):
+        datas = request.get_json()
+        islem = BgpProjects()
+        status = islem.setBgpProjectDetailFormChange(datas)
+        return {'status':status}
+    
     
 class BgpProjectAyrintiForm(Resource):
     def get(self,id):
@@ -34,25 +51,20 @@ class BgpProjectAyrintiForm(Resource):
         result = islem.getBgpProjectDetailForm(id)
         return result
     
-class BgpProjectAyrintiFormChange(Resource):
-    def post(self):
-        datas = request.get_json()
-        islem = BgpProjects()
-        status,result = islem.setBgpProjectDetailFormChange(datas)
-        return {'status':status,'result':result}
+
 
 
 class BgpProjectAyrintiFormDelete(Resource):
-    def get(self,id,projectName):
+    def delete(self,id):
         islem = BgpProjects()
-        status,result = islem.setBgpProjectDetailFormDelete(id,projectName)
-        return {'status':status,'result':result}
+        status = islem.setBgpProjectDetailFormDelete(id)
+        return {'status':status}
     
 class BgpProjectDelete(Resource):
-    def get(self,temsilci,projectName):
+    def delete(self,projectName):
         islem = BgpProjects()
-        status,result = islem.setBgpProjectDelete(temsilci,projectName)
-        return {'status':status,'result':result}
+        status = islem.setBgpProjectDelete(projectName)
+        return {'status':status}
         
 class BgpProjectHatirlatmaListApi(Resource):
     def get(self,userId):

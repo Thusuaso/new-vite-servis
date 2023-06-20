@@ -263,32 +263,12 @@ class SiparisGiris:
           
           urunKayitDurum = self.__siparisUrunDataKayit(urunler,siparis['siparisNo'],marketing,siparis['musteriId'])
           if urunKayitDurum == True:
-            #   if(siparis['siparisDurumId']==1 and (siparis['odemeTurId']==1 or siparis['odemeTurId'] ==2) ):
-            #     MailService(siparis['siparisNo'] + " nolu Sipariş Tahsil Edilmeli", "huseyin@mekmarmarble.com", siparis['siparisNo'] + ' nolu yeni sipariş bekleyende, tahsilatını gerçekleştirip üretime alınız!') 
-
             #   self.mailGonderInsert(siparis,siparis['siparisNo']) #yeni sipariş için
               info2 = siparis['kayit_kisi']  + ' ' + siparis['siparisNo'] + ' siparişini girdi.'
               yukleme_tarihi=""
               DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi)
-            
-              info = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' ' +  'Siparişini Girdi.'
-              DegisiklikMain().setYapilanDegisiklikBilgisi(siparis['kayit_kisi'],info)
-              degisiklik = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' Siparişini Girdi.'
-              degisiklikAlani = 'Siparişler'
-              islem2 = DegisiklikTahmin()
-              now = datetime.datetime.now()
-              year = now.strftime("%Y")
-              month = now.strftime("%m")
-              day = now.strftime("%d")
-              hour = now.strftime("%H")
-              minute = now.strftime("%M")
-              second = now.strftime("%S")
-              watch = str(hour) + ' : ' + str(minute) + ' : '  + str(second)
-              islem2.kaydet(degisiklik,degisiklikAlani,marketing,year,month,day,watch)
-              data = {
-                  'status':True
-              }
-              return data
+              
+              return True
           else:
               self.__siparisDataSil(siparis['siparisNo'])
               self.__siparisUrunDataSilHepsi(siparis['siparisNo'])
@@ -310,18 +290,19 @@ class SiparisGiris:
     def siparisGuncelle(self,siparis,urunlerYeni,urunlerDegisenler,urunlerSilinenler,degisenMasraflar):
         
         try:
-                
-            mailListesi = []
-            for item in degisenMasraflar:
-                if(item['isChange'] == 1):
-                    mailListesi.append(self.__maliyetDegisimSendMail(item,siparis['siparisNo']))
+            if(len(degisenMasraflar)>0):
+                  
+                mailListesi = []
+                for item in degisenMasraflar:
+                    if(item['isChange'] == 1):
+                        mailListesi.append(self.__maliyetDegisimSendMail(item,siparis['siparisNo']))
             
-            for item in mailListesi:
-                info = item['degisenAdi'] + ' $' + str(item['eskiDeger']) + ' dan $' + str(item['yeniDeger']) + ' e değişti.'
-                DegisiklikMain().setMaliyetDegisiklik(info,siparis['kayit_kisi'],siparis['siparisNo'],siparis['yuklemeTarihi'])
+                for item in mailListesi:
+                    info = item['degisenAdi'] + ' $' + str(item['eskiDeger']) + ' dan $' + str(item['yeniDeger']) + ' e değişti.'
+                    DegisiklikMain().setMaliyetDegisiklik(info,siparis['kayit_kisi'],siparis['siparisNo'],siparis['yuklemeTarihi'])
 
-            if(siparis['siparisDurumId']==1 and (siparis['odemeTurId']==1 or siparis['odemeTurId'] ==2) ):
-                MailService(siparis['siparisNo'] + " nolu Sipariş Tahsil Edilmeli", "huseyin@mekmarmarble.com", siparis['siparisNo'] + ' nolu yeni sipariş bekleyende, tahsilatını gerçekleştirip üretime alınız!') 
+            # if(siparis['siparisDurumId']==1 and (siparis['odemeTurId']==1 or siparis['odemeTurId'] ==2) ):
+            #     MailService(siparis['siparisNo'] + " nolu Sipariş Tahsil Edilmeli", "huseyin@mekmarmarble.com", siparis['siparisNo'] + ' nolu yeni sipariş bekleyende, tahsilatını gerçekleştirip üretime alınız!') 
 
             for item in urunlerDegisenler:
                 item['miktar'] = float(item['miktar'])
@@ -332,7 +313,7 @@ class SiparisGiris:
             self.__siparisUrunDataKayit(urunlerYeni,siparis['siparisNo'],marketing,siparis['musteriId'])
             if len(urunlerDegisenler) >= 1 : # ürün değiştirme 
               
-              self.mailGonderUpdate(siparis,urunlerDegisenler,siparis['siparisNo'])
+            #   self.mailGonderUpdate(siparis,urunlerDegisenler,siparis['siparisNo'])
             
               info = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' ' +  'Sipariş Ürün Bilgilerini Güncelledi.'
               DegisiklikMain().setYapilanDegisiklikBilgisi(siparis['kayit_kisi'],info)
@@ -349,7 +330,7 @@ class SiparisGiris:
             if len(urunlerYeni) >= 1 : #yeni ürün ekleme
               info = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' ' +  'Yeni Ürün Ekledi.'
               DegisiklikMain().setYapilanDegisiklikBilgisi(siparis['kayit_kisi'],info)
-              self.mailGonderNew(siparis,urunlerYeni,siparis['siparisNo'])
+            #   self.mailGonderNew(siparis,urunlerYeni,siparis['siparisNo'])
               info2 = siparis['kayit_kisi']  + ' ' + siparis['siparisNo'] + ' siparişine yeni kalem ekledi.'
               yukleme_tarihi=""
               DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi)
@@ -400,7 +381,7 @@ class SiparisGiris:
             elif len(urunlerSilinenler) >= 1 : # ürün silindi ise
               info = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' ' +  'Bir Ürün Kalemi Silindi.'
               DegisiklikMain().setYapilanDegisiklikBilgisi(siparis['kayit_kisi'],info)
-              self.mailGonderDelete(siparis,urunlerSilinenler,siparis['siparisNo'])
+            #   self.mailGonderDelete(siparis,urunlerSilinenler,siparis['siparisNo'])
               info2 = siparis['kayit_kisi']  + ' ' + siparis['siparisNo'] + ' siparişinden bir kalemi sildi.'
               yukleme_tarihi=""
               DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi) 
@@ -569,10 +550,10 @@ class SiparisGiris:
                         NavlunSatis,KullaniciID,SiparisDurumID,UretimAciklama,SevkiyatAciklama,FinansAciklama,OdemeAciklama,TahminiYuklemeTarihi,
                         Vade,Ulke,UlkeId,Komisyon,DetayAciklama_1,DetayMekmarNot_1,DetayTutar_1,DetayAlis_1,DetayAciklama_2,DetayMekmarNot_2,
                         DetayTutar_2,DetayAlis_2,DetayAciklama_3,DetayMekmarNot_3,DetayTutar_3,DetayTutar_4,DetayAciklama_4,DetayAlis_3,SiparisSahibi,EvrakGideri,Eta,
-                        KonteynerAyrinti,KonteynerNo,TeslimYeri,FaturaKesimTurID,AktarmaLimanAdi,depo_yukleme,sigorta_id,sigorta_Tutar,Operasyon ,Finansman,Iade,sigorta_tutar_satis,MalBedeli,TahminiEtaTarihi
+                        KonteynerAyrinti,KonteynerNo,TeslimYeri,FaturaKesimTurID,AktarmaLimanAdi,depo_yukleme,sigorta_id,sigorta_Tutar,Operasyon ,Finansman,Iade,sigorta_tutar_satis,TahminiEtaTarihi
                     )
                     values
-                    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                     """,(
                         siparis['siparisNo'],s_tarihi,siparis['odemeTurId'],siparis['teslimTurId'],siparis['musteriId'],
                         siparis['pesinat'],siparis['navlunFirma'],siparis['navlunMekmarNot'],float(siparis['navlunAlis']),float(siparis['navlunSatis']),
@@ -582,7 +563,7 @@ class SiparisGiris:
                         siparis['detayAciklama_2'],siparis['detayMekmarNot_2'],siparis['detayTutar_2'],float(siparis['detayAlis_2']),
                         siparis['detayAciklama_3'],siparis['detayMekmarNot_3'],float(siparis['detayTutar_3']),float(siparis['detayTutar_4']),siparis['detayAciklama_4'],float(siparis['detayAlis_3']),siparis['siparisSahibi'],
                         siparis['evrakGideri'],siparis['eta'],siparis['konteynerAyrinti'],siparis['konteynerNo'],siparis['teslimYeri'],siparis['faturaKesimTurId'],siparis['liman'],siparis['depo'], 
-                        siparis['sigorta_id'],float(siparis['sigorta_tutar']),siparis['operasyon'],siparis['finansman'],siparis['iade'],float(siparis['sigorta_tutar_satis']),siparis['malBedeli'],tahmini_eta
+                        siparis['sigorta_id'],float(siparis['sigorta_tutar']),siparis['operasyon'],siparis['finansman'],siparis['iade'],float(siparis['sigorta_tutar_satis']),tahmini_eta
                     )
                 )
                 
@@ -602,7 +583,6 @@ class SiparisGiris:
     
     def __siparisUrunDataKayit(self,urunler,siparisNo,marketing,musteriid):
             
-            
             for item in urunler:
                 
                 ozelMiktar = self.decimalDegerKontrol(item['ozelMiktar'])
@@ -614,15 +594,15 @@ class SiparisGiris:
                     """
                     insert into SiparisUrunTB (
                         SiparisNo,TedarikciID,UrunKartID,UrunBirimID,Miktar,OzelMiktar,KasaAdet,
-                        SatisFiyati,SatisToplam,UretimAciklama,MusteriAciklama,Notlar,
+                        SatisFiyati,SatisToplam,UretimAciklama,MusteriAciklama,
                         AlisFiyati,AlisFiyati_TL,SiraNo,Ton,musteriID
                     )
                     values
-                    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                     """,(
                         siparisNo,item['tedarikciId'],item['urunKartId'],item['urunBirimId'],
                         item['miktar'],ozelMiktar,item['kasaAdet'],item['satisFiyati'],
-                        item['satisToplam'],item['uretimAciklama'],item['musteriAciklama'],item['notlar'],
+                        item['satisToplam'],item['uretimAciklama'],item['musteriAciklama'],
                         item['alisFiyati'],item['alisFiyati_Tl'],item['siraNo'],ton,musteriid
                     )
                 )

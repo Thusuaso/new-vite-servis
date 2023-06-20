@@ -7,3 +7,6 @@ from views.raporlar.ceyreklikRapor.ceyreklikRapor import CeyreklikRaporlar
 from views.raporlar.stock_price import StockPrice
 from views.raporlar.mekmarRaporlari import *
 from views.raporlar.logs import LogsMaliyet
+from views.raporlar.guRaporlar import *
+from views.raporlar.yapilacaklar import *
+from views.raporlar.maliyetHatalar import *

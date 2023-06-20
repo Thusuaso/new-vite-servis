@@ -129,7 +129,11 @@ class KonteynerFaturalar:
                 (?,?,?,?,?)
                 """,(item['Firma_id'],item['tarih'],item['faturaNo'],item['kur'],item['tarih'])
             )
-           
+
+            invoice = self.data.getStoreList("""
+                                                select ID,FaturaNo from KonteynerDigerFaturalarKayitTB where FaturaNo=?
+                                             """,(item['faturaNo']))[0]
+            
             self.__urunId(item)
             
             result = self.data.getStoreList("""
@@ -142,7 +146,14 @@ class KonteynerFaturalar:
             
             info = 'Huseyin Konteyner Fatura Girişi Yaptı.'
             DegisiklikMain().setYapilanDegisiklikBilgisi('Huseyin',info)
-            return True
+            
+            data = {
+                'status':True,
+                'invoiceId':invoice.ID,
+                'invoiceNo':invoice.FaturaNo
+            }
+            
+            return data
         except Exception as e:
             print('konteynerKaydet  Hata : ',str(e))
         return False
@@ -194,21 +205,10 @@ class KonteynerFaturalar:
 
     def KonteynerDosyaKaydet(self,item):
         try:
-       
-            
-            kullaniciid = self.data.getStoreList(
-                    """
-                    Select ID from KullaniciTB
-                    where KullaniciAdi=?
-                    """,(item['kullaniciAdi'])
-                )[0].ID
-           
             if (item['fatura_tur_list']['id'] == 7) : 
                 yukleme_evrak = 70
             else :
                 yukleme_evrak = 50
-
-                
             forMat = '%d-%m-%Y'
             item['tarih'] = datetime.datetime.strptime(item['tarih'], forMat)
             item['tarih'] = item['tarih'].date()
@@ -228,7 +228,7 @@ class KonteynerFaturalar:
                     )   
                      values
                     (?,?,?, ?,?,?,?,?,?,?,?)
-                """,(item['tarih'],item['urunID'],item['fatura_tur_list']['id'],item['siparisno'],item['Tutar_dolar'],1,yukleme_evrak,2,item['tarih'],item['faturaNo']+'.pdf' , kullaniciid)
+                """,(item['tarih'],item['urunID'],item['fatura_tur_list']['id'],item['siparisno'],item['Tutar_dolar'],1,yukleme_evrak,2,item['tarih'],item['faturaNo']+'.pdf' , item['kullaniciid'])
             )
             info = 'Huseyin Konteyner Fatura Dosyası Girişi Yaptı.'
             DegisiklikMain().setYapilanDegisiklikBilgisi('Huseyin',info)

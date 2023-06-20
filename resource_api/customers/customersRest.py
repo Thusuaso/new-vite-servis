@@ -9,10 +9,14 @@ from flask import jsonify,request,send_file
 class CustomersListeApi(Resource):
 
     def get(self,users):
-
-        islem = MusteriListem()
-        musteri_listesi = islem.getMusteriListesi(users)
-        return musteri_listesi
+        if (users == 47):
+            islem = MusteriListem()
+            musteri_listesi = islem.getMusteriListesiAll()
+            return musteri_listesi
+        else:
+            islem = MusteriListem()
+            musteri_listesi = islem.getMusteriListesi(users)
+            return musteri_listesi
 
 
 class CustomersListeSatisciApi(Resource):
@@ -151,8 +155,9 @@ class CustomersKayitIslem(Resource):
     def put(self):
 
         item = request.get_json()
+        print(item)
+        
         islem = SatisciIslem()
-
         data = islem.satisciGuncelle(item)
 
         return jsonify(data)
@@ -191,10 +196,9 @@ class CustomersChangePriority(Resource):
 class CustomersChangeFollow(Resource):
     def get(self,customer,follow):
         islem = SatisciIslem()
-        status,changeFollowing = islem.setFollowing(customer,follow)
+        status = islem.setFollowing(customer,follow)
         data = {
             'status':status,
-            'changeFollowing':changeFollowing
         }
         return jsonify(data)
 class CustomersTemsilciList(Resource):

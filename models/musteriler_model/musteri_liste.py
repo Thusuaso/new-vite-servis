@@ -18,6 +18,7 @@ class MusteriListeSchema(Schema):
     isim = fields.String()
     satisci = fields.String()
     notlar = fields.String()
+    sonkullanici = fields.Boolean()
 
 class MusteriListeModel:
     id = None
@@ -34,8 +35,8 @@ class MusteriListeModel:
     sira = 0
     isim = ""
     satisci=""
-    notlar = ""
-
+    notlar =  ""
+    sonkullanici=False
 class MusteriSiparisListeSchema(Schema):
 
     firmaadi = fields.String()

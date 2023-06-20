@@ -26,3 +26,12 @@ class TedarikciFormModel:
     kullanici_id = None
     kullanici_adi = ""
     tedarikci_id = None
+    
+class TedarikciTeslimvFaturaTurSchema(Schema):
+    id = fields.Int()
+    tur = fields.String()
+    
+    
+class TedarikciTeslimvFaturaTurModel:
+    id = 0
+    tur = ""

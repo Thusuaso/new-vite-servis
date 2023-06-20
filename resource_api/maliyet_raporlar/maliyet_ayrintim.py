@@ -57,9 +57,9 @@ class MaliyetRaporuAyrinti:
 			s.DetayAlis_2,
             s.DetayTutar_3,
 			s.DetayAlis_3,
-           s.DetayTutar_4,
-		   s.EvrakGideri,
-		   s.Komisyon,
+            s.DetayTutar_4,
+		    s.EvrakGideri,
+		    s.Komisyon,
             s.alisFiyatiControl,
             s.Pesinat,
             (
@@ -70,6 +70,17 @@ class MaliyetRaporuAyrinti:
             select Sum(Masraf) from OdemelerTB o where o.SiparisNo=s.SiparisNo
             and s.MusteriID=m.ID
             ) as BankaMasraf,
+			(
+            select Sum(Kur) / (
+				(
+            select count(o.SiparisNo) from OdemelerTB o where o.SiparisNo=s.SiparisNo
+            and s.MusteriID=m.ID
+            ) 
+			) 
+			
+			from OdemelerTB o where o.SiparisNo=s.SiparisNo
+            and s.MusteriID=m.ID
+            ) as Kur,
             (
               select Sum(SatisToplam) from SiparisUrunTB u where u.SiparisNo=s.SiparisNo
             ) as UrunBedeli,
@@ -138,7 +149,7 @@ class MaliyetRaporuAyrinti:
             model.nakliye , model.gumruk , model.ilaclama , model.liman = self.__digerMaliyet(siparisno)
             model.ozel_iscilik = self.__ozelIscilik(siparisno)
             model.total_in = model.sigorta + model.liman + model.ilaclama +  model.gumruk + model.nakliye + model.mekmer_alim + model.mek_moz_alim + model.dis_alim + model.banka_masrafi + model.ozel_iscilik + model.navlun_alis + model.detay_1 + model.detay_2 + model.detay_3 + model.mekus_masraf + model.komisyon + model.kurye
-           
+            model.kur = self.__noneType(item.Kur)
      
                
               

@@ -72,5 +72,37 @@ class NumuneListe:
      
         return schema.dump(liste)
 
+    def getYilListesi(self):
+
+        result = self.data.getList(
+            """
+            select
+            Year(Tarih) as Yil
+            from
+            NumuneOdemelerTB
+            group by Year(Tarih)
+            order by Year(Tarih) desc
+
+            """
+        )
+
+        id = 1
+
+        liste = list()
+
+        for item in result:
+
+            model = NumuneYilModel()
+            model.id = id 
+            model.yil = item.Yil
+
+            liste.append(model)
+
+            id += 1
+
+        schema = NumuneYilSchema(many=True)
+
+        return schema.dump(liste)
+
    
    

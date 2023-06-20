@@ -66,27 +66,27 @@ class UretimListApi(Resource):
 
     def get(self):
 
-        uretim = UretimListe()
-        siparis = SeleksiyonListeler()
+        production = UretimListe()
+        order = SeleksiyonListeler()
 
-        uretimlist = uretim.getUretimList()
-        siparislist = siparis.getUretimSiparisListe()
-        siparis_ayrintilist = siparis.getUretimSiparisDetayList()
-        ocaklist = siparis.getOcakList()
-        tedarikcilist = siparis.getTedarikciList()
-        urunbirimlist = siparis.getUrunBirimList()
-        uretimozetlist = siparis.getUretimOzetList()
+        productionList = production.getUretimList()
+        orderList = order.getUretimSiparisListe()
+        orderDetailList = order.getUretimSiparisDetayList()
+        mineList = order.getOcakList()
+        supplierList = order.getTedarikciList()
+        productUnitList = order.getUrunBirimList()
+        productSummaryList = order.getUretimOzetList()
 
 
         data = {
 
-            "uretimlist" : uretimlist,
-            "siparislist" : siparislist,
-            "siparis_ayrintilist" : siparis_ayrintilist,
-            "ocaklist" : ocaklist,
-            "tedarikcilist" : tedarikcilist,
-            "urunbirimlist" : urunbirimlist,
-            "uretimozetlist" : uretimozetlist
+            "productionList" : productionList,
+            "orderList" : orderList,
+            "orderDetailList" : orderDetailList,
+            "mineList" : mineList,
+            "supplierList" : supplierList,
+            "productUnitList" : productUnitList,
+            "productSummaryList" : productSummaryList
         }
 
         return jsonify(data)

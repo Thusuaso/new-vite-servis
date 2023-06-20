@@ -34,13 +34,13 @@ class MusteriIslem:
             from
             MusterilerTB m,YeniTeklif_UlkeTB u,KullaniciTB k
             where u.Id=m.UlkeId and k.ID=m.MusteriTemsilciId 
-            order by m.ID desc
+            order by m.ID
 
             """
         )
 
         liste = list()
-
+        sira = 1
         for item in result:
 
             model = MusteriListeModel()
@@ -50,15 +50,19 @@ class MusteriIslem:
             model.adres = item.Adres
             model.marketing = item.Marketing
             model.ulkeadi = item.UlkeAdi
-            model.logo = item.Png_Flags
+            model.logo = 'https://cdn.mekmarimage.com/countryLogo/' + item.Png_Flags
             model.temsilci = item.Temsilci
             model.devir = item.Devir
             model.ozel = item.Ozel
             model.telefon = item.Telefon
-            model.sira = item.Sira
+            model.sira = sira
             model.satisci = item.Satisci
-            model.sonkullanici = item.SonKullanici
+            if(model.sonkullanici != None):
+                model.sonkullanici = item.SonKullanici
+            else:
+                model.sonkullanici = False
             liste.append(model)
+            sira += 1
 
         schema = MusteriListeSchema(many=True)
 
@@ -116,6 +120,7 @@ class MusteriIslem:
 
     def setSurfaceCustomers(self,data):
         try:
+            print(data)
             surface_id = self.__setCountryId(data['surface'],data['user_id'])
             self.data.update_insert("""
                                         insert into SurfaceCustomersTB(FirstName,Adress,City,Email,Phone,SurfaceId,UserId) VALUES(?,?,?,?,?,?,?)
@@ -184,7 +189,38 @@ class MusteriIslem:
         except Exception as e:
             print("setSurfaceCustomersDelete hata",str(e))
             return False
-        
+    
+    def getCustomerSurfaceDetail(self,id):
+        try:
+            result = self.data.getStoreList("""
+                                                select 
+                                                    sc.*,
+                                                    cs.Surface
+                                                from SurfaceCustomersTB sc
+                                                inner join CustomersSurfaceTB cs on sc.SurfaceId = cs.ID
+                                                where sc.ID=?
+                                            
+                                            """,(id))
+            liste = list()
+            for item in result:
+                model = CustomersSurfaceListModel()
+                model.id = item.ID
+                model.surface = item.Surface
+                model.firstName = item.FirstName
+                model.adress = item.Adress
+                model.city = item.City
+                model.email = item.Email
+                model.phone = item.Phone
+                model.surfaceId = item.SurfaceId
+                model.user_id = item.UserId
+                
+                liste.append(model)
+            schema = CustomersSurfaceListSchema(many=True)
+            return schema.dump(liste)
+            
+        except Exception as e:
+            print('getCustomerSurfaceDetail hata',str(e))
+            return False
         
         
         
@@ -562,7 +598,7 @@ class FuarMusteriler:
             self.data.update_insert("""
                                         insert into FuarMusterilerTB(Customer,Company,Email,Phone,Country,Kullanici,Adress,Orderer,FilelinkOn,FilelinkArka) VALUES(?,?,?,?,?,?,?,?,?,?)
                                     
-                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['user'],data['adress'],data['orderer'],data['linkOn'],data['linkArka']))
+                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['user'],data['adress'],data['satisci'],data['linkOn'],data['linkArka']))
             
             return True
         except Exception as e:
@@ -666,7 +702,7 @@ class BgpMusteriler:
             self.data.update_insert("""
                                         insert into BgpProjectMusteriler(Customer,Company,Email,Phone,Ulke,Kullanici,Adress,Satisci) VALUES(?,?,?,?,?,?,?,?)
                                     
-                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['user'],data['adress'],data['orderer']))
+                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['user'],data['adress'],data['satisci']))
             
             return True
         except Exception as e:

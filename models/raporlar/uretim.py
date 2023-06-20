@@ -21,7 +21,7 @@ class UretimSchema(Schema):
     siparisno = fields.String()
     urunKartID = fields.String()
     aciklama = fields.String()
-
+    kutuiciadet = fields.Int()
 
 class UretimModel:
 
@@ -42,3 +42,4 @@ class UretimModel:
     siparisno = ""
     urunKartID=0
     aciklama=""
+    kutuiciadet = 0

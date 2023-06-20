@@ -2,6 +2,8 @@ from resource_api.maliyet_raporlar.maliyet_rapor_islem import MaliyetRaporIslem,
 from resource_api.maliyet_raporlar.maliyet_zaman import MaliyeZamanIslem
 from resource_api.maliyet_raporlar.excel_cikti import ExcelCiktiIslem
 from resource_api.maliyet_raporlar.maliyet_ayrintim import MaliyetRaporuAyrinti
+from resource_api.operasyon.evrakRestApi import EvrakListeler
+
 from flask_restful import Resource
 from flask import request,send_file,jsonify
 
@@ -66,16 +68,19 @@ class MaliyetRaporuAyrintiApi(Resource):
 
     def get(self,siparisno): 
         islem = MaliyetRaporuAyrinti()
-
+        islem2 = EvrakListeler()
         maliyet = islem.getMaliyetAyrintiList(siparisno)
 
         banka = islem.getBankaAyrintiList(siparisno)
 
+        evrak = islem2.getEvrakList(siparisno)
+        
+        
         data = {
 
             "maliyet" : maliyet,
-            "banka" : banka
-           
+            "banka" : banka,
+            "evrak":evrak,
         }
 
         return jsonify(data)

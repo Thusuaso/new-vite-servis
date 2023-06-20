@@ -15,6 +15,7 @@ class MusteriListeSchema(Schema):
     newOncelik = fields.String()
     satisciDurum = fields.String()
     teklifSira = fields.Int()
+    takipEt = fields.Boolean()
 class MusteriListeModel:
     id = None
     musteriadi = ""
@@ -28,7 +29,7 @@ class MusteriListeModel:
     newOncelik=""
     satisciDurum = ""
     teklifSira = 0
-    
+    takipEt = False
 
 class MusteriAyrintiSchema(Schema):
 

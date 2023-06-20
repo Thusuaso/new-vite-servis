@@ -94,8 +94,14 @@ class SevkiyatNewModel(Resource):
     def get(self):
 
         model = SevkiyatIslem().newSevkiyatModel()
-
-        return model
+        islem = Listeler()
+        siparis_liste = islem.getSiparisListe()
+        data = {
+            'model':model,
+            'siparis_liste':siparis_liste
+            
+        }
+        return data
 
 class SevkiyatKayitIslem(Resource):
 

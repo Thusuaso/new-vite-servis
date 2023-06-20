@@ -5,7 +5,7 @@ class BgpProjects():
     def __init__(self):
         self.data = SqlConnect().data
         
-    def setBgpProjectsName(self,projectName,temsilci,bgpUlkeAdi,ulkeLogo):
+    def setBgpProjectsName(self,data):
         try:
             now = datetime.datetime.now()
             day = now.strftime("%d")
@@ -15,24 +15,21 @@ class BgpProjects():
             result = self.data.getStoreList("""
                                                 select * from BgpNetworkProjects where ProjectName=?
                                             
-                                            """,(projectName))
+                                            """,(data['name']))
             
             if len(result) > 0:
-                result = self.getBgpProjectList(temsilci)
-                return False,result
+                return False
             else:
                 self.data.update_insert("""
 
                                             insert BgpNetworkProjects(ProjectName,DateofRegistiration,Temsilci,UlkeAdi,UlkeLogo) VALUES(?,?,?,?,?)
                                         
-                                        """,(projectName,nowDate,temsilci,bgpUlkeAdi,ulkeLogo))
-                result = self.getBgpProjectList(temsilci)
-                return True,result
+                                        """,(data['name'],nowDate,data['representive'],data['country'],data['countryLogo']))
+                return True
             
         except Exception as e:
             print('setBgpProjectsName',str(e))
-            result = self.getBgpProjectList(temsilci)
-            return False,result
+            return False
     
     
     
@@ -58,7 +55,10 @@ class BgpProjects():
         try:
             if temsilci == 19 or temsilci == 44:
                 result = self.data.getStoreList("""
-                                                    select * from BgpNetworkProjects where Temsilci=?
+                                                    select 
+                                                        bgp.*,
+                                                        (select k.KullaniciAdi from KullaniciTB k where k.ID=bgp.Temsilci) as TemsilciAdi
+                                                    from BgpNetworkProjects bgp where bgp.Temsilci=?
                                                 
                                                 """,(temsilci))
                 liste = list()
@@ -72,17 +72,20 @@ class BgpProjects():
                         model.borderColor = 'red'
                     elif item.Temsilci == 44:
                         model.borderColor = 'blue'
-                    
                     model.ulkeAdi = item.UlkeAdi
                     model.ulkeLogo = item.UlkeLogo
                     model.filelink = item.Filelink
                     model.fileCloud = item.FileCloud
+                    model.temsilciAdi = item.TemsilciAdi
                     liste.append(model)
                 schema = BgpProjectsListSchema(many=True)
                 return schema.dump(liste)
             else:
                 result = self.data.getList("""
-                                                    select * from BgpNetworkProjects
+                                                    select 
+                                                        bgp.*,
+                                                        (select k.KullaniciAdi from KullaniciTB k where k.ID=bgp.Temsilci) as TemsilciAdi
+                                                    from BgpNetworkProjects bgp
                                                 
                                                 """)
                 liste = list()
@@ -100,6 +103,7 @@ class BgpProjects():
                     model.ulkeLogo = item.UlkeLogo
                     model.filelink = item.Filelink
                     model.fileCloud = item.FileCloud
+                    model.temsilciAdi = item.TemsilciAdi
                     liste.append(model)
                 schema = BgpProjectsListSchema(many=True)
                 return schema.dump(liste)
@@ -147,7 +151,12 @@ class BgpProjects():
             print('getBgpProjectList hata',str(e))
             return False
         
-        
+    def getBgpDetailModel(self):
+        model = BgpProjectsAyrintiModel()
+        schema = BgpProjectsAyrintiSchema()
+        return schema.dump(model)
+
+         
     def setBgpProjectListDetail(self,datas):
         try:
             self.data.update_insert("""
@@ -175,11 +184,11 @@ class BgpProjects():
                                              
                                              """,(datas['projectName'],
                                                   datas['firmaAdi'],
-                                                  datas['date'],
+                                                  datas['kayitTarihi'],
                                                   datas['baslik'],
                                                   datas['aciklama'],
-                                                  datas['date_hatirlatma'],
-                                                  datas['hatirlatma_notu'],
+                                                  datas['hatirlatmaTarihi'],
+                                                  datas['hatirlatmaAciklama'],
                                                   datas['temsilci'],
                                                   datas['email'],
                                                   datas['phoneNumber'],
@@ -191,10 +200,10 @@ class BgpProjects():
                                                   
                                                   
                                                   ))
-            result = self.getBgpProjectListAyrinti(datas['projectName'])
-            return True,result
+            return True
         except Exception as e:
             print('setBgpProjectListDetail',str(e))
+            return False
             
             
     def getBgpProjectDetailForm(self,id):
@@ -272,28 +281,24 @@ class BgpProjects():
                                          datas['interested'],
                                          datas['unvan'],
                                          datas['id']))
-            result = self.getBgpProjectListAyrinti(datas['projectName'])
-            return True,result
+            return True
         except Exception as e:
             print('getBgpProjectDetailFormChange',str(e))
-            result = self.getBgpProjectListAyrinti(datas['projectName'])
-            return False,result
+            return False
         
         
-    def setBgpProjectDetailFormDelete(self,id,projectName):
+    def setBgpProjectDetailFormDelete(self,id):
         try:
             self.data.update_insert("""
                                         delete BgpProjectDetailList where ID=?
                                    
                                    """,(id))
-            result = self.getBgpProjectListAyrinti(projectName)
-            return True,result
+            return True
         except Exception as e:
             print('setBgpProjectDetailFormDelete',str(e))
-            result = self.getBgpProjectListAyrinti(projectName)
-            return False,result
+            return False
         
-    def setBgpProjectDelete(self,temsilci,projectName):
+    def setBgpProjectDelete(self,projectName):
         try:
             self.data.update_insert("""
                                         delete BgpNetworkProjects where ProjectName=?
@@ -310,9 +315,8 @@ class BgpProjects():
                                         """,(projectName))
             
             
-            result = self.getBgpProjectList(temsilci)
             
-            return True,result
+            return True
         except Exception as e:
             print('setBgpProjectDelete hata',str(e))
             return False
@@ -513,43 +517,11 @@ class BgpProjects():
                     
 
                    
-                
-                
-                labelsData=[""]
-                basicData= {
-                        'labels': labelsData,
-                        'datasets': [
-                            {      
-                                'type': 'bar',
-                                'label': 'Yanlış Numara',
-                                'backgroundColor': '#42A5F5',
-                                'data': [sumWrongNumber]
-                            },
-                            {
-                                'type': 'bar',
-                                'label': 'Cevap Yok',
-                                'backgroundColor': '#ec5552',
-                                'data': [sumNotResponse]
-                            },
-                            {
-                                'type': 'bar',
-                                'label': 'İlgilenmeyen',
-                                'backgroundColor': '#ffff33',
-                                'data': [sumNotInterested]
-                            },
-                            {
-                                'type': 'bar',
-                                'label': 'İlgili',
-                                'backgroundColor': '#28d09e',
-                                'data': [ sumInterested]
-                            },
-                        ]
-                    }
+            
                 
                 
                 
-                
-                return liste,basicData
+                return liste
             
         else:
             ulkeler = self.data.getList("""
@@ -617,41 +589,8 @@ class BgpProjects():
                     continue
                 
             
-            labelsData=[""]
-            basicData= {
-                    'labels': labelsData,
-                    'datasets': [
-                        {      
-                            'type': 'bar',
-                            'label': 'Yanlış Numara',
-                            'backgroundColor': '#42A5F5',
-                            'data': [sumWrongNumber]
-                        },
-                        {
-                            'type': 'bar',
-                            'label': 'Cevap Yok',
-                            'backgroundColor': '#ec5552',
-                            'data': [sumNotResponse]
-                        },
-                        {
-                            'type': 'bar',
-                            'label': 'İlgilenmeyen',
-                            'backgroundColor': '#ffff33',
-                            'data': [sumNotInterested]
-                        },
-                        {
-                            'type': 'bar',
-                            'label': 'İlgili',
-                            'backgroundColor': '#28d09e',
-                            'data': [ sumInterested]
-                        },
-                    ]
-                }
             
-            
-            
-            
-            return liste,basicData
+            return liste
             
 
     def getBgpProjectCompanyStatusDetail(self,ulkeAdi):
@@ -785,13 +724,14 @@ class BgpProjects():
     
     def getCountryList(self):
         result = self.data.getList("""
-                                   select count(bgp.UlkeAdi),bgp.UlkeAdi as UlkeAdi from BgpProjectDetailList bgp group by bgp.UlkeAdi
+                                   select count(bgp.UlkeAdi) as Total,bgp.UlkeAdi as UlkeAdi from BgpProjectDetailList bgp group by bgp.UlkeAdi
 
                                    """)
         liste = list()
         for item in result:
             model = BgpProjectsCountryListModel()
             model.ulkeAdi = item.UlkeAdi
+            model.toplamProje = item.Total
             liste.append(model)
         schema = BgpProjectsCountryListSchema(many=True)
         return schema.dump(liste)

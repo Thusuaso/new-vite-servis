@@ -8,13 +8,20 @@ class TedarikciListApi(Resource):
 
         islem = TedarikciIslem()
 
-        data = {
+        result = islem.getTedarikciList()
 
-            "tedarikci_model" : islem.getTedarikciModel(),
-            "tedarikci_liste" : islem.getTedarikciList()
-        }
+        return jsonify(result)
 
-        return jsonify(data)
+class TedarikciModelApi(Resource):
+    def get(self):
+
+        islem = TedarikciIslem()
+
+
+        result = islem.getTedarikciModel(),
+
+        return jsonify(result)
+    
 
 class TedarikciIslemApi(Resource):
 
@@ -24,9 +31,9 @@ class TedarikciIslemApi(Resource):
 
         islem = TedarikciIslem()
 
-        status,result = islem.tedarikciKaydet(data)
+        status = islem.tedarikciKaydet(data)
 
-        return jsonify({'status' : status,'result':result})
+        return jsonify({'status' : status })
 
     def put(self):
 
@@ -34,9 +41,9 @@ class TedarikciIslemApi(Resource):
 
         islem = TedarikciIslem()
 
-        status,result = islem.tedarikciGuncelle(data)
+        status = islem.tedarikciGuncelle(data)
 
-        return jsonify({'status' : status,'result':result})
+        return jsonify({'status' : status })
 
 class TedarikciSilmeIslemApi(Resource):
 
@@ -44,9 +51,9 @@ class TedarikciSilmeIslemApi(Resource):
 
         islem = TedarikciIslem()
 
-        status,result = islem.tedarikciSilme(id)
+        status = islem.tedarikciSilme(id)
 
-        return jsonify({'status' : status,'result':result})
+        return jsonify({'status' : status})
 
         
 class IcSiparisDosyaKaydet(Resource):
@@ -54,7 +61,7 @@ class IcSiparisDosyaKaydet(Resource):
     def post(self):
 
         data = request.get_json()
-
+        print(data)
         islem = TedarikciIslem()
         result = islem.IcSiparisDosyaKaydet(data)
 

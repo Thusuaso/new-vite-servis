@@ -6,10 +6,10 @@ from models.operasyon.sevk_takip_listesi import *
 
 class KullaniciSiparisOzetListeler:
 
-    def __init__(self,username):
+    def __init__(self,userId):
 
         self.data = SqlConnect().data
-        self.kullaniciId = self.data.getStoreList("Select ID from KullaniciTB where KullaniciAdi=?",(username))[0].ID
+        self.kullaniciId = userId
 
     
     def getAyOzetList_gecenYil(self):

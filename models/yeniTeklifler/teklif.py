@@ -47,6 +47,7 @@ class TeklifSchema(Schema):
     email = fields.String()
     phone = fields.String()
     adress = fields.String()
+    hatirlatmaDurum = fields.Boolean()
 class TeklifModel:
     id = None
     tarih = ""
@@ -93,3 +94,4 @@ class TeklifModel:
     email = ""
     phone = ""
     adress = ""
+    hatirlatmaDurum = False

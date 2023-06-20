@@ -31,13 +31,18 @@ class NumuneAyrinti:
          for item in result:
 
             model = NumuneModel()
+            model.id = item.ID
             model.numuneNo = item.NumuneNo
-            model.tarih = tarihIslem.getDate(item.NumuneTarihi).strftime("%d-%m-%Y")
-          
+            model.giristarih = tarihIslem.getDate(item.NumuneTarihi).strftime("%d-%m-%Y")
+            model.yukleme_tarihi = tarihIslem.getDate(item.NumuneTarihi).strftime("%d-%m-%Y")
+            model.takip_No = item.TrackingNo
+            model.parite = item.Parite
             model.temsilci = item.NumuneTemsilci
-            
-            model.musteriadi = item.MusteriAdi
+            model.adres = item.Adres
+            model.aciklama = item.Aciklama
+            model.musteriAdi = item.MusteriAdi
             model.musteriId = item.MusteriID
+            model.ulke = item.Ulke
             model.kategoriAdi = item.KategoriAdi 
             model.kategoriId = item.KategoriID
             model.gonderiId = item.GonderiTipi
@@ -53,6 +58,17 @@ class NumuneAyrinti:
             model.urunBirim = item.BirimAdi
             model.Miktar = item.Miktar
             model.urunBirimId = item.UrunBirimi
+            if(item.Numune_Cloud_Dosya == None): 
+                model.numuneCloudDosya = ""
+            else:
+                model.numuneCloudDosya = 'https://file-service.mekmar.com/file/download/numune/numuneDosya/' + str(item.ID) + '/' + item.Numune_Cloud_Dosya
+                
+            if(item.Numune_Cloud_Dosya2 == None): 
+                model.numuneCloudDosya2 = ""
+            else:
+                model.numuneCloudDosya2 = 'https://file-service.mekmar.com/file/download/numune/numuneDosya/' + str(item.ID) + '/' + item.Numune_Cloud_Dosya2
+                
+            
             if item.BirimAdi != None:
                 if item.BirimAdi == 'M2' :
                     
@@ -72,4 +88,33 @@ class NumuneAyrinti:
          schema = NumuneSchema(many=True)
         
          return schema.dump(liste)
-          
+    
+    def getNumuneOdemelerList(self):
+        try:
+            result = self.data.getStoreList("""
+                                                select * from NumuneOdemelerTB where NumuneNo=?
+
+                                            """,(self.numune_no))
+            liste = list()
+            for item in result:
+                model = NumuneOdemelerModel()
+                model.id = item.ID
+                model.tarih = item.Tarih
+                model.musteri_id = item.MusteriID
+                model.numune_no = item.NumuneNo
+                model.aciklama = item.Aciklama
+                model.tutar = self.__getNone(item.Tutar)
+                model.masraf = self.__getNone(item.Masraf)
+                model.banka = item.Banka
+                liste.append(model)
+            schema = NumuneOdemelerSchema(many=True)
+            return schema.dump(liste)
+        except Exception as e:
+            print('getNumuneOdemelerList hata ',str(e))
+            return False
+        
+    def __getNone(self,value):
+        if(value == None):
+            return 0
+        else:
+            return float(value)

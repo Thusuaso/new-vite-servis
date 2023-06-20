@@ -7,6 +7,6 @@ class UrunKartMenuList(Resource):
         urun = UrunKartMenu()
 
         result = urun.getUrunKartListe()
-
+        
         return result
 

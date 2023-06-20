@@ -7,18 +7,21 @@ class Notification:
         self.notificationSubList = self.data.getList("""
                                                         select 
 
-                                                            ID,
-                                                            Tarih,
-                                                            NotificationId,
-                                                            Queue,
-                                                            Message,
-                                                            Follow,
-                                                            WhoSendId,
-                                                            WhoSendName,
-                                                            ReceiverName,
-                                                            ReceiverId
+                                                            abg.ID,
+                                                            abg.Tarih,
+                                                            abg.NotificationId,
+                                                            abg.Queue,
+                                                            abg.Message,
+                                                            abg.Follow,
+                                                            abg.WhoSendId,
+                                                            abg.WhoSendName,
+                                                            abg.ReceiverName,
+                                                            abg.ReceiverId,
+															(select Image from KullaniciTB k where k.ID = abg.WhoSendId) as WhoSendImage,
+															(select Image from KullaniciTB k where k.ID = abg.ReceiverId) as ReceiverImage
 
-                                                        from AnlikBildirimGeriDonusTB
+
+                                                        from AnlikBildirimGeriDonusTB abg
                                                         order by Tarih desc
                                                      
                                                      
@@ -58,18 +61,21 @@ class Notification:
             result = self.data.getStoreList("""
                                                 select 
 
-                                                    ID,
-                                                    Tarih,
-                                                    UserId,
-                                                    UserName,
-                                                    Message,
-                                                    Follow,
-                                                    WhoSendId,
-                                                    WhoSendName
+                                                    ab.ID,
+                                                    ab.Tarih,
+                                                    ab.UserId,
+                                                    ab.UserName,
+                                                    ab.Message,
+                                                    ab.Follow,
+                                                    ab.WhoSendId,
+                                                    ab.WhoSendName,
+													(select k.Image from KullaniciTB k where k.ID = ab.UserId) as UserImage,
+													(select k.Image from KullaniciTB k where k.ID = ab.WhoSendId) as WhoSendImage
 
 
-                                                from AnlikBildirimTB
-                                                where UserId =? or WhoSendId=?
+
+                                                from AnlikBildirimTB ab
+                                                where ab.UserId =? or ab.WhoSendId=?
                                                 order by ID desc
                                             
                                             """,(id,id))
@@ -83,10 +89,12 @@ class Notification:
                         'tarih':item.Tarih,
                         'user_id':item.UserId,
                         'user_name':item.UserName,
+                        'user_image':'https://cdn.mekmarimage.com/personel/' + item.UserImage,
                         'message':item.Message,
                         'follow':item.Follow,
                         'who_send_id':item.WhoSendId,
-                        'who_send_name':item.WhoSendName
+                        'who_send_name':item.WhoSendName,
+                        'who_send_image':'https://cdn.mekmarimage.com/personel/' + item.WhoSendImage
                     },
                     'children':self.__getNotificationSubList(item.ID,key)
                 })
@@ -114,8 +122,10 @@ class Notification:
                         'message':item.Message,
                         'who_send_id':item.WhoSendId,
                         'who_send_name':item.WhoSendName,
+                        'who_send_image':'https://cdn.mekmarimage.com/personel/' + item.WhoSendImage,
                         'receiver_name':item.ReceiverName,
-                        'receiver_id':item.ReceiverId
+                        'receiver_id':item.ReceiverId,
+                        'receiver_image':'https://cdn.mekmarimage.com/personel/' + item.ReceiverImage
                     }
                 })
                 

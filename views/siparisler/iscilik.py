@@ -52,7 +52,6 @@ class Iscilik:
         return schema.dump(model)
 
     def kaydet(self,data):
-
         self.data.update_insert(
             """
             insert into SiparisEkstraGiderlerTB (
@@ -68,11 +67,10 @@ class Iscilik:
                 data['aciklama'],data['tutar']
             )
         )
-        info = data['username'].capitalize() + ', ' + data['siparisNo'] + ' $' + data['tutar'] + ' ' +  'işçilik girdi.'
-        DegisiklikMain().setYapilanDegisiklikBilgisi(data['username'].capitalize(),info)
+
 
     def guncelle(self,data):
-
+        print(data)
         self.data.update_insert(
             """
             update SiparisEkstraGiderlerTB set Tarih=?,TedarikciID=?,

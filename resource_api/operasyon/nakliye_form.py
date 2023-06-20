@@ -38,7 +38,7 @@ class NakliyeKayitIslem(Resource):
 
         result = islem.nakliyeKaydet(data)
 
-        return jsonify({'status' : result})       
+        return jsonify(result)       
 
 
 class NakliyeDosyaKaydet(Resource):
@@ -50,7 +50,7 @@ class NakliyeDosyaKaydet(Resource):
         nakliyeIslem = NakliyeIslem()
         result = nakliyeIslem.NakliyeDosyaKaydet(nakliye)
 
-        return jsonify({'Status' : result})            
+        return jsonify({'status' : result})            
 
 class NakliyeIslemModelListApi(Resource):
 

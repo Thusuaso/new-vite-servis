@@ -10,10 +10,8 @@ class ChatGiris:
         self.data = SqlConnect().data
         
     def mailGonderInsert(self,item):
-        print("mailGonderInsert",item )
        
         
-        bugun = datetime.datetime.now()     
         try:
             #item = _item['pesinat_model']
           
@@ -26,7 +24,7 @@ class ChatGiris:
                 (?,?,?,?,?)
                 """,
                 (
-                item['po'], item['gonderen'] ,item['alici'] , item['metin'] , bugun
+                item['po'], item['gonderen'] ,item['alici'] , item['metin'] , item['bugun']
                 )
             )
 

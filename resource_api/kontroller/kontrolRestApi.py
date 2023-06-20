@@ -20,7 +20,20 @@ class MusteriEtaMailIslem(Resource):
         return jsonify({'status' : result})
 
 
+class EtaYaklasanTarihBildirimApi(Resource):
+    def get(self):
+        islem = MusteriEta()
+        result = islem.getEtaControlNotification()
+        return jsonify(result)
+    
+    
+class EtaYaklasanTarihBildirimStatusApi(Resource):
+    def get(self,po,etaSure):
+        islem = MusteriEta()
+        result = islem.setEtaControlNotificationStatus(po,etaSure)
+        return result
 
+    
 class FinansVadeMailIslem(Resource):
 
     def get(self):

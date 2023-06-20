@@ -28,7 +28,7 @@ class NumuneFinansAyrinti:
             """
         )
 
-    def getAyrintiList(self,musteriid):
+    def getAyrintiList(self,musteriid,yil):
 
         tarihIslem = TarihIslemler()
         result = self.data.getStoreList(
@@ -47,13 +47,13 @@ class NumuneFinansAyrinti:
 			(select g.GonderiAdi from NumuneGonderiTipi g where g.ID=n.GonderiTipi) as odeme,
 			(select b.BankaAdi from NumuneBankaSecim b where b.ID = n.BankaSecim) as banka
 			from NumunelerTB n ,  YeniTeklif_MusterilerTB m 
-			where m.Id = n.MusteriID  and m.Id=?
+			where m.Id = n.MusteriID  and m.Id=? and YEAR(n.YuklemeTarihi) = ?
 			group by n.NumuneNo ,  m.Id ,n.YuklemeTarihi , n.KuryeAlis,n.GonderiTipi,
 			n.KuryeSatis,TL_Alis,TL_Satis,Euro_Alis,Euro_Satis,n.BankaSecim,n.NumuneTarihi
 
 			order by  n.NumuneNo asc
 
-            """,(musteriid)
+            """,(musteriid,yil)
         )
 
         liste = list()

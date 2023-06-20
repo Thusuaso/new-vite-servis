@@ -54,7 +54,8 @@ class Listeler:
             dbo.Get_KenarIslem(u.UrunKartID) as KenarIslem,
             dbo.Get_Ebat(u.UrunKartID) as Ebat,
 			(select s.NavlunSatis from SiparislerTB s WHERE s.SiparisNo = u.SiparisNo) as NavlunSatis,
-			(select st.TeslimTur from SiparislerTB s,SiparisTeslimTurTB st WHERE s.SiparisNo = u.SiparisNo and s.TeslimTurID = st.ID ) as TeslimTuru
+			(select st.TeslimTur from SiparislerTB s,SiparisTeslimTurTB st WHERE s.SiparisNo = u.SiparisNo and s.TeslimTurID = st.ID ) as TeslimTuru,
+            (select sum(Miktar) from UretimTB ur where ur.SiparisAciklama = u.SiparisNo and ur.UrunKartID = u.UrunKartID) as Uretim
             from
             SiparisUrunTB u,TedarikciTB t
             where
@@ -67,10 +68,10 @@ class Listeler:
 
             model = SiparisKalemModel()
             model.id = item.ID 
-            model.siparis = item.SiparisMiktar 
+            model.siparis = self.__getNoneControl(item.SiparisMiktar) 
             model.tedarikciadi = item.Tedarikci 
             model.tedarikciid = item.TedarikciID 
-            model.uretim = 0 
+            model.uretim = self.__getNoneControl(item.Uretim)
             model.urunkartid = item.UrunKartID 
             model.icerik = f" {indeks} - {model.tedarikciadi}/{item.Kategori}/{item.UrunAdi}/{item.KenarIslem}/{item.Ebat} "
             model.navlunsatis = item.NavlunSatis
@@ -83,6 +84,10 @@ class Listeler:
         
         return schema.dump(liste)
 
-    
+    def __getNoneControl(self,value):
+        if(value == None):
+            return 0
+        else:
+            return value
 
 

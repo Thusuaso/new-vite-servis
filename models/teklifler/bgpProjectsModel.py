@@ -10,6 +10,7 @@ class BgpProjectsListSchema(Schema):
     borderColor = fields.String()
     filelink = fields.String()
     fileCloud = fields.Boolean()
+    temsilciAdi = fields.String()
 class BgpProjectsListModel:
 
     id = 0
@@ -21,6 +22,7 @@ class BgpProjectsListModel:
     borderColor=""
     filelink = ""
     fileCloud = False
+    temsilciAdi = ""
     
 
 class BgpProjectsAyrintiSchema(Schema):
@@ -42,6 +44,7 @@ class BgpProjectsAyrintiSchema(Schema):
     unvan = fields.String()
     unvanColor = fields.String()
     temsilciAdi = fields.String()
+    ulkeAdi = fields.String()
 
 class BgpProjectsAyrintiModel:
     id = 0
@@ -62,6 +65,7 @@ class BgpProjectsAyrintiModel:
     unvan = ""
     unvanColor = ""
     temsilciAdi =""
+    ulkeAdi = ""
 
     
 class BgpProjectsUlkeSchema(Schema):
@@ -111,7 +115,9 @@ class BgpProjectsCountryandReseptationModel:
     
     
 class BgpProjectsCountryListSchema(Schema):
-    ulkeAdi = fields.String() 
+    ulkeAdi = fields.String()
+    toplamProje = fields.Int()
 class BgpProjectsCountryListModel:
     ulkeAdi = ""
+    toplamProje = ""
     

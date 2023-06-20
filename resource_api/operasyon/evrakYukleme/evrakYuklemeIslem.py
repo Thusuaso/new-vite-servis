@@ -45,14 +45,8 @@ class EvrakFaturaIslem:
         return kayitDurum
 
     def __faturaKayit(self,item):
-        
+        print(item)
         try:    
-            kullaniciid = self.data.getStoreList(
-                    """
-                    Select ID from KullaniciTB
-                    where KullaniciAdi=?
-                    """,(item['kullaniciAdi'])
-                )[0].ID
             date = datetime.datetime.now()    
             self.data.update_insert(
                 """
@@ -69,7 +63,7 @@ class EvrakFaturaIslem:
                    EvrakYuklemeTarihi,KullaniciID)
                    
                 values (?, ?,?,?,?,?,?,?,?)
-                """,(date, 0,0,item['siparisno'],item['id'],2,item['siparisno'] + '.pdf' ,date,kullaniciid)
+                """,(date, 0,0,item['siparisno'],item['id'],2,item['siparisno'] + '.pdf' ,date,item['kullaniciId'])
             )
             return True
         except Exception as e:

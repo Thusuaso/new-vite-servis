@@ -21,15 +21,15 @@ class KonteynerAnaListe(Resource):
 
         konteyner = Konteyner(yil)
         depo = DepoAnaListe()
-
+        vade = VadeAnaliste()
         konteyner_list = konteyner.getKonteynerList()
         depo_list = depo.getDepoList()
-
+        vade_list = vade.getVadeList()
         data = {
-
-            "konteyner_list" : konteyner_list,
-            "depo_list" : depo_list
-        }
+                    "konteyner_list" : konteyner_list,
+                    "depo_list" : depo_list,
+                    "vade_list":vade_list
+                }
 
         return jsonify(data)
 
@@ -150,12 +150,12 @@ class TahsilatIslemList(Resource):
         islem = TahsilatIslem()
 
         musteri_list = islem.getTahsilatList(musteriid,siparisno)
-        musteri_data = islem.getTahsilatModel(musteriid,siparisno)
+        musteri_model = islem.getTahsilatModel(musteriid,siparisno)
 
         data = {
 
             "musteri_list" : musteri_list,
-            "musteri_data" : musteri_data
+            "musteri_model" : musteri_model
         }
 
         return jsonify(data)

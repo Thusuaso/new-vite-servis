@@ -63,7 +63,6 @@ class NakliyeIslem:
         return schema.dump(model)
             
     def getNakliyeModel(self,urunId):
-        print("getNakliyeModel Sipariş",urunId)
         result = self.data.getStoreList(
 
             """
@@ -85,31 +84,43 @@ class NakliyeIslem:
         return schema.dump(liste)
 
     def nakliyeKaydet(self,item):
-        for key in item : 
-                forMat = '%d-%m-%Y'
-                key['tarih'] = datetime.datetime.strptime(key['tarih'], forMat)
-                key['tarih'] = key['tarih'].date()
-                self.data.update_insert(
-                    """
-                    INSERT INTO NakliyeFaturaKayitTB (FirmaID, Tarih, FaturaNo, Tutar,Kur,KayitTarihi)    values
-                    (?,?,?,?,?,?)
-                    """,(key['Firma_id'],key['tarih'],key['faturaNo'],key['Tutar_tl'],key['kur'],key['tarih'])
-                )
-               
-                self.__urunId(key)
-                self.__evrakId(key)
-                result = self.data.getStoreList("""
-                                        select FaturaKesimTurID,YuklemeTarihi from SiparislerTB where SiparisNo=?
-                                   
-                                   """,(key['siparisno']))
-                info = key['siparisno'] + ' po ya ' + key['faturaNo'] + ' fatura no ile ' + ' Nakliye faturası $ ' + key['Tutar_dolar'] + ' ve $ ' +  key['kur'] + ' kur girilmiştir.'
-                DegisiklikMain().setMaliyetDegisiklik(info,'Huseyin',key['siparisno'],result[0][1])
-            
-        info = "Huseyin Nakliye Faturası Girişi Yaptı"
-        DegisiklikMain().setYapilanDegisiklikBilgisi('Huseyin',info)
-             
-        print('nakliyeKaydet  Hata : ')
-        return True
+        try:
+            invoice_id = 0
+            invoice_name=""
+            for key in item : 
+                    forMat = '%d-%m-%Y'
+                    key['tarih'] = datetime.datetime.strptime(key['tarih'], forMat)
+                    key['tarih'] = key['tarih'].date()
+                    self.data.update_insert(
+                        """
+                        INSERT INTO NakliyeFaturaKayitTB (FirmaID, Tarih, FaturaNo, Tutar,Kur,KayitTarihi)    values
+                        (?,?,?,?,?,?)
+                        """,(key['Firma_id'],key['tarih'],key['faturaNo'],key['Tutar_tl'],key['kur'],key['tarih'])
+                    )
+                    self.__urunId(key)
+                    self.__evrakId(key)
+                    invoice = self.data.getStoreList("""
+                                                select ID,FaturaNo from NakliyeFaturaKayitTB where FaturaNo=?
+                                           """,(key['faturaNo']))[0]
+                    invoice_name = invoice.FaturaNo
+                    invoice_id = invoice.ID
+                    result = self.data.getStoreList("""
+                                            select FaturaKesimTurID,YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                       """,(key['siparisno']))
+                    info = key['siparisno'] + ' po ya ' + key['faturaNo'] + ' fatura no ile ' + ' Nakliye faturası $ ' + key['Tutar_dolar'] + ' ve $ ' +  key['kur'] + ' kur girilmiştir.'
+                    DegisiklikMain().setMaliyetDegisiklik(info,'Huseyin',key['siparisno'],result[0][1])
+                
+            info = "Huseyin Nakliye Faturası Girişi Yaptı"
+            DegisiklikMain().setYapilanDegisiklikBilgisi('Huseyin',info)
+            data = {
+                'status':True,
+                'invoice_id':invoice_id,
+                'invoice_name':invoice_name
+            }
+            return data
+        except Exception as e:
+            print('nakliyeKaydet  Hata : ')
+            return False
     def masraflarSendMail(self,item,siparisNo,nowDate,y_tarihi):
         body = """
         <table >
@@ -182,7 +193,6 @@ class NakliyeIslem:
                 """,( id ,item['siparisno'],item['faturaNo'])
             )
             
-            print("__evrakId",id)
             return True
         except Exception as e:
             print('__evrakId Hata : ',str(e))
@@ -213,13 +223,6 @@ class NakliyeIslem:
              for key in item :  
                 
                  urun =  self.__urunId(key)
-                
-                 kullaniciid = self.data.getStoreList(
-                        """
-                        Select ID from KullaniciTB
-                        where KullaniciAdi=?
-                        """,(key['kullaniciAdi'])
-                    )[0].ID
                  evrak_id = self.__evrakIdKontrol(key)
                  forMat = '%d-%m-%Y'
                  key['tarih'] = datetime.datetime.strptime(key['tarih'], forMat)
@@ -241,7 +244,7 @@ class NakliyeIslem:
                     )   
                         values
                         (?,?,?, ?,?,?,?,?,?,?,?,?)
-                    """,(key['tarih'],urun,11,key['siparisno'],key['Tutar_dolar'],1,13,evrak_id+201,2,key['tarih'],key['faturaNo']+'.pdf',kullaniciid)
+                    """,(key['tarih'],urun,11,key['siparisno'],key['Tutar_dolar'],1,13,evrak_id+201,2,key['tarih'],key['faturaNo']+'.pdf',key['kullaniciId'])
                 )
              info = "Huseyin Nakliye Faturası Evrağı Yükledi"
              DegisiklikMain().setYapilanDegisiklikBilgisi('Huseyin',info)

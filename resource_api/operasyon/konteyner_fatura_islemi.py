@@ -26,7 +26,7 @@ class KonteynerKayitIslem(Resource):
 
         result = islem.konteynerKaydet(data)
 
-        return jsonify({'status' : result})  
+        return jsonify(result)  
 
 class KonteynerDosyaGuncelle(Resource):
 
@@ -49,7 +49,7 @@ class KonteynerDosyaKaydet(Resource):
         konteynerIslem = KonteynerFaturalar()
         result = konteynerIslem.KonteynerDosyaKaydet(data)
 
-        return jsonify({'Status' : result})         
+        return jsonify({'status' : result})         
 
 class KonteynerIslemModelListApi(Resource):
 

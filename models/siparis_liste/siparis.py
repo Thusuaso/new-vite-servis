@@ -7,6 +7,7 @@ class SiparisUrunListeSchema(Schema):
     urunAdi = fields.String()
     icerik = fields.String()
     musteriAciklama=fields.String()
+    uretimAciklama = fields.String()
     kenar = fields.String()
     en = fields.String()
     boy = fields.String()
@@ -75,6 +76,7 @@ class SiparisUrunListeModel:
     urunAdi = ""
     icerik = ""
     musteriAciklama=""
+    uretimAciklama = ""
     kenar = ""
     en = ""
     boy = ""

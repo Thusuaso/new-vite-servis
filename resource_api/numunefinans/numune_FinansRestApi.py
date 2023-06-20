@@ -17,31 +17,26 @@ class NumuneFinansAnaListeApi(Resource):
        
         numune_list = islem.getNumuneList(yil)
         banka_list = islem.getNumuneBankaList(yil)
-
+        yil_list = islem.getYilListesi()
         data = {
 
             
             "numune_list" : numune_list,
-            "banka_list" : banka_list
+            "banka_list" : banka_list,
+            'yil_list':yil_list
         }
 
         return jsonify(data)
 
 class NumuneAyrintRestList(Resource):
 
-    def get(self,musteriid):
+    def get(self,musteriid,yil):
 
         islem = NumuneFinansAyrinti()
 
-        ayrinti_list = islem.getAyrintiList(musteriid)
+        ayrinti_list = islem.getAyrintiList(musteriid,yil)
 
-        data = {
-
-            "ayrinti_list" : ayrinti_list,
-            "musteriid" : musteriid
-        }
-
-        return jsonify(data) 
+        return jsonify(ayrinti_list) 
 
 class NumuneRaporYilListApi(Resource):
 

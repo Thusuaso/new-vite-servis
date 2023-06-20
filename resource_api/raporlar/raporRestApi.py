@@ -64,16 +64,25 @@ class YeniEklenenSiparislerListApi(Resource):
 
 class SiparisOzetRaporlarApi(Resource):
 
-    def get(self):
+    def get(self,userId):
 
         islem = SiparisOzetListeler()
-
+        kullanici = KullaniciSiparisOzetListeler(userId)
         siparis_list = islem.getSiparisAyOzetList()
         sevk_list = islem.getSevkiyatAyOzetList()
+        siparis_gecen_yil_list = kullanici.getAyOzetList_gecenYil()
+        siparis_bu_yil_list = kullanici.getAyOzetList_buYil()
+        sevkiyat_gecen_yil_list = kullanici.getAyOzetList_SevkiyatgecenYil()
+        sevkiyat_bu_yil_list = kullanici.getAyOzetList_SevkiyatbuYil()
         data = {
 
             "siparis_list" : siparis_list,
-            "sevk_list" : sevk_list
+            "sevk_list" : sevk_list,
+            'siparis_gecen_yil_list':siparis_gecen_yil_list,
+            'siparis_bu_yil_list':siparis_bu_yil_list,
+            'sevkiyat_gecen_yil_list':sevkiyat_gecen_yil_list,
+            'sevkiyat_bu_yil_list':sevkiyat_bu_yil_list
+            
           
         }
 
@@ -120,10 +129,10 @@ class SiparisOzetKullaniciApi(Resource):
 
         data = {
 
-            "siparis_gecen_yil_list" : siparis_gecen_yil_list,
-            "siparis_bu_yil_list" : siparis_bu_yil_list,
-            "sevkiyat_gecen_yil_list" : sevkiyat_gecen_yil_list,
-            "sevkiyat_bu_yil_list" : sevkiyat_bu_yil_list
+            "gecenYilSip" : siparis_gecen_yil_list,
+            "buYilSip" : siparis_bu_yil_list,
+            "gecenYilYukleme" : sevkiyat_gecen_yil_list,
+            "buYilYukleme" : sevkiyat_bu_yil_list
         }
 
         return jsonify(data)   
@@ -146,6 +155,12 @@ class UretimRaporApi(Resource):
 
         uretim_listesi = islem.getUretimListesiHepsi()
 
+        return uretim_listesi
+    
+class UretimRaporBuYilApi(Resource):
+    def get(self,yil):
+        islem = UretimRapor()
+        uretim_listesi = islem.getUretimListesiYil(yil)
         return uretim_listesi
 
 class UretimRaporTarihApi(Resource):

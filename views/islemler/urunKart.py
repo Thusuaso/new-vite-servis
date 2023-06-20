@@ -7,8 +7,6 @@ class UrunKart:
         self.data = SqlConnect().data
 
     def kaydet(self,kart):
-        
-        
         try:
             kart['urunId'] = self.__urunId(kart['urunAdi'])
             kart['olcuId'] = self.__olcuId(kart['en'],kart['boy'],kart['kenar'])
@@ -16,7 +14,7 @@ class UrunKart:
             kart['yuzeyId'] = self.__yuzeyId(kart['yuzeyIslem'])
             kayitKontrol = self.__kartKontrol(kart)
             if kayitKontrol == False:
-                return { 'kayitDurum' : False,'hataMesaj' : "kart daha önceden kaydı var" }
+                return { 'status' : False,'errorMessage' : "Bu Kart Zaten Kaydedilmiş." }
             self.data.update_insert( 
                 """
                 insert into UrunKartTB (UrunID,YuzeyID,OlcuID,KategoriID)
@@ -26,14 +24,13 @@ class UrunKart:
                     kart['urunId'],kart['yuzeyId'],kart['olcuId'],kart['kategoriId']
                 )
             )
-            yeniId = self.__getSonDataKayitId()
             kart['username'] = kart['username'].capitalize()
             info = kart['username'] + ', ' + 'Yeni Kart Girişi Yaptı'
             DegisiklikMain().setYapilanDegisiklikBilgisi(kart['username'],info)
-            return {'kayitDurum' : True,'data' : self.getUrunKart(yeniId)} 
+            return {'status' : True} 
         except Exception as e:
             print('Ürün Kart kaydet hata kod : ', str(e))
-            return { 'kayitDurum' : False, 'hataMesaj' : str(e) }
+            return { 'status' : False, 'errorMessage' : str(e) }
 
     def guncelle(self,kart):
         result = {
@@ -52,16 +49,15 @@ class UrunKart:
                    self.__kategoriId(kart['kategoriAdi']),kart['id']
                 )
             )
-            result['kayitDurum'] = True
-            result['data'] = self.getUrunKart(kart['id'])
+            result['status'] = True
             kart['username'] = kart['username'].capitalize()
             info = kart['username'] + ', ' + 'Ürün Kartı Güncellemesi Yaptı'
             DegisiklikMain().setYapilanDegisiklikBilgisi(kart['username'],info)
             return result 
         except Exception as e:
             print("ÜrünKart gümcelle hata kod : ",str(e))
-            result['kayitDurum'] = False
-            result['hataMesaj'] = str(e)
+            result['status'] = False
+            result['errorMessage'] = str(e)
             return result
 
     def getUrunKartSil(self,urunKartId,username):
@@ -291,7 +287,8 @@ class UrunKart:
             liste.append(model)
 
         return liste
-            
+      
+          
     def getUrunKart(self,urunKarId):
 
         model = UrunKartModel()

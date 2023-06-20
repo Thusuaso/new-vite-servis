@@ -47,14 +47,11 @@ class IscilikDataIslem(Resource):
 
 class IscilikKayitSil(Resource):
 
-    def put(self):
+    def delete(self,id):
         try:
             iscilik = Iscilik()
-            giderVeri = request.get_json()
             
-            iscilik.sil(giderVeri['id'])
-            info = giderVeri['username'].capitalize() + ', ' + giderVeri['siparisNo'] + ' $' + str(giderVeri['tutar']) + ' ' +  'işçilik sildi.'
-            DegisiklikMain().setYapilanDegisiklikBilgisi(giderVeri['username'].capitalize(),info)
+            iscilik.sil(id)
             return jsonify({'status' : True})
         except Exception as e:
             print('delete : ', str(e))

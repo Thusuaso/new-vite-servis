@@ -101,31 +101,84 @@ class SiparisListe:
             )
         if self.siparisDurum == 3:
             sorgu = self.data.getList("{call PytService_SiparisUrunListesi_Sevk3_Tn4}")
-       
-        siparisResult = self.data.getStoreList(
-            """
-            Select 
-             s.ID,
-             s.SiparisNo,
-             m.FirmaAdi,
-             s.SiparisTarihi,
-             YuklemeTarihi,
-             m.Marketing ,
-             (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.SiparisSahibi) as temsilci,
-             (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.Operasyon) as operasyon,
-             (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.SiparisSahibi) as logo,
-             (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.Operasyon) as operasyonlogo,
-             (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=2 ) as evrak,
-             (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=16 ) as evrakc,
-             (select f.FaturaAdi from FaturaKesilmeTB f where f.ID = s.FaturaKesimTurID) as fatura
-             from SiparislerTB s,MusterilerTB m
-            where s.MusteriID = m.ID and s.SiparisDurumID=?  and
-			
-			(Year(s.SiparisTarihi) =? or year(s.YuklemeTarihi)=?)
-             order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
-          
-            """,(self.siparisDurum,yil,yil)
-        )
+        
+        if self.siparisDurum == 2 or self.siparisDurum == 1:  
+            if(yil == 'Hepsi'):
+                
+                siparisResult = self.data.getStoreList(
+                """
+                Select 
+                s.ID,
+                s.SiparisNo,
+                m.FirmaAdi,
+                s.SiparisTarihi,
+                YuklemeTarihi,
+                m.Marketing ,
+                (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.SiparisSahibi) as temsilci,
+                (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.Operasyon) as operasyon,
+                (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.SiparisSahibi) as logo,
+                (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.Operasyon) as operasyonlogo,
+                (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=2 ) as evrak,
+                (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=16 ) as evrakc,
+                (select f.FaturaAdi from FaturaKesilmeTB f where f.ID = s.FaturaKesimTurID) as fatura
+                from SiparislerTB s,MusterilerTB m
+                where s.MusteriID = m.ID and s.SiparisDurumID=?  
+                
+                order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
+            
+                """,(self.siparisDurum)
+                )
+            else:
+                siparisResult = self.data.getStoreList(
+                """
+                Select 
+                s.ID,
+                s.SiparisNo,
+                m.FirmaAdi,
+                s.SiparisTarihi,
+                YuklemeTarihi,
+                m.Marketing ,
+                (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.SiparisSahibi) as temsilci,
+                (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.Operasyon) as operasyon,
+                (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.SiparisSahibi) as logo,
+                (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.Operasyon) as operasyonlogo,
+                (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=2 ) as evrak,
+                (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=16 ) as evrakc,
+                (select f.FaturaAdi from FaturaKesilmeTB f where f.ID = s.FaturaKesimTurID) as fatura
+                from SiparislerTB s,MusterilerTB m
+                where s.MusteriID = m.ID and s.SiparisDurumID=?  and
+                
+                (Year(s.SiparisTarihi) =? or year(s.YuklemeTarihi)=?)
+                order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
+            
+                """,(self.siparisDurum,yil,yil)
+                )
+        elif self.siparisDurum == 3:
+             siparisResult = self.data.getStoreList(
+                """
+                Select 
+                s.ID,
+                s.SiparisNo,
+                m.FirmaAdi,
+                s.SiparisTarihi,
+                YuklemeTarihi,
+                m.Marketing ,
+                (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.SiparisSahibi) as temsilci,
+                (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.Operasyon) as operasyon,
+                (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.SiparisSahibi) as logo,
+                (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.Operasyon) as operasyonlogo,
+                (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=2 ) as evrak,
+                (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=16 ) as evrakc,
+                (select f.FaturaAdi from FaturaKesilmeTB f where f.ID = s.FaturaKesimTurID) as fatura
+                from SiparislerTB s,MusterilerTB m
+                where s.MusteriID = m.ID and s.SiparisDurumID=?  and
+                
+                (Year(s.SiparisTarihi) =? or year(s.YuklemeTarihi)=?)
+                order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
+            
+                """,(self.siparisDurum,yil,yil)
+                )
+        
         urunListesi = list()
         sira = 1
         for item in siparisResult:
@@ -417,4 +470,5 @@ class SiparisListe:
             iscilik = item.FirmaAdi
         return iscilik
 
+        
 

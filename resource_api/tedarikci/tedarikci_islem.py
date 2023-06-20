@@ -52,6 +52,7 @@ class TedarikciIslem:
     def tedarikciKaydet(self,item):
 
         try:
+            print("tedarikciKaydet",item['tedarikciadi'])
             self.data.update_insert(
                 """
                 insert into TedarikciTB (FirmaAdi)
@@ -59,9 +60,7 @@ class TedarikciIslem:
                 (?)
                 """,(item['tedarikciadi'])
             )
-            islem = Tedarikci()
-            result = islem.getTedarikciSiparisList()
-            return True,result
+            return True
         except Exception as e:
             print('TedarikciIslem tedarikciKaydet Hata : ',str(e))
             return False
@@ -77,9 +76,7 @@ class TedarikciIslem:
                 )
             )
 
-            islem = Tedarikci()
-            result = islem.getTedarikciSiparisList()
-            return True,result
+            return True
         except Exception as e:
             print('TedarikciIslem tedarikciGuncelle Hata : ',str(e))
             return False
@@ -92,9 +89,7 @@ class TedarikciIslem:
                     delete from TedarikciTB where ID=?
                     """,(id)
                 )
-                islem = Tedarikci()
-                result = islem.getTedarikciSiparisList()
-                return True,result
+                return True
             return False
         except Exception as e:
             print('TedarikciIslem tedarikciSilme Hata : ',str(e))
@@ -127,15 +122,6 @@ class TedarikciIslem:
         
         urunID = self.__evrakId(item)
         try:
-            kullaniciid = self.data.getStoreList(
-                """
-                Select ID from KullaniciTB
-                where KullaniciAdi=?
-                """,(item['kullaniciAdi'])
-            )[0].ID
-           
-
-         
             self.data.update_insert(
                 """
                 INSERT INTO SiparisFaturaKayitTB (
@@ -153,7 +139,7 @@ class TedarikciIslem:
                     )   
                      values
                     (?,?,?, ?,?,?,?,?,?,?,?,?)
-                """,(date,0,0,item['siparisno'],0,3,urunID,2,date, item['evrak'],kullaniciid,1)
+                """,(date,0,0,item['siparisno'],0,3,urunID,2,date, item['evrak'],item['kullaniciId'],1)
             )
           
             return True

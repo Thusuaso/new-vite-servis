@@ -6,9 +6,8 @@ class UlkelerSchema(Schema):
     ulkeAdi = fields.String()
     logo = fields.String()
     path = fields.String()
-
 class UlkelerModel:
     id = None
     ulkeAdi = ""
     logo = ""
-    path = 'assets/layout/images/country-logo/' + logo
+    path = '/assets/layout/images/country-logo/'

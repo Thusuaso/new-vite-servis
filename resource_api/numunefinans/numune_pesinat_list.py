@@ -75,28 +75,20 @@ class TahsilatIslem:
     def tahsilatKaydet(self,item):
        
         try:
-            kullaniciid = self.data.getStoreList(
-                """
-                Select ID from KullaniciTB
-                where KullaniciAdi=?
-                """,(item['kullaniciadi'])
-            )[0].ID
-
             self.data.update_insert(
                 """
-                insert into NumuneOdemelerTB (
-                    Tarih,MusteriID,NumuneNo,
-                    Tutar,Kullanici,Banka
-                )
-                values
-                (?,?,?,?,?,?)
+                    insert into NumuneOdemelerTB (
+                        Tarih,MusteriID,NumuneNo,
+                        Tutar,Kullanici,Banka
+                        )
+                    values
+                    (?,?,?,?,?,?)
                 """,
                 (
-                    item['tarih'],item['musteri_id'],item['siparisno'],item['tutar'],kullaniciid,item['banka']
+                    item['tarih'],item['musteri_id'],item['siparisno'],item['tutar'],item['kullaniciid'],item['banka']
                 )
             )
             self.mailGonder(item['siparisno'],'Yeni Numune Tahsilat Girişi',item['tutar'],item['tarih'],item['kullaniciadi'])
-            item['kullaniciadi'] = item['kullaniciadi'].capitalize()
             info = item['kullaniciadi'] + ',' + item['siparisno'] + ' Numunesi Için Tahsilat Girdi.'
             DegisiklikMain().setYapilanDegisiklikBilgisi(item['kullaniciadi'],info)
             return True

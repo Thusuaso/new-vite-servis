@@ -17,4 +17,5 @@ class OperasyonKullaniciList(Resource):
 
         result = kullanici.getOperasyonKullaniciList()
 
-        return result        
+        return result
+ 

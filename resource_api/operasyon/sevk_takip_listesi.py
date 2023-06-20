@@ -28,7 +28,8 @@ class SevkTakip:
             s.YuklemeTarihi,
             s.KonsimentoDurum,
             s.AktarmaLimanAdi,
-            s.Line
+            s.Line,
+            s.Takip
             from
             SiparislerTB s,MusterilerTB m
             where s.MusteriID=m.ID
@@ -82,7 +83,11 @@ class SevkTakip:
             model.eta = eta
             model.sorumlusu = item.Sorumlu
             model.musteriadi = item.MusteriAdi
-            model.konsimento = item.KonsimentoDurum
+            model.takip = item.Takip
+            if(item.KonsimentoDurum == None):
+                model.konsimento = False
+            else:
+                model.konsimento = item.KonsimentoDurum
             model.line = item.Line
             model.liman = item.AktarmaLimanAdi
 
@@ -123,6 +128,7 @@ class SevkTakip:
 			)
 			and s.KonteynerNo is not null
             and s.KonteynerNo != ''
+            and s.Takip=0
             order by s.ID desc
             """
         )
@@ -233,7 +239,7 @@ class SevkTakip:
 
     def sevkDetayGuncelle(self,item):
         
-         
+        print(item)
         try:
             self.data.update_insert(
                 """

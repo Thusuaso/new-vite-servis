@@ -22,11 +22,10 @@ class TeklifKayitIslem(Resource):
         veri = request.get_json()
         teklif = veri['teklif']
         urunler = veri['urunler']
-        kullaniciAdi = veri['kullaniciAdi']
 
-        kayitDurum,teklifId = teklifIslem.kaydet(teklif,urunler,kullaniciAdi)
+        kayitDurum = teklifIslem.kaydet(teklif,urunler)
 
-        return jsonify({'status' : kayitDurum,'teklifId' : teklifId})
+        return jsonify({'status' : kayitDurum})
 
 
     def put(self):
@@ -34,19 +33,14 @@ class TeklifKayitIslem(Resource):
         teklifIslem = TeklifIslem()
 
         data = request.get_json()
-
         teklif = data['teklif']
         eklenenUrunler = data['eklenenUrunler']
         guncellenenUrunler = data['guncellenenUrunler']
         silinenUrunler = data['silinenUrunler']
         kullaniciAdi = data['kullaniciAdi']
         guncellenenMusteri = data['guncellenenMusteri']
-        kategoriadd = data['kategoriadd']
 
-        for item in silinenUrunler:
-            print('silinen item : ', item)
-
-        result = teklifIslem.guncelleme(teklif,eklenenUrunler,guncellenenUrunler,silinenUrunler,kullaniciAdi,guncellenenMusteri,kategoriadd)
+        result = teklifIslem.guncelleme(teklif,eklenenUrunler,guncellenenUrunler,silinenUrunler,kullaniciAdi,guncellenenMusteri)
 
         return jsonify({'status' : result})
 
@@ -95,9 +89,9 @@ class TeklifDosyaKaydet(Resource):
         teklif = request.get_json()
 
         teklifIslem = TeklifIslem()
-        result = teklifIslem.teklifDosyaKaydet(teklif)
+        status = teklifIslem.teklifDosyaKaydet(teklif)
 
-        return jsonify({'Status' : result})
+        return jsonify({'status' : status})
 
 class TeklifSonGorulmeKaydet(Resource):
 
@@ -128,13 +122,16 @@ class TeklifFormListeler(Resource):
         teklif = TeklifIslem()
 
         data = {
+            'teklifModel':teklif.getTeklifModel(),
+            'teklifUrunModel':teklif.getTeklifUrunModel(),
             'kategoriList' : teklif.getKategoriList(),
             'urunList' : teklif.getUrunList(),
             'enBoyList' : teklif.getEnBoyList(),
             'kalinlikList' : teklif.getKalinlikList(),
             'yuzeyList' : teklif.getYuzeyList(),
             'musteriList' : teklif.getMusteriList(),
-            'ulkeList' : teklif.getUlkeList()
+            'ulkeList' : teklif.getUlkeList(),
+            'urunler':[]
         }
 
         return jsonify(data)
@@ -152,27 +149,32 @@ class TeklifFormModel(Resource):
     
     def get(self,teklifId):
 
-        teklifIslem = TeklifIslem()
-        data = {
+        teklif = TeklifIslem()
 
-            'teklif' : teklifIslem.getTeklif(teklifId),
-            'urunler' : teklifIslem.getTeklifUrun(teklifId),
-            'teklifModel' : teklifIslem.getTeklifUrunModel()
+        data = {
+            'teklifModel':teklif.getTeklif(teklifId),
+            'teklifUrunModel':teklif.getTeklifUrunModel(),
+            'kategoriList' : teklif.getKategoriList(),
+            'urunList' : teklif.getUrunList(),
+            'enBoyList' : teklif.getEnBoyList(),
+            'kalinlikList' : teklif.getKalinlikList(),
+            'yuzeyList' : teklif.getYuzeyList(),
+            'musteriList' : teklif.getMusteriList(),
+            'ulkeList' : teklif.getUlkeList(),
+            'urunler':teklif.getTeklifUrun(teklifId),
         }
 
         return jsonify(data)
 
 class TeklifDosyaSil(Resource):
 
-    def put(self):
+    def delete(self,id):
 
         teklifIslem = TeklifIslem()
 
-        teklif = request.get_json()
+        status = teklifIslem.teklifDosyaSil(id)
 
-        result = teklifIslem.teklifDosyaSil(teklif['id'])
-
-        return jsonify({'Status' : result})
+        return jsonify({'status' : status})
 
 class TeklifIslem:
 
@@ -380,31 +382,30 @@ class TeklifIslem:
         return schema.dump(liste)
 
 
-    def kaydet(self,teklif,urunler,kullaniciAdi):
-        dtKullanici = self.data.getStoreList("Select * from KullaniciTB where KullaniciAdi=?",(kullaniciAdi))
-        kullaniciId = int(dtKullanici[0].ID)
+    def kaydet(self,teklif,urunler):
+        
         dtMusteriler = self.data.getList("Select * from YeniTeklif_MusterilerTB")
      
-        kayitDurum = self.__teklifKayit(teklif,kullaniciId,dtMusteriler)
+        kayitDurum = self.__teklifKayit(teklif,dtMusteriler)
         teklifId = None
         if kayitDurum == True:
-            teklifId = self.data.getStoreList("Select Max(Id) as Id from YeniTeklifTB where KullaniciId=?",(kullaniciId))[0].Id
+            teklifId = self.data.getStoreList("Select Max(Id) as Id from YeniTeklifTB where KullaniciId=?",(teklif['kullaniciId']))[0].Id
             for item in urunler:
                 kayitDurum = self.__teklifUrunKayit(item,teklifId)
-        kullaniciAdi = kullaniciAdi.capitalize()
+        kullaniciAdi = teklif['kullaniciAdi'].capitalize()
         info = kullaniciAdi + ' ' + 'Yeni Teklif Girişi Yaptı'
         DegisiklikMain().setYapilanDegisiklikBilgisi(kullaniciAdi,info)
 
-        return kayitDurum,teklifId
+        return kayitDurum
     
-    def guncelleme(self,teklif,eklenenUrunler,guncellenenUrunler,silinenUrunler,kullaniciAdi,guncellenenMusteri,kategoriadd):
+    def guncelleme(self,teklif,eklenenUrunler,guncellenenUrunler,silinenUrunler,kullaniciAdi,guncellenenMusteri):
 
         dtKullanici = self.data.getStoreList("Select * from KullaniciTB where KullaniciAdi=?",(kullaniciAdi))
         dtMusteriler = self.data.getList("Select * from YeniTeklif_MusterilerTB ")
         kullaniciId = int(dtKullanici[0].ID)
         
     
-        kayitDurum = self.__teklifGuncelleme(teklif,kullaniciId,dtMusteriler)
+        kayitDurum = self.__teklifGuncelleme(teklif)
         
         
             
@@ -568,56 +569,20 @@ class TeklifIslem:
             print('teklifDosyaSil Hata : ',str(e))
             return False
 
-    def __teklifKayit(self,item,kullaniciId,dtMusteriler):
-        
+    def __teklifKayit(self,item,dtMusteriler):
         try:
-            hatirlatmaTarihi = None 
-            hatirlatmaSonTarih = None
-            numuneGirisTarihi = None
-            numuneHatirlatmaTarihi = None
-            numuneHatirlatmaSonTarih = None
-            
             musteriId = item['musteriId']
             if musteriId == None:
-                musteriId = self.__musteriKayit(item['musteriAdi'],item['ulkeId'],item,kullaniciId)
+                musteriId = self.__musteriKayit(item['musteriAdi'],item['ulkeId'],item,item['kullaniciId'])
             else:
                 musteriId = self.__musteriGuncelle(musteriId,item)
-             
-            proformaTarih = None
-            if len(item['hatirlatmaTarihi']) > 0:
-                #hatirlatmaTarihi = self.__dateConvert(item['hatirlatmaTarihi'])
-                #hatirlatmaSonTarih = self.__dateAdd(hatirlatmaTarihi)
-
-                hatirlatmaTarihi = item['hatirlatmaTarihi']
-                forMat = '%d-%m-%Y'
-                hatirlatmaTarihi = datetime.datetime.strptime(hatirlatmaTarihi, forMat)
-                hatirlatmaSonTarih = self.__dateAdd(hatirlatmaTarihi)
-                hatirlatmaTarihi = hatirlatmaTarihi.date()
-
-
-            if len(item['numuneGirisTarihi']) > 0:
-
-                numuneGirisTarihi = item['numuneGirisTarihi']
-                forMat = '%d-%m-%Y'
-                numuneGirisTarihi = datetime.datetime.strptime(numuneGirisTarihi, forMat)
-                numuneGirisTarihi = numuneGirisTarihi.date()
-
-            if len(item['numuneHatirlatmaTarihi']) > 0:
-                numuneHatirlatmaTarihi = self.__dateConvert(item['numuneHatirlatmaTarihi'])
-                numuneHatirlatmaSonTarih = self.__dateAdd(numuneHatirlatmaTarihi)
-            if len(item['proformaTarih']) > 0:
-                #proformaTarih = self.__dateConvert(item['proformaTarih'])
-                proformaTarih = item['proformaTarih']
-                forMat = '%d-%m-%Y'
-                proformaTarih = datetime.datetime.strptime(proformaTarih, forMat)
-                proformaTarih = proformaTarih.date()
-
-            tarih = item['tarih']
-            forMat = '%d-%m-%Y'
-            tarih = datetime.datetime.strptime(tarih, forMat)
-            tarih = tarih.date()
-
-
+                
+            teklifTarihi = self.__dateControl(item['tarih'])
+            hatirlatmaTarihiİlk = self.__dateControl(item['hatirlatmaTarihi'])
+            numuneGirisTarihi = self.__dateControl(item['numuneGirisTarihi'])
+            numuneHatirlatmaTarihiİlk = self.__dateControl(item['numuneHatirlatmaTarihi'])
+            proformaTarihi = self.__dateControl(item['proformaTarih'])
+            
             self.data.update_insert(
                 """
                 insert into YeniTeklifTB (
@@ -704,9 +669,9 @@ class TeklifIslem:
                     ?
                     )
                 """,(
-                    tarih,
-                    hatirlatmaTarihi,
-                    hatirlatmaSonTarih,
+                    teklifTarihi,
+                    hatirlatmaTarihiİlk,
+                    hatirlatmaTarihiİlk,
                     musteriId,
                     item['aciklama'],
                     item['cfr'],
@@ -714,7 +679,7 @@ class TeklifIslem:
                     item['dtp'],
                     item['fca'],
                     item['goruldu'],
-                    kullaniciId,
+                    item['kullaniciId'],
                     item['takipEt'],
                     item['kaynakYeri'],
                     item['teklifYeri'],
@@ -722,13 +687,13 @@ class TeklifIslem:
                     item['hatirlatmaAciklama'],
                     item['satis'],
                     numuneGirisTarihi,
-                    numuneHatirlatmaTarihi,
-                    numuneHatirlatmaSonTarih,
+                    numuneHatirlatmaTarihiİlk,
+                    numuneHatirlatmaTarihiİlk,
                     item['numuneTrackingNo'],
                     item['numuneOdenenTutar'],
                     item['numuneAlinanTutar'],
                     item['proformaPoNo'],
-                    proformaTarih,
+                    proformaTarihi,
                     item['proformaTutar'],
                     item['teklifCloud'],
                     item['teklifCloudDosya'],                    
@@ -750,21 +715,21 @@ class TeklifIslem:
             print('Teklif kaydet hata : ', str(e))
             return False
 
+    def __dateControl(self,value):
+        if(value == None or value == ""):
+            return None
+        else:
+            date = value.split('-')
+            return date[2] + '-' + date[1] + '-' + date[0]
+    
     def __teklifUrunKayit(self,item,teklifId):
         try:
-            tarih = None 
            
             item['kategoriId'] = self.__kategoriId(item)
             item['urunId'] = self.__urunId(item)
             item['enBoyId'] = self.__enboyId(item)
             item['kalinlikId'] = self.__KalinliKId(item)  
             item['yuzeyIslemId'] = self.__yuzeyisleMId(item)
-            if len(item['tarih']):
-                #tarih = self.__dateConvert(item['tarih'])
-                tarih = item['tarih']
-                forMat = '%d-%m-%Y'
-                tarih = datetime.datetime.strptime(tarih, forMat)
-                tarih = tarih.date()
 
             self.data.update_insert(
                 """
@@ -773,7 +738,7 @@ class TeklifIslem:
                 values
                 (?,?,?,?,?,?,?,?,?,?,?,?,?)
                 """,(
-                    tarih,teklifId,item['kategoriId'],item['urunId'],item['enBoyId'],
+                    item['tarih'],teklifId,item['kategoriId'],item['urunId'],item['enBoyId'],
                     item['yuzeyIslemId'],item['kalinlikId'],item['fobFiyat'],item['teklifFiyat'],
                     item['birim'],item['fcaFiyat'],item['cFiyat'],item['dFiyat']
                 )
@@ -785,7 +750,7 @@ class TeklifIslem:
             print('Teklif Kaydet Ürün Hata : ',str(e))
             return False
 
-    def __teklifGuncelleme(self,item,kullaniciId,dtMusteriler):
+    def __teklifGuncelleme(self,item):
         
         try:
             
@@ -793,35 +758,11 @@ class TeklifIslem:
             if musteriId == None:
                 musteriId = self.__musteriKayit(item['musteriAdi'],item['ulkeId'])
                
-            hatirlatmaTarihi = None 
-            hatirlatmaSonTarih = None
-            numuneGirisTarihi = None
-            numuneHatirlatmaTarihi = None
-            numuneHatirlatmaSonTarih = None
-            proformaTarih = None
-            hatirlatmaDurum=None
-            if len(item['hatirlatmaTarihi']) > 0:
-                hatirlatmaTarihi = self.__dateConvert(item['hatirlatmaTarihi'])
-                hatirlatmaSonTarih = self.__dateAdd(hatirlatmaTarihi)
-                hatirlatmaDurum = True
-            if len(item['numuneGirisTarihi']) > 0:
-                 #numuneGirisTarihi = item['numuneGirisTarihi']
-                numuneGirisTarihi = item['numuneGirisTarihi']
-                forMat = '%d-%m-%Y'
-                numuneGirisTarihi = datetime.datetime.strptime(numuneGirisTarihi, forMat)
-                numuneGirisTarihi = numuneGirisTarihi.date()
-                
-            if len(item['numuneHatirlatmaTarihi']) > 0:
-                numuneHatirlatmaTarihi = self.__dateConvert(item['numuneHatirlatmaTarihi'])
-                numuneHatirlatmaSonTarih = self.__dateAdd(numuneHatirlatmaTarihi)
-            if len(item['proformaTarih']) > 0:
-                proformaTarih = self.__dateConvert(item['proformaTarih'])
-
-            
-            tarih = item['tarih']
-            forMat = '%d-%m-%Y'
-            tarih = datetime.datetime.strptime(tarih, forMat)
-            tarih = tarih.date()
+            teklifTarihi = self.__dateControl(item['tarih'])
+            hatirlatmaTarihiİlk = self.__dateControl(item['hatirlatmaTarihi'])
+            numuneGirisTarihi = self.__dateControl(item['numuneGirisTarihi'])
+            numuneHatirlatmaTarihiİlk = self.__dateControl(item['numuneHatirlatmaTarihi'])
+            proformaTarihi = self.__dateControl(item['proformaTarih'])
             self.data.update_insert(
                 """
                 update YeniTeklifTB set 
@@ -869,9 +810,9 @@ class TeklifIslem:
                 where Id=?
                 """,
                 (
-                    tarih,
-                    hatirlatmaTarihi,
-                    hatirlatmaSonTarih,
+                    teklifTarihi,
+                    hatirlatmaTarihiİlk,
+                    hatirlatmaTarihiİlk,
                     musteriId,
                     item['aciklama'],
                     item['cfr'],
@@ -886,13 +827,13 @@ class TeklifIslem:
                     item['hatirlatmaAciklama'],
                     item['satis'],
                     numuneGirisTarihi,
-                    numuneHatirlatmaTarihi,
-                    numuneHatirlatmaSonTarih,
+                    numuneHatirlatmaTarihiİlk,
+                    numuneHatirlatmaTarihiİlk,
                     item['numuneTrackingNo'],
                     item['numuneOdenenTutar'],
                     item['numuneAlinanTutar'],
                     item['proformaPoNo'],
-                    proformaTarih,
+                    proformaTarihi,
                     item['proformaTutar'],
                     item['teklifCloud'],
                     item['teklifCloudDosya'],
@@ -906,7 +847,7 @@ class TeklifIslem:
                     item['proformaNot'],
                     item['numuneNot'],
                     item['blist'],
-                    hatirlatmaDurum,
+                    item['hatirlatmaDurum'],
                     item['company'],
                     item['email'],
                     item['phone'],

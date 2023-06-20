@@ -15,13 +15,10 @@ class NumuneKayitIslem(Resource):
         numuneIslem = NumuneIslem()
 
         veri = request.get_json()
-        numune = veri['numune']
         
-        kullaniciAdi = veri['kullaniciAdi']
+        status = numuneIslem.kaydet(veri)
 
-        kayitDurum,numuneId = numuneIslem.kaydet(numune,kullaniciAdi)
-
-        return jsonify({'status' : kayitDurum,'id' : numuneId})
+        return jsonify({'status' : status })
 
 
     def put(self):
@@ -30,31 +27,9 @@ class NumuneKayitIslem(Resource):
 
         data = request.get_json()
 
-        numune = data['numune']
-      
-       
-       
-        kullaniciAdi = data['kullaniciAdi']
-        guncellenenMusteri = data['guncellenenMusteri']
-        kategoriadd = data['kategoriadd']
-
-
-        result = numuneIslem.guncelleme(numune,kullaniciAdi,guncellenenMusteri,kategoriadd)
+        result = numuneIslem.guncelleme(data)
 
         return jsonify({'status' : result})
-
-
-    def get(self):
-
-        numuneIslem = NumuneIslem()
-
-        data = {
-            'numune' : numuneIslem.getNumuneModel(),
-           
-        }
-
-        return jsonify(data)
-
 
 class NumuneDosyaKaydet(Resource):
     
@@ -86,14 +61,15 @@ class NumuneFormListeler(Resource):
         numune = NumuneIslem()
 
         data = {
-
+            'model': numune.getNumuneModel(),
             'kategoriList' : numune.getKategoriList(),
             
             'musteriList' : numune.getMusteriList(),
             'ulkeList' : numune.getUlkeList(),
             
             'birimList' : numune.getBirimList(),
-            'temsilciList' : numune.getTemsilciList()
+            'temsilciList' : numune.getTemsilciList(),
+            'odemeler':[],
            
         }
 
@@ -239,65 +215,112 @@ class NumuneIslem:
             return False
 
 
-    def kaydet(self,numune,kullaniciAdi):
-        
-        
-        dtKullanici = self.data.getStoreList("Select * from KullaniciTB where KullaniciAdi=?",(kullaniciAdi))
-        kullaniciId = int(dtKullanici[0].ID)
-       
-        dtMusteriler = self.data.getList("Select * from YeniTeklif_MusterilerTB")
-     
-        kayitDurum = self.__numuneKayit(numune,kullaniciId,dtMusteriler)
-        numuneId = None
-        if kayitDurum == True:
-            numuneId = self.data.getStoreList("Select ID from NumunelerTB where NumuneNo=?",(numune['numuneNo']))[0].ID
+    def kaydet(self,numune):
+        try:
             
-        kullaniciAdi = kullaniciAdi.capitalize()
-        info = kullaniciAdi + ',' + numune['numuneNo'] + ' Numunesinin Kaydını Yaptı.'
-        DegisiklikMain().setYapilanDegisiklikBilgisi(kullaniciAdi,info)
-        return kayitDurum,numuneId
-    
-    def guncelleme(self,numune,kullaniciAdi,guncellenenMusteri,kategoriadd):
-
-        dtKullanici = self.data.getStoreList("Select * from KullaniciTB where KullaniciAdi=?",(kullaniciAdi))
-        dtMusteriler = self.data.getList("Select * from YeniTeklif_MusterilerTB ")
-        kullaniciId = int(dtKullanici[0].ID)
+            dtMusteriler = self.data.getList("Select * from YeniTeklif_MusterilerTB")
         
+            status = self.__numuneKayit(numune,numune['userId'],dtMusteriler)
+            info = numune['username'] + ',' + numune['numuneNo'] + ' Numunesinin Kaydını Yaptı.'
+            DegisiklikMain().setYapilanDegisiklikBilgisi(numune['username'],info)
+            return status
+        except Exception as e:
+            print('numune kaydet hata',str(e))
+            return False
     
-        kayitDurum = self.__numuneGuncelleme(numune,kullaniciId,dtMusteriler)
-        
-       
-               
+    def guncelleme(self,item):
+        try:
+            g_tarihi = item['giristarih']
+            y_tarihi = item['yukleme_tarihi']
+            if float(item['Euro_Alis']) >0:
+                item['kuryeAlis'] = float(item['Euro_Alis']) * float(self.__getCrossRange(g_tarihi))
+                item['TL_Alis'] = float(item['kuryeAlis']) * float(self.__getNormalRange(g_tarihi))
+                    
+            if float(item['kuryeSatis']) >0:
+                item['Euro_Satis'] = float(item['kuryeSatis']) / float(self.__getCrossRange(g_tarihi))
+                item['TL_Satis'] = float(item['kuryeSatis']) * float(self.__getNormalRange(g_tarihi))
+            musteriId = self.__musteriKayit(item)
+            self.data.update_insert(
+                """
+                update NumunelerTB set 
+                    NumuneTarihi=?,
+                    MusteriID=?,
+                    NumuneTemsilci=?,
+                    Ulke=?,
+                    Adres =?,
+                    TrackingNo=?,
+                    Parite =?,
+                    Aciklama=?,               
+                    YuklemeTarihi=?,
+                    KuryeAlis =?,
+                    KuryeSatis =?,
+                    TL_Alis =?,
+                    TL_Satis =?,
+                    Euro_Alis =?,
+                    Euro_Satis =?,
 
-        if len(guncellenenMusteri) > 0:
-            for item in guncellenenMusteri:
-                self.__numuneMusteriGuncelle(item)
-                
-                 
-      
+                    GonderiTipi=?,
+                    BankaSecim=?,
+                    KategoriID=?,
+                    UrunBirimi=?,
+                    Miktar =? 
+                where ID=?
+                """,
+                (
+                    g_tarihi,
+                   
+                    musteriId,
+                    
+                    item['temsilci_id'],
+                    item['ulke'],
+                    item['adres'],
+                   
+                    item['takip_No'],
+                    item['parite'],
+                    item['aciklama'],
+
+                    y_tarihi,
+
+                    item['kuryeAlis'],
+                    item['kuryeSatis'],
+
+                    item['TL_Alis'],
+                    item['TL_Satis'],
+
+                    item['Euro_Alis'],
+                    item['Euro_Satis'],
+
+                    item['gonderiId'],
+                    item['bankaId'],
+
+                    item['kategoriId'],
+                    item['urunBirimId'],
+                    item['Miktar'],
+                   
+                    item['id']
+                   
+                )
+            )
+            info = item['username'] + ',' + item['numuneNo'] + ' Numunesini Güncelledi.'
+            DegisiklikMain().setYapilanDegisiklikBilgisi(item['username'],info)
+            return True 
+        except Exception as e:
+            print('numune Güncelleme Hata :', str(e))
+            return False
+    
+
             
-
-       
-               
-
-        kullaniciAdi = kullaniciAdi.capitalize()
-        info = kullaniciAdi + ',' + numune['numuneNo'] + ' Numunesini Güncelledi.'
-        DegisiklikMain().setYapilanDegisiklikBilgisi(kullaniciAdi,info)
-        
-        return kayitDurum
-    
  
-    def __numuneKayit(self,item,kullaniciId,dtMusteriler):
-
+    def __numuneKayit(self,item):
         g_tarihi = item['giristarih']
         y_tarihi = item['yukleme_tarihi']
         
-        if item['Euro_Alis'] >0:
+        if float(item['Euro_Alis']) >0:
             item['kuryeAlis'] = float(item['Euro_Alis']) * float(self.__getCrossRange(g_tarihi))
             item['TL_Alis'] = float(item['kuryeAlis']) * float(self.__getNormalRange(g_tarihi))
 
         
-        if item['kuryeSatis'] >0:
+        if float(item['kuryeSatis']) >0:
             item['Euro_Satis'] = float(item['kuryeSatis']) / float(self.__getCrossRange(g_tarihi))
             item['TL_Satis'] = float(item['kuryeSatis']) * float(self.__getNormalRange(g_tarihi))
             
@@ -369,104 +392,6 @@ class NumuneIslem:
    
              
 
-    def __numuneGuncelleme(self,item,kullaniciId,dtMusteriler):
-      
-        g_tarihi = item['giristarih']
-        y_tarihi = item['yukleme_tarihi']
-        if item['Euro_Alis'] >0:
-            item['kuryeAlis'] = float(item['Euro_Alis']) * float(self.__getCrossRange(g_tarihi))
-            item['TL_Alis'] = float(item['kuryeAlis']) * float(self.__getNormalRange(g_tarihi))
-                
-        if item['kuryeSatis'] >0:
-            item['Euro_Satis'] = float(item['kuryeSatis']) / float(self.__getCrossRange(g_tarihi))
-            item['TL_Satis'] = float(item['kuryeSatis']) * float(self.__getNormalRange(g_tarihi))
-            
-            
-
-        
-        forMat = '%d-%m-%Y'
-        g_tarihi = datetime.datetime.strptime(g_tarihi, forMat)
-        y_tarihi = datetime.datetime.strptime(y_tarihi, forMat)
-        g_tarihi = g_tarihi.date()
-        y_tarihi = y_tarihi.date()
-        try:            
-            musteriId = self.__musteriKayit(item)
-
-               
-              
-           
-          
-            self.data.update_insert(
-                """
-                update NumunelerTB set 
-                NumuneTarihi=?,
-                MusteriID=?,
-                NumuneTemsilci=?,
-                Ulke=?,
-                Adres =?,
-                TrackingNo=?,
-                Parite =?,
-                Aciklama=?,               
-                YuklemeTarihi=?,
-                KuryeAlis =?,
-                KuryeSatis =?,
-                TL_Alis =?,
-                TL_Satis =?,
-                Euro_Alis =?,
-                Euro_Satis =?,
-
-                GonderiTipi=?,
-                BankaSecim=?,
-                KategoriID=?,
-                UrunBirimi=?,
-                Miktar =? 
-                where ID=?
-                """,
-                (
-                    g_tarihi,
-                   
-                    musteriId,
-                    
-                    item['temsilci_id'],
-                    item['ulke'],
-                    item['adres'],
-                   
-                    item['takip_No'],
-                    item['parite'],
-                    item['aciklama'],
-
-                    y_tarihi,
-
-                    item['kuryeAlis'],
-                    item['kuryeSatis'],
-
-                    item['TL_Alis'],
-                    item['TL_Satis'],
-
-                     item['Euro_Alis'],
-                    item['Euro_Satis'],
-
-                    item['gonderiId'],
-                    item['bankaId'],
-
-                    item['kategoriId'],
-                    item['urunBirimId'],
-                    item['Miktar'],
-                   
-                    item['id']
-                   
-                )
-             
-
-             
-
-            )
-
-            return True 
-        except Exception as e:
-            print('numune Güncelleme Hata :', str(e))
-            return False
-    
     def __numuneMusteriGuncelle(self,item):
       try:
             self.data.update_insert(

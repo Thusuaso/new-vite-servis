@@ -5,6 +5,7 @@ from views.raporlar.dashboard.dashboard import DashboardNew
 from resource_api.finans.konteyner_islem.konteyner import Konteyner
 import datetime
 from views.shared.degisiklikTahmin import *
+from resource_api.raporlar.ulkeBazindaSevkiyat import UlkeBazindaSevkiyat
 
 class DashboardNewApi(Resource):
     def get(self):
@@ -17,8 +18,8 @@ class DashboardNewApi(Resource):
         gelenSiparisMekmar = dashboard.getDashboardGelenSiparis()
         gelenSiparisMekmarYuklenen = dashboard.getDashboardGelenSiparisYuklenen()
         
-        gelenSiparisAll = dashboard.getDashboardGelenSiparisAll()
-        gelenSiparisAllYuklenen = dashboard.getDashboardGelenSiparisAllYuklenen()
+        # gelenSiparisAll = dashboard.getDashboardGelenSiparisAll()
+        # gelenSiparisAllYuklenen = dashboard.getDashboardGelenSiparisAllYuklenen()
         
         
         gelenSiparisYearMekmar = dashboard.getDashboardGelenSiparisYillikMekmar()
@@ -27,25 +28,34 @@ class DashboardNewApi(Resource):
         gelenSiparisYearYuklenenMekmar = dashboard.getDashboardYuklenenSiparisYillikMekmar()
         gelenSiparisYearYuklenenAll = dashboard.getDashboardYuklenenSiparisYillikAll()
         
-        gelenSiparisEfes = dashboard.getDashboardGelenSiparisEfes()
-        gelenSiparisYillikEfes = dashboard.getDashboardGelenSiparisYillikEfes()
-        gelenSiparisEfesYuklenen = dashboard.getDashboardGelenSiparisEfesYuklenen()
-        gelenSiparisYillikEfesYuklenen = dashboard.getDashboardGelenSiparisYillikEfesYuklenen()
-        
-        
+        # gelenSiparisEfes = dashboard.getDashboardGelenSiparisEfes()
+        # gelenSiparisYillikEfes = dashboard.getDashboardGelenSiparisYillikEfes()
+        # gelenSiparisEfesYuklenen = dashboard.getDashboardGelenSiparisEfesYuklenen()
+        # gelenSiparisYillikEfesYuklenen = dashboard.getDashboardGelenSiparisYillikEfesYuklenen()
+        buYilSipTop,buYilYukTop,gecenYilSipTop,gecenYilYukTop=dashboard.getSiparisGrafikYuklenenvSiparis()
+        grafikMekmar = dashboard.getsiparisGrafikRapor()
         data = {
             'gelenSiparisMekmar':gelenSiparisMekmar,
-            'gelenSiparisAll':gelenSiparisAll,
+            # 'gelenSiparisAll':gelenSiparisAll,
             'gelenSiparisYearMekmar':gelenSiparisYearMekmar,
             'gelenSiparisYearAll':gelenSiparisYearAll,
             'gelenSiparisMekmarYuklenen':gelenSiparisMekmarYuklenen,
-            'gelenSiparisAllYuklenen':gelenSiparisAllYuklenen,
+            # 'gelenSiparisAllYuklenen':gelenSiparisAllYuklenen,
             'gelenSiparisYearYuklenenMekmar':gelenSiparisYearYuklenenMekmar,
             'gelenSiparisYearYuklenenAll':gelenSiparisYearYuklenenAll,
-            'gelenSiparisEfes':gelenSiparisEfes,
-            'gelenSiparisYillikEfes':gelenSiparisYillikEfes,
-            'gelenSiparisEfesYuklenen':gelenSiparisEfesYuklenen,
-            'gelenSiparisYillikEfesYuklenen':gelenSiparisYillikEfesYuklenen,
+            'grafik':grafikMekmar,
+            'grafikSipBuYilTop':buYilSipTop,
+            'grafikYukBuYilTop':buYilYukTop,
+            'grafikSipGecenYilTop':gecenYilSipTop,
+            'grafikYukGecenYilTop':gecenYilYukTop,
+            
+            
+            
+            
+            # 'gelenSiparisEfes':gelenSiparisEfes,
+            # 'gelenSiparisYillikEfes':gelenSiparisYillikEfes,
+            # 'gelenSiparisEfesYuklenen':gelenSiparisEfesYuklenen,
+            # 'gelenSiparisYillikEfesYuklenen':gelenSiparisYillikEfesYuklenen,
             
         }
         return jsonify(data)
@@ -79,10 +89,14 @@ class DashboardNewGrafikDataApi(Resource):
         }
         return data
 
+
+
 class DashboardNewSubApi(Resource):
     def get(self):
         
         satis = DashboardNew()
+        islem = UlkeBazindaSevkiyat()
+        
         
         konteynir = satis.getDashboardKonteynir()
         finans = satis.getDashboardFinans()
@@ -92,6 +106,7 @@ class DashboardNewSubApi(Resource):
         teklifler = satis.getDashboardTeklifler()
         tekliflerYillik = satis.getDashboardTekliflerYillik()
         sonEklenenSiparisler = satis.getDashboardSonSiparisler()
+        ulkeyeGore = islem.getUlkeBazindaSevkiyat()
         
             
         data = {
@@ -102,7 +117,8 @@ class DashboardNewSubApi(Resource):
             'musteriSiparisler':musteriSiparisler,
             'teklifler':teklifler,
             'tekliflerYillik':tekliflerYillik,
-            'sonEklenenSiparisler':sonEklenenSiparisler
+            'sonEklenenSiparisler':sonEklenenSiparisler,
+            'ulkeyeGore':ulkeyeGore
         }
         
         

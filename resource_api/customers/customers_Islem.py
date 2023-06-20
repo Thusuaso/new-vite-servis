@@ -91,7 +91,6 @@ class SatisciIslem:
             return False    
        
     def satisciKaydet(self,item):
-        
         try:
 
             self.data.update_insert(
@@ -128,12 +127,6 @@ class SatisciIslem:
     def satisciGuncelle(self,item):
         
         try:
-            kullaniciid = self.data.getStoreList(
-                """
-                Select ID from KullaniciTB
-                where KullaniciAdi=?
-                """,(item['temsilci'])
-            )[0].ID
 
             self.data.update_insert(
 
@@ -143,22 +136,22 @@ class SatisciIslem:
                 where ID=?
                 """,(
                     item['musteriadi'],item['aciklama'],item['baslik'],
-                    item['tarih_giris'],item['satisci_cloud'],item['satisci_cloud_dosya'],item['hatirlatmaTarihi'],item['hatirlatma_notu'],kullaniciid,item['id']
+                    item['tarih_giris'],item['satisci_cloud'],item['satisci_cloud_dosya'],item['hatirlatmaTarihi'],item['hatirlatma_notu'],item['temsilci'],item['id']
                 )
             )
-            temsilci = self.data.getStoreList("""
-                                                select ID from KullaniciTB where KullaniciAdi=?
+            # temsilci = self.data.getStoreList("""
+            #                                     select ID from KullaniciTB where KullaniciAdi=?
                                               
-                                              """,(item['temsilci']))
+            #                                   """,(item['temsilci']))
             
-            islem = MusteriListem()
-            result = islem.getMusteriListesi(temsilci[0][0])
-            islem2 = SatisciAyrinti()
-            result2 = islem2.getAyrintiList(item['musteriadi'])
+            # islem = MusteriListem()
+            # result = islem.getMusteriListesi(temsilci[0][0])
+            # islem2 = SatisciAyrinti()
+            # result2 = islem2.getAyrintiList(item['musteriadi'])
             data={
                 'status':True,
-                'result':result,
-                'result2':result2
+                # 'result':result,
+                # 'result2':result2
             }
 
             return data
@@ -168,28 +161,28 @@ class SatisciIslem:
 
     def satisciSilme(self,id):
         try:
-            satisci = self.data.getStoreList(
+            # satisci = self.data.getStoreList(
 
-                """
-                select MusteriAdi,Temsilci from SatisciAyrintiTB where ID=?
-                """,(id)
-            )
-            musteriAdi = satisci[0][0]
-            temsilci = satisci[0][1]
+            #     """
+            #     select MusteriAdi,Temsilci from SatisciAyrintiTB where ID=?
+            #     """,(id)
+            # )
+            # musteriAdi = satisci[0][0]
+            # temsilci = satisci[0][1]
             
             self.data.update_insert(
                 """
                 delete from SatisciAyrintiTB where ID=?
                 """,(id)
             )
-            islem = MusteriListem()
-            result = islem.getMusteriListesi(temsilci)
-            islem2 = SatisciAyrinti()
-            result2 = islem2.getAyrintiList(musteriAdi)
+            # islem = MusteriListem()
+            # result = islem.getMusteriListesi(temsilci)
+            # islem2 = SatisciAyrinti()
+            # result2 = islem2.getAyrintiList(musteriAdi)
             data={
                 'status':True,
-                'result':result,
-                'result2':result2
+                # 'result':result,
+                # 'result2':result2
             }
             
             
@@ -325,11 +318,11 @@ class SatisciIslem:
                                                   """,(result[0][0]))
                 customerID = customer[0][0]
                 
-            islem = MusteriListem()
-            result = islem.getMusteriListesi(customerID)
+            # islem = MusteriListem()
+            # result = islem.getMusteriListesi(customerID)
             
             
-            return True,result
+            return True
         except Exception as e:
             print('setFollowing hata',str(e))
             return False

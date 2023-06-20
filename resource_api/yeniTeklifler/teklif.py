@@ -5,13 +5,14 @@ from flask_restful import Resource
 from flask import jsonify 
 import datetime
 from models.shared import StyleSchema,StyleSchema
+from resource_api.yeniTeklifler.raporlar.teklif_takip.teklifListe import TeklifListe
 
 
 class TeklifAnaSayfaData(Resource):
 
-    def get(self,username):
+    def get(self,userId):
 
-        teklif = Teklif(username)
+        teklif = Teklif(userId)
         data = {
             'takvimList' : teklif.getTakvimList(),
             'temsilciOzetList' : teklif.getTemsilciListOzet(),
@@ -23,18 +24,33 @@ class TeklifAnaSayfaData(Resource):
 
 class TeklifAyrintiListe(Resource):
 
-    def get(self,kullaniciAdi):
+    def get(self,kullaniciId):
 
-        teklif = TeklifListeler() 
+        teklifList = TeklifListeler() 
+        teklif = TeklifListe()
 
-        liste = teklif.getKullaniciListeAyrinti(kullaniciAdi)
+        alist = teklifList.getKullaniciListeAyrinti(kullaniciId)
 
-        blist = teklif.getKullaniciListeAyrinti_BList(kullaniciAdi)
-
+        blist = teklifList.getKullaniciListeAyrinti_BList(kullaniciId)
+        labels,datasets = teklif.getGrafikRaporHepsi()
+        datasets_oncelik,labels_oncelik = teklif.getOncelikGrafikRapor()
+        
+        aListChart = {
+            'labels' : labels,
+            'datasets' : datasets, 
+        }
+        bListChart =  {
+            'datasets' : datasets_oncelik,
+            'labels' : labels_oncelik
+        }
+            
         data = {
 
-            "liste" : liste,
-            "blist" : blist
+            "alist" : alist,
+            "blist" : blist,
+            "aListChart":aListChart,
+            "bListChart":bListChart,
+            
         }
 
         return jsonify(data)
@@ -45,15 +61,33 @@ class TeklifAyrintiListeHepsi(Resource):
 
     def get(self):
 
-        teklif = TeklifListeler()
+        teklifList = TeklifListeler()
 
-        liste = teklif.getKullaniciListeHepsi()
-        blist = teklif.getKullaniciListeHepsi_BList()
+        teklif = TeklifListe()
 
+        labels,datasets = teklif.getGrafikRaporHepsi()
+        datasets_oncelik,labels_oncelik = teklif.getOncelikGrafikRapor()
+        blist = teklifList.getKullaniciListeHepsi_BList()
+        alist = teklifList.getKullaniciListeHepsi()
+        
+        
+
+        aListChart = {
+            'labels' : labels,
+            'datasets' : datasets, 
+        }
+        bListChart =  {
+            'datasets' : datasets_oncelik,
+            'labels' : labels_oncelik
+        }
+            
         data = {
 
-            "liste" : liste,
-            "blist" : blist
+            "alist" : alist,
+            "blist" : blist,
+            "aListChart":aListChart,
+            "bListChart":bListChart,
+            
         }
 
         return jsonify(data)
@@ -61,10 +95,10 @@ class TeklifAyrintiListeHepsi(Resource):
 
 class Teklif:
 
-    def __init__(self,username):
+    def __init__(self,userId):
         self.data = SqlConnect().data
         self.tarihIslem = TarihIslemler()
-        self.kullaniciId = self.data.getStoreList("Select ID from KullaniciTB where KullaniciAdi=?",(username))[0].ID
+        self.kullaniciId = userId
 
     
     def getTakvimList(self):
@@ -140,7 +174,8 @@ class Teklif:
 
             model = TemsilciOzetModel()
             model.id = id
-            model.adi = item.KullaniciAdi 
+            model.adi = item.KullaniciAdi
+            model.temsilci_id = item.ID
             model.teklifSayisi = int(self.__getTakipTeklifSayisi(item.ID))
             model.proformaSayisi = int(self.__getTeklifProformaSayisi(item.ID))
             liste.append(model)
@@ -202,6 +237,8 @@ class Teklif:
             yt.MusteriId=m.Id and m.UlkeId=u.Id and yt.TakipEt=1
             and yt.HatirlatmaTarihi is not null 
             and yt.KullaniciId=?
+			and YEAR(yt.HatirlatmaTarihi) = YEAR(GETDATE())
+			and MONTH(yt.HatirlatmaTarihi) > MONTH(GETDATE())
             """,(self.kullaniciId)
         )
 
@@ -260,7 +297,7 @@ class Teklif:
             where
             yt.MusteriId=m.Id and m.UlkeId=u.Id and yt.TakipEt=1
             and yt.HatirlatmaTarihi is not null  
-            and k.ID=yt.KullaniciId and yt.KullaniciId=?
+            and k.ID=yt.KullaniciId and yt.KullaniciId=? and YEAR(yt.HatirlatmaTarihi) = YEAR(GETDATE()) and MONTH(yt.HatirlatmaTarihi) > MONTH(GETDATE())
             """,(self.kullaniciId)
         )
 
@@ -313,28 +350,27 @@ class TeklifListeler:
         self.data = SqlConnect().data
         self.tarihIslem = TarihIslemler()
 
-    def getKullaniciListeAyrinti(self,kullaniciAdi):
-        kullaniciId = self.data.getStoreList("Select ID from KullaniciTB where KullaniciAdi=?",(kullaniciAdi))[0].ID
+    def getKullaniciListeAyrinti(self,kullaniciId):
         liste = list()
 
         result = self.data.getStoreList(
             """
-            select
-            t.Tarih,
-            t.Id,
-            m.MusteriAdi,
-            u.UlkeAdi,
-            t.TeklifOncelik,
-            k.KullaniciAdi,
-            t.Goruldu,
-            t.Sira
-            from
-            YeniTeklifTB t,YeniTeklif_MusterilerTB m,
-            YeniTeklif_UlkeTB u,KullaniciTB k
-            where
-            t.MusteriId=m.Id and u.Id=m.UlkeId
-            and k.ID=t.KullaniciId and t.TakipEt=1
-            and k.ID=? and t.BList=0  order by t.TeklifOncelik asc
+                select
+                t.Tarih,
+                t.Id,
+                m.MusteriAdi,
+                u.UlkeAdi,
+                t.TeklifOncelik,
+                k.KullaniciAdi,
+                t.Goruldu,
+                t.Sira
+                from
+                YeniTeklifTB t,YeniTeklif_MusterilerTB m,
+                YeniTeklif_UlkeTB u,KullaniciTB k
+                where
+                t.MusteriId=m.Id and u.Id=m.UlkeId
+                and k.ID=t.KullaniciId and t.TakipEt=1
+                and k.ID=? and t.BList=0  order by t.TeklifOncelik asc
             """,(kullaniciId)
         )
 
@@ -349,21 +385,11 @@ class TeklifListeler:
             model.goruldu = item.Goruldu 
             model.sira = item.Sira
             kullaniciAdi = ""
-            if item.KullaniciAdi == "Gizem":
+            if item.KullaniciAdi == 'Gizem':
                 kullaniciAdi = "GU"
-            if item.KullaniciAdi == "Fadime":
-                kullaniciAdi = "FY"
-            if item.KullaniciAdi == "Ozlem":
+            if item.KullaniciAdi == 'Ozlem':
                 kullaniciAdi = "OO"
-            if item.KullaniciAdi == "Fatih":
-                kullaniciAdi = "FS"
-            if item.KullaniciAdi == "Ozgul":
-                kullaniciAdi = "OA"
-            if item.KullaniciAdi == "Fatmanur":
-                kullaniciAdi = "FNY" 
-            if item.KullaniciAdi == "Sema":
-                kullaniciAdi = "Sİ" 
-            if item.KullaniciAdi == "Hakan":
+            if item.KullaniciAdi == 'Hakan':
                 kullaniciAdi = "HK"        
 
             model.temsilciAdi = kullaniciAdi
@@ -374,8 +400,7 @@ class TeklifListeler:
 
         return schema.dump(liste)
 
-    def getKullaniciListeAyrinti_BList(self,kullaniciAdi):
-        kullaniciId = self.data.getStoreList("Select ID from KullaniciTB where KullaniciAdi=?",(kullaniciAdi))[0].ID
+    def getKullaniciListeAyrinti_BList(self,kullaniciId):
         liste = list()
 
         result = self.data.getStoreList(
@@ -412,18 +437,10 @@ class TeklifListeler:
             kullaniciAdi = ""
             if item.KullaniciAdi == "Gizem":
                 kullaniciAdi = "GU"
-            if item.KullaniciAdi == "Fadime":
-                kullaniciAdi = "FY"
+
             if item.KullaniciAdi == "Ozlem":
                 kullaniciAdi = "OO"
-            if item.KullaniciAdi == "Fatih":
-                kullaniciAdi = "FS"
-            if item.KullaniciAdi == "Ozgul":
-                kullaniciAdi = "OA"
-            if item.KullaniciAdi == "Fatmanur":
-                kullaniciAdi = "FNY"
-            if item.KullaniciAdi == "Sema":
-                kullaniciAdi = "Sİ"   
+
             if item.KullaniciAdi == "Hakan":
                 kullaniciAdi = "HK"  
             model.temsilciAdi = kullaniciAdi

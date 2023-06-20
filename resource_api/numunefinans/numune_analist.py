@@ -212,9 +212,9 @@ class NumuneFinansAnaListe:
             for item in result:
                 model = NumuneBankayaGelenAyrintiModel()
                 model.id = item.ID
-                model.bedel_dolar = item.bedel
-                model.bedel_euro = item.bedel_Euro
-                model.bedel_tl = item.bedel_TL
+                model.bedel_dolar = self.__getNone(item.bedel)
+                model.bedel_euro = self.__getNone(item.bedel_Euro)
+                model.bedel_tl = self.__getNone(item.bedel_TL)
                 model.banka_adi = item.Banka
                 model.musteri_adi = item.Musteri
                 model.numune_no = item.NumuneNo
@@ -227,5 +227,11 @@ class NumuneFinansAnaListe:
         except Exception as e:
             print('getBankayaGelenOdemelerAyrinti hata',str(e))
             return False
+        
+    def __getNone(self,value):
+        if(value == None):
+            return 0
+        else:
+            return float(value)
 
    

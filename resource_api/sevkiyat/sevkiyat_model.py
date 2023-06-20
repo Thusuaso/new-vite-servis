@@ -12,9 +12,7 @@ class SevkiyatIslem:
 
         item = SevkiyatModel()
         item.kasalistesi = list()
-
         schema = SevkiyatSchema()
-
         return schema.dump(item)
 
     def getKasaListesi(self,siparisno):

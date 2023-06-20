@@ -1,6 +1,6 @@
 from models.raporlar import *
 from helpers import SqlConnect,TarihIslemler
-
+import datetime
 
 
 class UretimRapor:
@@ -83,16 +83,84 @@ class UretimRapor:
               
            """
 
+        tarihIslem = TarihIslemler()
+        liste = list()
+
+        for item in result:
+
+            model = UretimModel()
+            model.id = item.ID
+
+            if item.Tarih != None:
+                model.tarih = tarihIslem.getDate(item.Tarih).strftime("%d-%m-%Y")
+
+            model.kimden = item.Kimden
+            model.kategori = item.Kategori
+            model.kasano = item.KasaNo
+            model.urunadi = item.UrunAdi
+            model.ocakadi = item.OcakAdi
+            model.yuzeyadi = item.YuzeyAdi
+            model.en = item.En
+            model.boy = item.Boy
+            model.kenar = item.Kenar
+            model.adet = item.Adet
+            model.miktar = item.Miktar
+            model.birimadi = item.BirimAdi
+            model.siparisno = item.SiparisAciklama
+            model.urunKartID = item.UrunKartID
+            model.aciklama = item.Aciklama
+            liste.append(model)
+
+        schema = UretimSchema(many=True)
+
+        return schema.dump(liste)
+    def getUretimListesiYil(self,yil):
+
+        result = self.data.getStoreList(
+           
+           """
+            select
+
+                u.ID,  
+                u.Tarih,
+                u.KasaNo,  
+                u.Adet,  
+                u.Miktar,  
+                u.SiparisAciklama,
+                t.FirmaAdi as Kimden,
+                ur.OcakAdi,
+                ub.BirimAdi,
+                ol.En,
+                ol.Boy,
+                ol.Kenar,
+                k.KategoriAdi as Kategori,
+                yk.YuzeyIslemAdi as YuzeyAdi,
+                urun.UrunAdi,
+                u.UrunKartID,
+				u.Aciklama
+                from 
 
 
+                UretimTB u
 
+                inner join TedarikciTB t on (u.TedarikciID = t.ID)
+                inner join UrunOcakTB ur on (ur.ID = u.UrunOcakID)
+                inner join UrunBirimTB ub on (ub.ID = u.UrunBirimID)
+                inner join UrunKartTB uk on (uk.ID = u.UrunKartID)
+                inner join KategoriTB k on (k.ID = uk.KategoriID)
+                inner join YuzeyKenarTB yk on (yk.ID = uk.YuzeyID) 
+                inner join UrunlerTB urun on (urun.ID = uk.UrunID)
+                inner join OlculerTB ol on (ol.ID = uk.OlcuID)
 
+                where
 
+                u.TedarikciID in (1,123) and YEAR(u.Tarih) = ?
 
+                order by u.Tarih desc
+           """,(yil)
+           )
 
-
-
-
+      
 
         tarihIslem = TarihIslemler()
         liste = list()

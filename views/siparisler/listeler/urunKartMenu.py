@@ -22,7 +22,7 @@ class UrunKartMenu:
         )
 
         kartList = list()
-
+        sira = 1
         for urun in result:
             model = UrunKartModel() 
             model.id = urun.Id
@@ -31,7 +31,7 @@ class UrunKartMenu:
             model.boy = urun.Boy
             model.kenar = urun.Kenar
             model.urunAdi = urun.UrunAdi
-            
+            model.sira = sira
             olculer = str(urun.YuzeyIslem).split('&')
 
             yuzey_1,yuzey_2,yuzey_3 =  self.__getYuzeyIslem(olculer)
@@ -46,6 +46,7 @@ class UrunKartMenu:
             if len(urun.Kenar) > 0:
                 model.ebat += 'X' + urun.Kenar
             kartList.append(model)
+            sira += 1
 
         schema = UrunKartSchema(many=True)
 

@@ -119,3 +119,24 @@ class NumuneModel:
     numuneCloud2 = 0
     numuneCloudDosya2 = ""
     aciklama = ""
+
+class NumuneOdemelerSchema(Schema):
+    id = fields.String()
+    tarih = fields.String()
+    musteri_id = fields.Int()
+    numune_no = fields.String()
+    aciklama = fields.String()
+    tutar = fields.Float()
+    masraf = fields.Float()
+    banka = fields.String()
+    
+class NumuneOdemelerModel:
+    id = 0
+    tarih = ""
+    musteri_id = 0
+    numune_no = ""
+    aciklama = ""
+    tutar = 0
+    masraf = 0
+    banka = ""
+    

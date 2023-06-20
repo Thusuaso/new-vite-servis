@@ -101,6 +101,7 @@ class MusteriListem:
             model.ulkeAdi = item.UlkeAdi
             model.mail = item.Mail
             model.satisciDurum = 'Musteri'
+            model.takipEt = item.TakipEt
             liste.append(model)
 
         schema = MusteriListeSchema(many=True)
@@ -120,10 +121,11 @@ class MusteriListem:
             u.Png_Flags as Flag,
             (select mt.MailAdresi from MusterilerTB mt where mt.FirmaAdi = m.MusteriAdi) as Mail,
             t.KaynakYeri as Kaynak,
-            t.Id as ID
+            t.Id as ID,
+			t.TakipEt
             from YeniTeklifTB t , YeniTeklif_MusterilerTB m,YeniTeklif_UlkeTB u
             where m.Id = t.MusteriId and ( t.TeklifOncelik='A' or  t.TeklifOncelik='B' or t.TeklifOncelik='C') and t.TakipEt=1 and u.Id = m.UlkeId and t.KullaniciId=?
-            GROUP BY  m.MusteriAdi,t.TeklifOncelik, t.KullaniciId,m.UlkeId,u.Png_Flags,t.KaynakYeri,t.Id
+            GROUP BY  m.MusteriAdi,t.TeklifOncelik, t.KullaniciId,m.UlkeId,u.Png_Flags,t.KaynakYeri,t.Id,t.TakipEt
 			order by t.TeklifOncelik
 
 
@@ -153,6 +155,7 @@ class MusteriListem:
             model.mail = item.Mail
             model.satisciDurum = 'Teklif'
             model.teklifSira = item.ID
+            model.takipEt = item.TakipEt
             liste.append(model)
 
         schema = MusteriListeSchema(many=True)
@@ -251,10 +254,15 @@ class MusteriListem:
             model.oncelik = item.MusteriOncelik
             if item.MusteriOncelik == 'A':
                 model.newOncelik = "1"
+                model.oncelikBackground = '#ec1802'
             elif item.MusteriOncelik == 'B':
                 model.newOncelik = "2"
+                model.oncelikBackground = '#0073e5'
+                
             elif item.MusteriOncelik == 'C':
                 model.newOncelik = "3"
+                model.oncelikBackground = '#e9f204'
+                
             model.oncelikBackground = '#63b0f5'
             model.temsilci = item.Temsilci
             if item.baslik == None:
@@ -283,10 +291,11 @@ class MusteriListem:
             u.Png_Flags as Flag,
             (select mt.MailAdresi from MusterilerTB mt where mt.FirmaAdi = m.MusteriAdi) as Mail,
             t.KaynakYeri as Kaynak,
-			t.Id as ID
+			t.Id as ID,
+			t.TakipEt
             from YeniTeklifTB t , YeniTeklif_MusterilerTB m,YeniTeklif_UlkeTB u
             where m.Id = t.MusteriId and ( t.TeklifOncelik='A' or  t.TeklifOncelik='B' or t.TeklifOncelik='C') and t.TakipEt=1 and u.Id = m.UlkeId
-            GROUP BY  m.MusteriAdi,t.TeklifOncelik, t.KullaniciId,m.UlkeId,u.Png_Flags,t.KaynakYeri,t.Id
+            GROUP BY  m.MusteriAdi,t.TeklifOncelik, t.KullaniciId,m.UlkeId,u.Png_Flags,t.KaynakYeri,t.Id,t.TakipEt
 			order by t.TeklifOncelik
 
 

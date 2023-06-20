@@ -28,6 +28,25 @@ class Kullanici:
 
         return schema.dump(kullaniciList)
 
+    def getChatKullaniciList(self):
+        result = self.data.getList("select * from KullaniciTB where Aktif=1 and Satisci=1 and VersiyonDegisim=1")
+        kullaniciList = list()
+
+        for item in result:
+
+            model = KullaniciModel()
+
+            model.id = item.ID 
+            model.kullaniciAdi = item.KullaniciAdi 
+            model.kullaniciSoyAd = item.KullaniciSoyAd 
+            model.mailAdres = item.MailAdres
+            model.image = 'https://cdn.mekmarimage.com/personel/' + item.Image
+
+            kullaniciList.append(model)
+
+        schema = KullaniciSchema(many=True)
+
+        return schema.dump(kullaniciList)
 
     def getOperasyonKullaniciList(self):
 

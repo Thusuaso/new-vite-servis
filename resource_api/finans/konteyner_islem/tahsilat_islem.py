@@ -78,13 +78,6 @@ class TahsilatIslem:
         tarih = datetime.datetime.strptime(tarih, forMat)
         tarih = tarih.date()
         try:
-            kullaniciid = self.data.getStoreList(
-                """
-                Select ID from KullaniciTB
-                where KullaniciAdi=?
-                """,(item['kullaniciadi'])
-            )[0].ID
-
             self.data.update_insert(
                 """
                 insert into OdemelerTB (
@@ -96,18 +89,16 @@ class TahsilatIslem:
                 """,
                 (
                     tarih,item['musteri_id'],item['siparisno'],
-                    1,item['aciklama'],item['tutar'],item['masraf'],kullaniciid,item['kur']
+                    1,item['aciklama'],item['tutar'],item['masraf'],item['kullaniciid'],item['kur']
                 )
             )
             self.mailGonder(item['siparisno'],'Yeni Tahsilat Girişi',item['tutar'],item['tarih'],item['masraf'],item['kullaniciadi'])
             info =item['kullaniciadi'].capitalize() + ', ' + item['siparisno'] + ' $' + str(item['tutar']) +' Tahsilat Girişi Yaptı'
-            DegisiklikMain().setYapilanDegisiklikBilgisi(item['kullaniciadi'].capitalize(),info)
             yukleme_tarihi=""
             DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],yukleme_tarihi)
 
             data = {
                 'status':True,
-                'siparisno':item['siparisno']
             }
             return data
         except Exception as e:
@@ -120,13 +111,6 @@ class TahsilatIslem:
         tarih = datetime.datetime.strptime(tarih, forMat)
         tarih = tarih.date()
         try:
-            kullaniciid = self.data.getStoreList(
-                """
-                Select ID from KullaniciTB
-                where KullaniciAdi=?
-                """,(item['kullaniciadi'])
-            )[0].ID
-
             self.data.update_insert(
 
                 """
@@ -135,7 +119,7 @@ class TahsilatIslem:
                 where ID=?
                 """,(
                     tarih,item['tutar'],item['masraf'],
-                    item['aciklama'],kullaniciid,item['kur'],item['id']
+                    item['aciklama'],item['kullaniciid'],item['kur'],item['id']
                 )
             )
 
@@ -146,7 +130,6 @@ class TahsilatIslem:
             DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],yukleme_tarihi)
             data = {
                 'status':True,
-                'siparisno':item['siparisno']
             }
             return data
         except Exception as e:
