@@ -43,7 +43,11 @@ class SiparisCeki:
     def __getTonaj(self,kategori,birim,adet,miktar,en,boy,kenar):
         tonaj = 0
         if(birim == 'M2'):
-            tonaj = self.__getKategoriKatsayisi(kategori) * float(str(kenar).replace(',','.')) * float(str(miktar).replace(',','.')) * 10
+            if(kenar == 'VAR'):
+                pass
+            else:
+                
+                tonaj = self.__getKategoriKatsayisi(kategori) * float(str(kenar).replace(',','.')) * float(str(miktar).replace(',','.')) * 10
         elif (birim == 'Adet'):
             if(en == 'VAR' or en == 'Var' or boy=='Free' or boy == 'FREE' or en == 'Various' or en == 'VARIOUS' or en == 'SLAB' or en == 'Slab' or en=='Other' or boy== 'Other'):
                 pass
