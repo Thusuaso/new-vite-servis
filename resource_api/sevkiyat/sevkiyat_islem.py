@@ -145,8 +145,8 @@ class SevkiyatKayit:
                 
 
     def __siparisGuncelle(self,item):
-
         try:
+        
             self.data.update_insert(
                 """
                 update SiparislerTB set YuklemeTarihi=?,
@@ -192,6 +192,12 @@ class SevkiyatKayit:
         )
         return musteriID[0]
 
+    def __dateChange(self,date):
+        date = date.split('-')
+        year = date[2]
+        month = date[1]
+        day = date[0]
+        return year + '-' + month + '-' + day
 
     def __iptal_siparisGuncelle(self,siparisno):
 

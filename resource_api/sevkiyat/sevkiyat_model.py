@@ -50,7 +50,7 @@ class SevkiyatIslem:
             model.id = item.UrunKartID 
             model.kasano = item.KasaNo 
             model.birimfiyat = item.SatisFiyati 
-            model.toplam = item.SatisToplam 
+            model.toplam = float(item.SatisFiyati) * float(item.Miktar)
             model.urunadi =item.urunadi 
             model.yuzeyislem = item.yuzeyislem 
             model.ebat = item.ebat 
