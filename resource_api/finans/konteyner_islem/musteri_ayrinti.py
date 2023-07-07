@@ -76,11 +76,6 @@ class MusteriAyrinti:
             
             if item.TahminiEtaTarihi != None:
                 model.tahmini_eta = tarihIslem.getDate(item.TahminiEtaTarihi).strftime("%d-%m-%Y")  
-                
-                
-            
-                
-                
             model.pesinat = item.Pesinat
             navlun = 0 
             tutar_1 = 0
@@ -109,7 +104,7 @@ class MusteriAyrinti:
             model.siparis_total = model.toplam
             
             model.kalan = model.toplam - odeme
-            
+            model.kalan2 = model.toplam - odeme
             model.odenen_tutar = odeme
             liste.append(model)
 
@@ -200,6 +195,7 @@ class MusteriAyrinti:
             model.pesinat = pesinat
             model.siparis_total = navlun + tutar_1 + tutar_2 + tutar_3 + urun_bedel + sigorta
             model.toplam = item.Pesinat
+            model.kalan2 = model.siparis_total - item.Pesinat
             model.kalan =  -odeme
             model.odenen_tutar = odeme
             liste.append(model)

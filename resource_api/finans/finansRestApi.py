@@ -1,7 +1,7 @@
 from resource_api.finans.konteyner_islem.konteyner import Konteyner
 from resource_api.finans.konteyner_islem.musteri_ayrinti import MusteriAyrinti
 from resource_api.finans.konteyner_islem.tahsilat_islem import TahsilatIslem
-from resource_api.finans.depo import DepoAnaListe,DepoAyrinti
+from resource_api.finans.depo import DepoAnaListe,DepoAyrinti,DepoAnaListeYeni
 from flask_restful import Resource
 from flask import jsonify,request,send_file
 from resource_api.finans.konteyner_islem.excel_cikti import ExcelCiktiIslem
@@ -10,7 +10,7 @@ from resource_api.finans.odemeler.odeme_islem import OdemeIslem
 from resource_api.finans.pesinat_islem_liste import PesinatIslemListe
 from resource_api.finans.pesinat_islem import FinansPesinatIslem
 from resource_api.finans.yeniFinans import YeniMusteriAnaIslem
-from resource_api.finans.vade import VadeAnaliste
+from resource_api.finans.vade import VadeAnaliste,VadeAnalisteYeni
 from resource_api.finans.guncel_kur import DovizListem
 from resource_api.finans.konteyner_islem.marketing import Marketing
 from resource_api.finans.konteyner_islem.konteyner import *
@@ -32,6 +32,29 @@ class KonteynerAnaListe(Resource):
                 }
 
         return jsonify(data)
+    
+
+class KonteynerAnaListeYeni(Resource): 
+
+    def get(self,yil):
+
+        konteyner = KonteynerYeni(yil)
+        depo = DepoAnaListeYeni()
+        vade = VadeAnalisteYeni()
+        konteyner_list = konteyner.getKonteynerList()
+        depo_list = depo.getDepoList()
+        vade_list = vade.getVadeList()
+        data = {
+                    "konteyner_list" : konteyner_list,
+                    "depo_list" : depo_list,
+                    "vade_list":vade_list
+                }
+
+        return jsonify(data)
+
+
+
+
 
 class MarketingListeApi(Resource):
     

@@ -24,24 +24,18 @@ class TedarikciIslem:
     
     def IcSiparisKaydet(self,tedarikci):
         try:
-      
-           
-           
             
             self.data.update_insert(
                 """
                     insert into SiparisUrunTedarikciFormTB (
-                       SiparisNo,TedarikciID,TedarikciSiparisFaturaTurID,TedarikciTeslimTurID,TeslimTarihi
-                       
+                    SiparisNo,TedarikciID,TedarikciSiparisFaturaTurID,TedarikciTeslimTurID,TeslimTarihi
                     )
                     values
                     (?,?,?,?,?)
-                    """,(
-                      tedarikci[7]['siparisNo'],tedarikci[7]['tedarikciId'],tedarikci[7]['id'],tedarikci[2][0]['id'],tedarikci[1]
-                       
-                    )
+                """,(
+                    tedarikci[14]['siparisNo'],tedarikci[14]['tedarikciId'],tedarikci[14]['id'],tedarikci[2][0]['id'],tedarikci[1]
+                )
             )
-
             return True
         except Exception as e:
             print('IcSiparisKaydet Hata : ',str(e))

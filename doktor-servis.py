@@ -38,7 +38,7 @@ from resource_api.efesfinans.efinansRestApi import EfesGelenSiparisvYuklenenler
 from resource_api.teklifler.bgpProject import *
 from resource_api.mekmar_com.Galleria import *
 from resource_api.notification import NotificationIslemApi,NotificationListApi,NotificationIslemAnsweredApi,NotificationIslemFollowApi,NotificationIslemFollowAnsweredApi
-
+from resource_api.finansTest.finanstestapi import FinanceTestListApi,FinanceTestDetailListApi,FinanceTestListExcelApi
 
 app = Flask(__name__)
 
@@ -411,7 +411,12 @@ api.add_resource(UretimTakipIslem,'/kontroller/UretimTakipIslem/',methods=['GET'
 api.add_resource(TedarikciTakipIslem,'/kontroller/TedarikciTakipIslem/',methods=['GET'])
 api.add_resource(ChatMailGonderim,'/kontroller/chatIslem',methods=['GET','POST','PUT'])
 api.add_resource(ChatMailler,'/kontroller/listeler/chatmailler/<string:po>',methods=['GET'])
+#finans işlemler yeni
+api.add_resource(KonteynerAnaListeYeni,'/finans/listeler/konteynerAnaListe/yeni/<int:yil>',methods=['GET'])
 
+api.add_resource(FinanceTestListApi,'/finance/reports/test',methods=['GET'])
+api.add_resource(FinanceTestDetailListApi,'/finance/reports/test/detail/<int:customer_id>',methods=['GET'])
+api.add_resource(FinanceTestListExcelApi,'/finance/reports/test/excel',methods=['GET','POST'])
 
 #finans işlemler 
 api.add_resource(KonteynerAnaListe,'/finans/listeler/konteynerAnaListe/<int:yil>',methods=['GET'])

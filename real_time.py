@@ -148,6 +148,19 @@ def eta_list_emit():
 @socketio.on('representative_list_emit')
 def representative_list_emit():
     emit('representative_list_on',broadcast=True)
+    
+#Socket IO Finance Test
+@socketio.on('finance_test_detail_payment_emit')
+def finance_test_detail_payment_emit(data):
+    emit('finance_test_detail_payment_on',data,broadcast=True)
+
+@socketio.on('finance_test_detail_emit')
+def finance_test_detail_emit(data):
+    emit('finance_test_detail_on',data,broadcast=True)
+
+@socketio.on('finance_test_list_emit')
+def finance_test_list_emit():
+    emit('finance_test_list_on',broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app,port=5001)

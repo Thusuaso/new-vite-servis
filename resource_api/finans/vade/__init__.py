@@ -1,1 +1,1 @@
-from resource_api.finans.vade.vade_analiste import VadeAnaliste
+from resource_api.finans.vade.vade_analiste import VadeAnaliste,VadeAnalisteYeni
