@@ -10,7 +10,8 @@ class FinanceTest:
         self.customers = self.sql.getList("""
                                                 select 
                                                     m.ID,
-                                                    m.FirmaAdi 
+                                                    m.FirmaAdi,
+                                                    m.Marketing
                                                 from MusterilerTB m 
                                                 where m.ID in 
                                                     (
@@ -190,6 +191,7 @@ class FinanceTest:
             # else:
                 
             liste.append({
+                'marketing':item.Marketing,
                 'customer_id':item.ID,
                 'customer_name':item.FirmaAdi,
                 'order':self.__getOrder(item.ID),
