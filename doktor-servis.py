@@ -39,6 +39,7 @@ from resource_api.teklifler.bgpProject import *
 from resource_api.mekmar_com.Galleria import *
 from resource_api.notification import NotificationIslemApi,NotificationListApi,NotificationIslemAnsweredApi,NotificationIslemFollowApi,NotificationIslemFollowAnsweredApi
 from resource_api.finansTest.finanstestapi import FinanceTestListApi,FinanceTestDetailListApi,FinanceTestListExcelApi
+from resource_api.controls import ProformaKayitKontrolApi
 
 app = Flask(__name__)
 
@@ -403,6 +404,7 @@ api.add_resource(EvrakSilmeIslemApi,'/operasyon/fatura/deleteFaturaEvrak/<int:id
 #api.add_resource(KonteynerFaturatIslem,'/konteynerfatura/kayitIslem',methods=['GET','POST','PUT'])
 #api.add_resource(FaturaDetayListeYeni,'/islemler/fatura/getFaturaDetayListeYeni')
 
+api.add_resource(ProformaKayitKontrolApi,'/controls/proforma/<string:siparisNo>',methods=['GET'])
 
 #kontrol işlemleri
 api.add_resource(MusteriEtaMailIslem,'/kontroller/musterietatakipislem',methods=['GET'])

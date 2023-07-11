@@ -173,10 +173,10 @@ class SiparisListe:
                 from SiparislerTB s,MusterilerTB m
                 where s.MusteriID = m.ID and s.SiparisDurumID=?  and
                 
-                (Year(s.SiparisTarihi) =? or year(s.YuklemeTarihi)=?)
+                (Year(s.SiparisTarihi) >= 2021 or year(s.YuklemeTarihi) >=2021)
                 order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
             
-                """,(self.siparisDurum,yil,yil)
+                """,(self.siparisDurum)
                 )
         
         urunListesi = list()

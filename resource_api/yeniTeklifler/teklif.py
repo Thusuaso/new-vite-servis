@@ -32,7 +32,9 @@ class TeklifAyrintiListe(Resource):
         alist = teklifList.getKullaniciListeAyrinti(kullaniciId)
 
         blist = teklifList.getKullaniciListeAyrinti_BList(kullaniciId)
+        
         labels,datasets = teklif.getGrafikRaporHepsi()
+        
         datasets_oncelik,labels_oncelik = teklif.getOncelikGrafikRapor()
         
         aListChart = {
@@ -352,28 +354,49 @@ class TeklifListeler:
 
     def getKullaniciListeAyrinti(self,kullaniciId):
         liste = list()
-
-        result = self.data.getStoreList(
-            """
-                select
-                t.Tarih,
-                t.Id,
-                m.MusteriAdi,
-                u.UlkeAdi,
-                t.TeklifOncelik,
-                k.KullaniciAdi,
-                t.Goruldu,
-                t.Sira
-                from
-                YeniTeklifTB t,YeniTeklif_MusterilerTB m,
-                YeniTeklif_UlkeTB u,KullaniciTB k
-                where
-                t.MusteriId=m.Id and u.Id=m.UlkeId
-                and k.ID=t.KullaniciId and t.TakipEt=1
-                and k.ID=? and t.BList=0  order by t.TeklifOncelik asc
-            """,(kullaniciId)
-        )
-
+        if(kullaniciId == 10 or kullaniciId == 47):
+            
+            result = self.data.getList(
+                """
+                    select
+                    t.Tarih,
+                    t.Id,
+                    m.MusteriAdi,
+                    u.UlkeAdi,
+                    t.TeklifOncelik,
+                    k.KullaniciAdi,
+                    t.Goruldu,
+                    t.Sira
+                    from
+                    YeniTeklifTB t,YeniTeklif_MusterilerTB m,
+                    YeniTeklif_UlkeTB u,KullaniciTB k
+                    where
+                    t.MusteriId=m.Id and u.Id=m.UlkeId
+                    and k.ID=t.KullaniciId and t.TakipEt=1
+                    and t.BList=0  order by t.TeklifOncelik asc
+                """
+                )
+        else:
+            result = self.data.getStoreList(
+                """
+                    select
+                    t.Tarih,
+                    t.Id,
+                    m.MusteriAdi,
+                    u.UlkeAdi,
+                    t.TeklifOncelik,
+                    k.KullaniciAdi,
+                    t.Goruldu,
+                    t.Sira
+                    from
+                    YeniTeklifTB t,YeniTeklif_MusterilerTB m,
+                    YeniTeklif_UlkeTB u,KullaniciTB k
+                    where
+                    t.MusteriId=m.Id and u.Id=m.UlkeId
+                    and k.ID=t.KullaniciId and t.TakipEt=1
+                    and k.ID=? and t.BList=0  order by t.TeklifOncelik asc
+                """,(kullaniciId)
+                )
         
         for item in result:
             model = KullaniciListeAyrintiModel()
@@ -403,26 +426,49 @@ class TeklifListeler:
     def getKullaniciListeAyrinti_BList(self,kullaniciId):
         liste = list()
 
-        result = self.data.getStoreList(
-            """
-            select
-            t.Tarih,
-            t.Id,
-            m.MusteriAdi,
-            u.UlkeAdi,
-            t.TeklifOncelik,
-            k.KullaniciAdi,
-            t.Goruldu,
-            t.Sira
-            from
-            YeniTeklifTB t,YeniTeklif_MusterilerTB m,
-            YeniTeklif_UlkeTB u,KullaniciTB k
-            where
-            t.MusteriId=m.Id and u.Id=m.UlkeId
-            and k.ID=t.KullaniciId and t.TakipEt=1
-            and k.ID=? and t.BList=1
-            """,(kullaniciId)
-        )
+        if(kullaniciId==10 or kullaniciId == 47):
+            
+            result = self.data.getList(
+                """
+                select
+                t.Tarih,
+                t.Id,
+                m.MusteriAdi,
+                u.UlkeAdi,
+                t.TeklifOncelik,
+                k.KullaniciAdi,
+                t.Goruldu,
+                t.Sira
+                from
+                YeniTeklifTB t,YeniTeklif_MusterilerTB m,
+                YeniTeklif_UlkeTB u,KullaniciTB k
+                where
+                t.MusteriId=m.Id and u.Id=m.UlkeId
+                and k.ID=t.KullaniciId and t.TakipEt=1
+                and t.BList=1
+                """
+            )
+        else:
+                result = self.data.getStoreList(
+                """
+                select
+                t.Tarih,
+                t.Id,
+                m.MusteriAdi,
+                u.UlkeAdi,
+                t.TeklifOncelik,
+                k.KullaniciAdi,
+                t.Goruldu,
+                t.Sira
+                from
+                YeniTeklifTB t,YeniTeklif_MusterilerTB m,
+                YeniTeklif_UlkeTB u,KullaniciTB k
+                where
+                t.MusteriId=m.Id and u.Id=m.UlkeId
+                and k.ID=t.KullaniciId and t.TakipEt=1
+                and k.ID=? and t.BList=1
+                """,(kullaniciId)
+            )
 
         
         for item in result:

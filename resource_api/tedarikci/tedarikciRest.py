@@ -61,7 +61,6 @@ class IcSiparisDosyaKaydet(Resource):
     def post(self):
 
         data = request.get_json()
-        print(data)
         islem = TedarikciIslem()
         result = islem.IcSiparisDosyaKaydet(data)
 

@@ -8,10 +8,8 @@ class FinansPesinatIslem:
         self.data = SqlConnect().data 
 
     
-    def pesinat_kaydet(self,_item):
+    def pesinat_kaydet(self,item):
         try:
-            item = _item['pesinat_model']
-            item['tarih'] = _item['tarih']
             
             self.data.update_insert(
                """
@@ -33,12 +31,12 @@ class FinansPesinatIslem:
             mail_konu = f""" 
             {item['musteri_adi']} {item['siparis_no']}  ${item['tutar']} / ${item['masraf']}       
             
-            {_item['kullaniciadi']} tarafından işlendi . 
+            {item['kullaniciadi']} tarafından işlendi . 
              """
            
-            info =_item['kullaniciadi'].capitalize() + ', ' + item['siparis_no'] + ' $' + str(item['tutar']) + ' Peşinat Girişi Yaptı'
+            info =item['kullaniciadi'].capitalize() + ', ' + item['siparis_no'] + ' $' + str(item['tutar']) + ' Peşinat Girişi Yaptı'
             yukleme_tarihi=""
-            DegisiklikMain().setMaliyetDegisiklik(info,_item['kullaniciadi'].capitalize(),item['siparis_no'],yukleme_tarihi)
+            DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparis_no'],yukleme_tarihi)
             MailService('Peşinat Tahsilat Bildirimi ',"huseyin@mekmarmarble.com",mail_konu)
             MailService('Peşinat Tahsilat Bildirimi ',"mehmet@mekmer.com",mail_konu)
           

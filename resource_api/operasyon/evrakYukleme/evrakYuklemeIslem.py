@@ -45,7 +45,6 @@ class EvrakFaturaIslem:
         return kayitDurum
 
     def __faturaKayit(self,item):
-        print(item)
         try:    
             date = datetime.datetime.now()    
             self.data.update_insert(

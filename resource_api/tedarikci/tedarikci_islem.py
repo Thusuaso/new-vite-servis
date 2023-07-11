@@ -211,7 +211,6 @@ class TedarikciIslem:
                                     select ID from TedarikciTB where FirmaAdi=?
                                 
                                 """,(tedarikciAdi))[0].ID
-        print(tedarikciId,siparisNo)
         self.data.update_insert("""
                                     delete SiparisUrunTedarikciFormTB where TedarikciID =? and SiparisNo=?
                                 

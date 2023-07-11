@@ -182,12 +182,13 @@ class TedarikciSiparisUrunListe:
         result = self.data.getStoreList(
             """
             select
-            t.FirmaAdi
+            t.FirmaAdi,
+			t.ID
          
             from
             SiparisUrunTB s , TedarikciTB t , SiparisEkstraGiderlerTB e 
             where s.SiparisNo=? and t.ID=s.TedarikciID 
-			group by   t.FirmaAdi
+			group by   t.FirmaAdi,t.ID
       
             """,(self.siparisno)
         )
@@ -197,7 +198,7 @@ class TedarikciSiparisUrunListe:
         for item in result:
 
             model = TedarikciListeModel()
-
+            model.id = item.ID
             model.tedarikciadi = item.FirmaAdi 
             tedarikciList.append(model)
 
