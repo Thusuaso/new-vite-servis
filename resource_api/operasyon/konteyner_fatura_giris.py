@@ -131,7 +131,7 @@ class KonteynerFaturalar:
             )
 
             invoice = self.data.getStoreList("""
-                                                select ID,FaturaNo from KonteynerDigerFaturalarKayitTB where FaturaNo=?
+                                                select ID,FaturaNo,FirmaID from KonteynerDigerFaturalarKayitTB where FaturaNo=?
                                              """,(item['faturaNo']))[0]
             
             self.__urunId(item)
@@ -150,6 +150,7 @@ class KonteynerFaturalar:
             data = {
                 'status':True,
                 'invoiceId':invoice.ID,
+                'companyId':invoice.FirmaID,
                 'invoiceNo':invoice.FaturaNo
             }
             
