@@ -15,3 +15,11 @@ class MaliyetHatalarSchema(Schema):
     kullanici_id = fields.Int()
     kullanici_adi = fields.String()
     tarih = fields.String()
+    
+class KullaniciSchema(Schema):
+    id = fields.Int()
+    name = fields.String()
+    
+class KullaniciModel:
+    id = 0
+    name = ""

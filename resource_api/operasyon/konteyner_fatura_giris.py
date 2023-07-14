@@ -125,9 +125,9 @@ class KonteynerFaturalar:
         try:
             self.data.update_insert(
                 """
-                INSERT INTO KonteynerDigerFaturalarKayitTB (FirmaID, Tarih, FaturaNo,Kur,KayitTarihi)    values
-                (?,?,?,?,?)
-                """,(item['Firma_id'],item['tarih'],item['faturaNo'],item['kur'],item['tarih'])
+                INSERT INTO KonteynerDigerFaturalarKayitTB (FirmaID, Tarih, FaturaNo,Kur,KayitTarihi,Aciklama)    values
+                (?,?,?,?,?,?)
+                """,(item['Firma_id'],item['tarih'],item['faturaNo'],item['kur'],item['tarih'],item['aciklama'])
             )
 
             invoice = self.data.getStoreList("""

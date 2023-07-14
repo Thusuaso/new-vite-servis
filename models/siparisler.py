@@ -107,6 +107,7 @@ class SiparislerSchema(Schema):
     kayit_kisi =fields.String()
     mail = fields.String()
     opChange = fields.Boolean()
+    maya = fields.Boolean()
 
 class SiparislerModel:
     id = None
@@ -207,6 +208,7 @@ class SiparislerModel:
     profit_usd = 0
     mekus_masraf = 0
     kayit_kisi = ""
+    maya = False
 
 
     

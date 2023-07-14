@@ -92,13 +92,13 @@ class SiparisBolme:
             
             
             
-            if len(resultOdemeler)>0:
-                if len(siparisNo.split('-'))>0:
-                    self.__odemelerUpdate(siparisNo,pesinat,kalanSiparisNo)
-                    self.__odemelerInsert(gidenSiparisNo,pesinat,resultOdemeler)
-                else:
-                    self.__odemelerInsert(gidenSiparisNo,pesinat,resultOdemeler)
-                    self.__odemelerUpdate(siparisNo,pesinat,kalanSiparisNo)
+            # if len(resultOdemeler)>0:
+            #     if len(siparisNo.split('-'))>0:
+            #         self.__odemelerUpdate(siparisNo,pesinat,kalanSiparisNo)
+            #         self.__odemelerInsert(gidenSiparisNo,pesinat,resultOdemeler)
+            #     else:
+            #         self.__odemelerInsert(gidenSiparisNo,pesinat,resultOdemeler)
+            #         self.__odemelerUpdate(siparisNo,pesinat,kalanSiparisNo)
             
                 
                 

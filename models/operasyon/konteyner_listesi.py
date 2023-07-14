@@ -25,7 +25,7 @@ class KonteynerSchema(Schema):
     nakliye_evrak = fields.String()
     kur = fields.Float()
     genel_link = fields.String()
-
+    aciklama = fields.String()
 class KonteynerModel:
     id = 0
     fatura_no = ""
@@ -49,6 +49,7 @@ class KonteynerModel:
     nakliye_evrak = ""
     kur = 0
     genel_link = ""
+    aciklama = ""
 
 class KonteynerListeSchema(Schema):
     

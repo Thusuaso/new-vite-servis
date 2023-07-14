@@ -21,8 +21,16 @@ class MaliyetHataRaporIslemApi(Resource):
 class MaliyetHataRaporModelApi(Resource):
     def get(self):
         islem = MaliyetHatalari()
-        result = islem.getModel()
-        return jsonify(result)
+        model = islem.getModel()
+        users = islem.users()
+        
+        data = {
+            'model' : model,
+            'users' : users
+            
+        }
+        
+        return jsonify(data)
     
 
 class MaliyetHataRaporDeleteApi(Resource):
@@ -34,5 +42,11 @@ class MaliyetHataRaporDeleteApi(Resource):
 class MaliyetHataRaporDetayApi(Resource):
     def get(self,id):
         islem = MaliyetHatalari()
-        result = islem.detail(id)[0]
-        return jsonify(result)
+        model = islem.detail(id)[0]
+        users = islem.users()
+        data = {
+            'model':model,
+            'users':users
+        }
+        
+        return jsonify(data)

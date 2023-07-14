@@ -166,5 +166,9 @@ def finance_test_detail_emit(data):
 def finance_test_list_emit():
     emit('finance_test_list_on',broadcast=True)
 
+@socketio.on('finance_test_advanced_payment_list_emit')
+def finance_test_advanced_payment_list_emit():
+    emit('finance_test_advanced_payment_list_on',broadcast=True)
+
 if __name__ == '__main__':
     socketio.run(app,port=5001)

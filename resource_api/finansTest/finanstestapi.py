@@ -5,8 +5,15 @@ from views.financetest.financetest import FinanceTest,FinanceTestDetail
 class FinanceTestListApi(Resource):
     def get(self):
         finance = FinanceTest()
-        result = finance.getList()
-        return jsonify(result)
+        
+        financeList = finance.getList()
+        mayaList = finance.getMayaList()
+        data = {
+            'financeList':financeList,
+            'mayaList':mayaList,
+            
+        }
+        return jsonify(data)
     
 class FinanceTestDetailListApi(Resource):
     def get(self,customer_id):

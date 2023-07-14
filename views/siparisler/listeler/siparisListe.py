@@ -154,7 +154,8 @@ class SiparisListe:
                 """,(self.siparisDurum,yil,yil)
                 )
         elif self.siparisDurum == 3:
-             siparisResult = self.data.getStoreList(
+            if yil == '2023':
+                siparisResult = self.data.getStoreList(
                 """
                 Select 
                 s.ID,
@@ -177,6 +178,31 @@ class SiparisListe:
                 order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
             
                 """,(self.siparisDurum)
+                )
+            else:
+                siparisResult = self.data.getStoreList(
+                """
+                Select 
+                s.ID,
+                s.SiparisNo,
+                m.FirmaAdi,
+                s.SiparisTarihi,
+                YuklemeTarihi,
+                m.Marketing ,
+                (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.SiparisSahibi) as temsilci,
+                (select lower(k.KullaniciAdi) from KullaniciTB k where k.ID=s.Operasyon) as operasyon,
+                (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.SiparisSahibi) as logo,
+                (select  'https://mekmar-image.fra1.digitaloceanspaces.com/personel/' + k.Image  from KullaniciTB k where k.ID=s.Operasyon) as operasyonlogo,
+                (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=2 ) as evrak,
+                (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=16 ) as evrakc,
+                (select f.FaturaAdi from FaturaKesilmeTB f where f.ID = s.FaturaKesimTurID) as fatura
+                from SiparislerTB s,MusterilerTB m
+                where s.MusteriID = m.ID and s.SiparisDurumID=?  and
+                
+                (Year(s.SiparisTarihi) = ? or Year(s.YuklemeTarihi) = ?)
+                order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
+            
+                """,(self.siparisDurum,yil,yil)
                 )
         
         urunListesi = list()

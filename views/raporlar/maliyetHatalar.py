@@ -82,3 +82,24 @@ class MaliyetHatalari:
         except Exception as e:
             print('maliye hata detay',str(e))
             return False
+        
+    def users(self):
+        try:
+            result = self.sql.getList("""
+                                            select * from KullaniciTB where Aktif=1 and Satisci=1
+                                      """)
+            
+            liste = list()
+            for item in result:
+                if item.ID == 9:
+                    continue
+                else:
+                    model = KullaniciModel()
+                    model.id = item.ID
+                    model.name = item.KullaniciAdi
+                    liste.append(model)
+            schema = KullaniciSchema(many=True)
+            return schema.dump(liste)
+        except Exception as e:
+            print('maliye hata users',str(e))
+            return False

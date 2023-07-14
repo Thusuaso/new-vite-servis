@@ -29,7 +29,8 @@ class KonteynerHepsiListesi:
         f.YuklemeEvrakID,
         k.Kur,
         k.ID,
-        f.Tutar
+        f.Tutar,
+		k.Aciklama
         from SiparisFaturaKayitTB f , KonteynerDigerFaturalarKayitTB k 
         where k.ID=f.FaturaKayitID and f.SiparisFaturaTurID !=0 and f.SiparisNo !=''
         order by f.EvrakYuklemeTarihi desc
@@ -51,6 +52,7 @@ class KonteynerHepsiListesi:
             model.evrak_id=item.SiparisFaturaTurID
             model.evrak_adi=item.EvrakAdi
             model.kur = item.Kur
+            model.aciklama = item.Aciklama
 
             if  item.SiparisFaturaTurID == 73:
                 model.tur = "İlaçlama"

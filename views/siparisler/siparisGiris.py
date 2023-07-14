@@ -115,6 +115,7 @@ class SiparisGiris:
         model.operasyon = result.Operasyon
         model.finansman = result.Finansman
         model.iade = result.Iade
+        model.maya = self.__noneBooleanControl(result.MayaControl)
         if model.siparisDurumId == 3:
             model.yuklemeTarihi = tarihIslem.getDate(result.YuklemeTarihi).strftime("%d-%m-%Y")
         model.faturaNo = result.FaturaNo 
@@ -173,6 +174,12 @@ class SiparisGiris:
        
         return model
 
+    def __noneBooleanControl(self,value):
+        if(value == None):
+            return False
+        else:
+            return value
+    
     def __getSiparisUrunler(self,siparisNo):
 
         result = self.data.getStoreList(
@@ -550,10 +557,10 @@ class SiparisGiris:
                         NavlunSatis,KullaniciID,SiparisDurumID,UretimAciklama,SevkiyatAciklama,FinansAciklama,OdemeAciklama,TahminiYuklemeTarihi,
                         Vade,Ulke,UlkeId,Komisyon,DetayAciklama_1,DetayMekmarNot_1,DetayTutar_1,DetayAlis_1,DetayAciklama_2,DetayMekmarNot_2,
                         DetayTutar_2,DetayAlis_2,DetayAciklama_3,DetayMekmarNot_3,DetayTutar_3,DetayTutar_4,DetayAciklama_4,DetayAlis_3,SiparisSahibi,EvrakGideri,Eta,
-                        KonteynerAyrinti,KonteynerNo,TeslimYeri,FaturaKesimTurID,AktarmaLimanAdi,depo_yukleme,sigorta_id,sigorta_Tutar,Operasyon ,Finansman,Iade,sigorta_tutar_satis,TahminiEtaTarihi
+                        KonteynerAyrinti,KonteynerNo,TeslimYeri,FaturaKesimTurID,AktarmaLimanAdi,depo_yukleme,sigorta_id,sigorta_Tutar,Operasyon ,Finansman,Iade,sigorta_tutar_satis,TahminiEtaTarihi,MayaControl
                     )
                     values
-                    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                     """,(
                         siparis['siparisNo'],s_tarihi,siparis['odemeTurId'],siparis['teslimTurId'],siparis['musteriId'],
                         siparis['pesinat'],siparis['navlunFirma'],siparis['navlunMekmarNot'],float(siparis['navlunAlis']),float(siparis['navlunSatis']),
@@ -563,7 +570,7 @@ class SiparisGiris:
                         siparis['detayAciklama_2'],siparis['detayMekmarNot_2'],siparis['detayTutar_2'],float(siparis['detayAlis_2']),
                         siparis['detayAciklama_3'],siparis['detayMekmarNot_3'],float(siparis['detayTutar_3']),float(siparis['detayTutar_4']),siparis['detayAciklama_4'],float(siparis['detayAlis_3']),siparis['siparisSahibi'],
                         siparis['evrakGideri'],siparis['eta'],siparis['konteynerAyrinti'],siparis['konteynerNo'],siparis['teslimYeri'],siparis['faturaKesimTurId'],siparis['liman'],siparis['depo'], 
-                        siparis['sigorta_id'],float(siparis['sigorta_tutar']),siparis['operasyon'],siparis['finansman'],siparis['iade'],float(siparis['sigorta_tutar_satis']),tahmini_eta
+                        siparis['sigorta_id'],float(siparis['sigorta_tutar']),siparis['operasyon'],siparis['finansman'],siparis['iade'],float(siparis['sigorta_tutar_satis']),tahmini_eta,siparis['maya']
                     )
                 )
                 
@@ -696,7 +703,7 @@ class SiparisGiris:
                 DetayAciklama_2=?,DetayMekmarNot_2=?,DetayTutar_2=?,DetayAlis_2=?,
                 DetayAciklama_3=?,DetayMekmarNot_3=?,DetayTutar_3=?,DetayTutar_4=?,DetayAciklama_4=?,DetayAlis_3=?,SiparisSahibi=?,EvrakGideri=?,
                 KonteynerAyrinti=?,KonteynerNo=?,FaturaKesimTurID =? ,AktarmaLimanAdi =? , depo_yukleme=? ,sigorta_id=?,sigorta_Tutar=?, Operasyon =? , 
-                Finansman =?, Iade=?,sigorta_tutar_satis=?, MalBedeli=? , TahminiEtaTarihi=? where SiparisNo=?
+                Finansman =?, Iade=?,sigorta_tutar_satis=?, MalBedeli=? , TahminiEtaTarihi=?,MayaControl = ? where SiparisNo=?
                 """,(
                     siparis['odemeTurId'],siparis['teslimTurId'],siparis['pesinat'],siparis['navlunFirma'],siparis['navlunMekmarNot'],
                     float(siparis['navlunAlis']),float(siparis['navlunSatis']),siparis['kullaniciId'],siparis['uretimAciklama'],siparis['sevkiyatAciklama'],siparis['finansAciklama'],
@@ -705,7 +712,7 @@ class SiparisGiris:
                     siparis['detayAciklama_2'],siparis['detayMekmarNot_2'],float(siparis['detayTutar_2']),float(siparis['detayAlis_2']),
                     siparis['detayAciklama_3'],siparis['detayMekmarNot_3'],float(siparis['detayTutar_3']),float(siparis['detayTutar_4']),siparis['detayAciklama_4'],float(siparis['detayAlis_3']),
                     siparis['siparisSahibi'],evrak_gider,siparis['konteynerAyrinti'],siparis['konteynerNo'], siparis['faturaKesimTurId'],siparis['liman'],siparis['depo'], siparis['sigorta_id'],
-                    float(siparis['sigorta_tutar']), siparis['operasyon'], siparis['finansman'],siparis['iade'],float(siparis['sigorta_tutar_satis']),siparis['malBedeli'],tahmini_eta,siparis['siparisNo']
+                    float(siparis['sigorta_tutar']), siparis['operasyon'], siparis['finansman'],siparis['iade'],float(siparis['sigorta_tutar_satis']),siparis['malBedeli'],tahmini_eta,siparis['maya'],siparis['siparisNo']
                 )
             )
             

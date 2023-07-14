@@ -31,13 +31,14 @@ class FinanceTest:
                                                 sum(s.DetayTutar_3) as Detay3,
                                                 sum(s.sigorta_tutar_satis) as Sigorta,
                                                 s.MusteriID,
-                                                (select k.KullaniciAdi from KullaniciTB k where k.ID = m.MusteriTemsilciId) as Temsilci
+                                                (select k.KullaniciAdi from KullaniciTB k where k.ID = m.MusteriTemsilciId) as Temsilci,
+												s.MayaControl
                                             from SiparislerTB s
                                                 inner join MusterilerTB m on m.ID = s.MusteriID 
                                             where
                                                 m.Mt_No = 2
                                             group by
-                                                s.MusteriID,m.MusteriTemsilciId
+                                                s.MusteriID,m.MusteriTemsilciId,s.MayaControl
                                        """)
         self.products = self.sql.getList("""
                                             select 
@@ -181,6 +182,45 @@ class FinanceTest:
                                                
                                                """)
         
+        self.mayaPaymentOrders = self.sql.getList("""
+                                                    select 
+                                                        s.SiparisNo,
+                                                        s.NavlunSatis + s.DetayTutar_1 + s.DetayTutar_2 + s.DetayTutar_3 + s.sigorta_tutar_satis as Cost,
+                                                        m.FirmaAdi,
+                                                        m.ID,
+                                                        s.SiparisTarihi,
+														s.YuklemeTarihi
+                                                    from SiparislerTB s
+                                                        inner join MusterilerTB m on m.ID = s.MusteriID
+
+                                                    where
+                                                        s.MayaControl = 1
+                                                 """)
+        
+        self.mayaPaymentProducts = self.sql.getList("""
+                                                        select sum(su.SatisToplam) as Total,su.SiparisNo from SiparisUrunTB su
+                                                            inner join SiparislerTB s on s.SiparisNo = su.SiparisNo
+                                                        where
+                                                            s.MayaControl = 1
+                                                        group by
+                                                            su.SiparisNo
+                                                    """)
+        self.mayaPaymentList = self.sql.getList("""
+                                                    select 
+                                                        sum(o.Tutar) as Total,
+                                                        o.SiparisNo
+                                                    from OdemelerTB o 
+                                                        inner join SiparislerTB s on s.SiparisNo = o.SiparisNo
+                                                    where
+                                                        s.MayaControl = 1
+
+                                                    group by
+                                                        o.SiparisNo
+
+                                                """)
+        
+        
+        
         
     def getList(self):
         liste = list()
@@ -204,6 +244,24 @@ class FinanceTest:
                 'total': (self.__getOrder(item.ID) + self.__getProduct(item.ID)) - self.__noneControl(self.__getPaid(item.ID))
             })
         return liste
+    
+    def getMayaList(self):
+        try:
+            liste = list()
+            for item in self.mayaPaymentOrders:
+                liste.append({
+                    'po':item.SiparisNo,
+                    'customer':item.FirmaAdi,
+                    'order_date':item.SiparisTarihi,
+                    'forwarding_date':item.YuklemeTarihi,
+                    'order_amount': self.__noneControl(item.Cost) + self.__noneControl(self.__getMayaProduct(item.SiparisNo)),
+                    'paid':self.__noneControl(self.__getMayaPaid(item.SiparisNo)),
+                    'balance': (self.__noneControl(item.Cost) + self.__noneControl(self.__getMayaProduct(item.SiparisNo))) - self.__noneControl(self.__getMayaPaid(item.SiparisNo))
+                })
+            return liste
+        except Exception as e:
+            print('finance maya hata',str(e))
+            return False
     
     def getExcelList(self,data_list):
         try:
@@ -241,6 +299,16 @@ class FinanceTest:
         except Exception as e:
             print('ExcelCiktiIslem depoCikti Hata : ',str(e))
             return False
+    
+    def __getMayaProduct(self,po):
+        for item in self.mayaPaymentProducts:
+            if(item.SiparisNo) == po:
+                return self.__noneControl(item.Total)
+    def __getMayaPaid(self,po):
+        for item in self.mayaPaymentList:
+            if(item.SiparisNo) == po:
+                return self.__noneControl(item.Total)
+    
     
     def __getOrder(self,customer_id):
         for item in self.orders:
@@ -313,7 +381,8 @@ class FinanceTestDetail:
                                                         s.DetayTutar_3,
                                                         s.sigorta_tutar_satis,
                                                         s.SiparisTarihi,
-														s.YuklemeTarihi
+														s.YuklemeTarihi,
+                                                        s.MayaControl
 
                                                     from SiparislerTB s
 
@@ -334,7 +403,8 @@ class FinanceTestDetail:
                                                         s.sigorta_tutar_satis,
 														s.Pesinat,
                                                         s.SiparisTarihi,
-														s.YuklemeTarihi
+														s.YuklemeTarihi,
+                                                        s.MayaControl
                                                     from SiparislerTB s
                                                     where 
                                                         s.MusteriID = ? and s.SiparisDurumID in (1,2)
@@ -397,6 +467,7 @@ class FinanceTestDetail:
             model.advanced_payment = self.__noneControl(item.Pesinat)
             model.product_date = item.SiparisTarihi
             model.forwarding_date = item.YuklemeTarihi
+            model.maya_control = self.__noneBooleanControl(item.MayaControl)
             liste.append(model)
         for item in self.orderForwardingDetail:
             model = FinanceDetailModel()
@@ -415,6 +486,7 @@ class FinanceTestDetail:
             model.status = 'Sevk Edilmiş'
             model.product_date = item.SiparisTarihi
             model.forwarding_date = item.YuklemeTarihi
+            model.maya_control = self.__noneBooleanControl(item.MayaControl)
             liste.append(model)
             
         
@@ -437,7 +509,11 @@ class FinanceTestDetail:
     
     
     
-    
+    def __noneBooleanControl(self,value):
+        if(value == None):
+            return False
+        else:
+            return value
     
     def __getProduct(self,po):
         for item in self.productsDetail:
