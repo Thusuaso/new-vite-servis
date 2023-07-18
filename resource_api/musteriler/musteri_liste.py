@@ -15,26 +15,26 @@ class MusteriIslem:
 
         result = self.data.getList(
             """
-            select
-            m.ID,
-            m.FirmaAdi,
-            m.Unvan,
-            m.Adres,
-            m.Marketing,
-            u.UlkeAdi,
-            u.Png_Flags,
-            k.KullaniciAdi as Temsilci,
-            m.Devir,
-            m.Ozel,
-            m.Telefon,
-            m.Sira,
-			m.Notlar,
-            m.SonKullanici,
-			(select KullaniciAdi from KullaniciTB ku where ku.ID = m.Satisci) as Satisci
-            from
-            MusterilerTB m,YeniTeklif_UlkeTB u,KullaniciTB k
-            where u.Id=m.UlkeId and k.ID=m.MusteriTemsilciId 
-            order by m.ID
+                select
+                m.ID,
+                m.FirmaAdi,
+                m.Unvan,
+                m.Adres,
+                m.Marketing,
+                u.UlkeAdi,
+                u.Png_Flags,
+                k.KullaniciAdi as Temsilci,
+                m.Devir,
+                m.Ozel,
+                m.Telefon,
+                m.Sira,
+                m.Notlar,
+                m.SonKullanici,
+                (select KullaniciAdi from KullaniciTB ku where ku.ID = m.Satisci) as Satisci
+                from
+                MusterilerTB m,YeniTeklif_UlkeTB u,KullaniciTB k
+                where u.Id=m.UlkeId and k.ID=m.MusteriTemsilciId 
+                order by m.ID
 
             """
         )
@@ -68,6 +68,30 @@ class MusteriIslem:
 
         return schema.dump(liste)
 
+    def getMusteriPoListesi(self):
+        try:
+            result = self.data.getList("""
+                                            select 
+                                                s.SiparisNo,
+                                                s.MusteriID,
+                                                m.FirmaAdi
+                                            from SiparislerTB s
+                                            inner join MusterilerTB m on m.ID=s.MusteriID
+                                       """)
+            liste = list()
+            for item in result:
+                model = MusteriPoListeModel()
+                model.id = item.MusteriID
+                model.po = item.SiparisNo
+                model.customer_name = item.FirmaAdi
+                liste.append(model)
+            schema = MusteriPoListeSchema(many = True)
+            return schema.dump(liste)
+        
+        except Exception as e:
+            print('getMusteriPoListesi hata',str(e))
+            return False
+    
     def excelCiktiAl(self,data_list):
 
 

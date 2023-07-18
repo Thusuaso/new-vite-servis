@@ -10,13 +10,15 @@ from flask import jsonify,request,send_file
 class MusteriListeApi(Resource):
 
     def get(self):
-
         islem = MusteriIslem()
-
-        musteri_listesi = islem.getMusteriListesi()
-
-
-        return musteri_listesi
+        customer_list = islem.getMusteriListesi()
+        customer_po_list = islem.getMusteriPoListesi()
+        data = {
+            'customer_list':customer_list,
+            'customer_po_list':customer_po_list,
+            
+        }
+        return jsonify(data)
 
 class MusteriSiparisListesiApi(Resource):
     def get(self):

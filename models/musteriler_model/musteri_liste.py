@@ -37,6 +37,17 @@ class MusteriListeModel:
     satisci=""
     notlar =  ""
     sonkullanici=False
+
+class MusteriPoListeSchema(Schema):
+    po = fields.String()
+    id = fields.Int()
+    customer_name = fields.String()
+    
+class MusteriPoListeModel:
+    po = ""
+    id = 0
+    customer_name = ""
+
 class MusteriSiparisListeSchema(Schema):
 
     firmaadi = fields.String()

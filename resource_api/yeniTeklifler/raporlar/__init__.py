@@ -26,7 +26,6 @@ class EskiTekliflerListApi(Resource):
 class EnBoyEkleApi(Resource):
     def post(self):
         dat = request.get_json()
-        print(dat)
         teklifler = TumTeklifler()
         status,datas = teklifler.setEnBoyOlcu(dat)
         data = {
