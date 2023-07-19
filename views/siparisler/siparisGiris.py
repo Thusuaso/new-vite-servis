@@ -684,7 +684,7 @@ class SiparisGiris:
                 ay = yuklemeTarihi.month
                 yil = yuklemeTarihi.year
                 capraz_kur = d.getDovizKurListe(yil,ay,gun)
-                
+                print(capraz_kur)
                 evrak_gider = float(cprz_kur_dhl[0][0]) *  1.25 * float(capraz_kur) 
                 
                 evrak_gider = round(evrak_gider,2)
