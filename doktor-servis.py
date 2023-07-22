@@ -186,6 +186,8 @@ api.add_resource(SiparisKayitIslemControlApi,'/siparis/kayitIslemControl/<string
 api.add_resource(SiparisDegisimMailGonderApi,'/siparis/masraflar/change/sendmail',methods=['POST'])
 api.add_resource(StokListFilterApi,'/uretim/stokList/filter',methods=['GET'])
 api.add_resource(StokListFilterAyrintiApi,'/uretim/stokList/filter/ayrinti/<int:urunKartId>',methods=['GET'])
+api.add_resource(SiparisProformaSilApi,'/siparis/delete/proforma/<string:po>',methods=['GET','POST'])
+
 #numuneler
 api.add_resource(NumuneListApi,'/numuneler/numunelist/<int:yil>',methods=['GET']) #Analiste
 api.add_resource(NumuneAyrintiListApi,'/numuneler/numunelist/ayrinti/<string:po>') #Ayrinti Alani

@@ -1,8 +1,5 @@
 from marshmallow import Schema,fields
 
-class FinanceDetailDateSchema(Schema):
-    date = fields.String()
-
 class FinanceDetailSchema(Schema):
     customer_id = fields.Int()
     po = fields.String()
@@ -14,7 +11,7 @@ class FinanceDetailSchema(Schema):
     product_date = fields.String()
     forwarding_date = fields.String()
     maya_control = fields.Boolean()
-    paid_date = fields.String()
+    paid_date = fields.List(fields.Dict(keys=fields.String(),values=fields.String()))
 class FinanceDetailModel:
     customer_id = 0
     po = ""

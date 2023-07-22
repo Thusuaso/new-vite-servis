@@ -435,15 +435,15 @@ class FinanceTestDetail:
         self.paidDateDetail = self.sql.getStoreList("""
                                                         select 
                                                         o.Tarih,
-														o.SiparisNo
+														o.SiparisNo,
+														o.Tutar
                                                     from OdemelerTB o
                                                     where 
                                                         o.MusteriID=? and o.SiparisNo in 
                                                         (
 															select s.SiparisNo from SiparislerTB s where s.SiparisNo = o.SiparisNo
 														)
-                                                    group by 
-                                                        o.Tarih,o.SiparisNo
+
                                                     order by
                                                         o.Tarih desc
                                                     """,(customer_id))
@@ -546,8 +546,11 @@ class FinanceTestDetail:
         liste = list()
         for item in self.paidDateDetail:
             if(item.SiparisNo == po):
-                liste.append(item.Tarih)
+                liste.append({'date':str(item.Tarih),'paid':item.Tutar})
         return liste
+    
+
+    
     
     def __noneControl(self,value):
         if(value == None):

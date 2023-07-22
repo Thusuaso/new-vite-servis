@@ -81,3 +81,8 @@ class SiparisOdemeSekliChangeExApi(Resource):
         status = siparisGiris.getchangeOdemeBilgisiEx(siparisNo,odemeTur)
         return {'status':status}
 
+class SiparisProformaSilApi(Resource):
+    def get(self,po):
+        siparisGiris = SiparisGiris()
+        status = siparisGiris.deleteProforma(po)
+        return {'status':status}

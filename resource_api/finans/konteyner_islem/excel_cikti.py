@@ -1,7 +1,7 @@
 from openpyxl import *
 import shutil
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
-
+from datetime import datetime
 class ExcelCiktiIslem:
 
     def konteynerCikti(self,data_list):
@@ -74,41 +74,53 @@ class ExcelCiktiIslem:
             return False
 
     def konteyner_ayrinti_ciktisi(self,data_list):
-        print("konteyner_ayrinti_ciktisi",data_list)
-        # try:
-        #     source_path = 'resource_api/finans/konteyner_islem/sablonlar/konteyner_ayrinti_listesi.xlsx'
-        #     target_path = 'resource_api/finans/konteyner_islem/dosyalar/konteyner_ayrinti_listesi.xlsx'
+        try:
+            print(data_list)
+            source_path = 'resource_api/finans/konteyner_islem/sablonlar/konteyner_ayrinti_listesi.xlsx'
+            target_path = 'resource_api/finans/konteyner_islem/dosyalar/konteyner_ayrinti_listesi.xlsx'
 
-        #     shutil.copy2(source_path, target_path)
-
-
-        #     kitap = load_workbook(target_path)
-        #     sayfa = kitap.get_sheet_by_name('Sayfa1')
-
-        #     satir = 2
-
-        #     for item in data_list:
-
-        #         sayfa.cell(satir,column=1,value=item['po'])          
-        #         sayfa.cell(satir,column=2,value=item['product_date'])
-        #         sayfa.cell(satir,column=3,value=item['forwarding_date'])
-        #         sayfa.cell(satir,column=4,value=item['status'])
-        #         sayfa.cell(satir,column=5,value=item['cost'])
-        #         sayfa.cell(satir,column=6,value=item['paid'])
-        #         sayfa.cell(satir,column=7,value=item['balance'])
+            shutil.copy2(source_path, target_path)
 
 
-        #         satir += 1
+            kitap = load_workbook(target_path)
+            sayfa = kitap.get_sheet_by_name('Sayfa1')
 
-        #     kitap.save(target_path)
-        #     kitap.close()
+            satir = 2
 
-        #     return True
+            for item in data_list:
 
-        # except Exception as e:
-        #     print('ExcelCiktiIslem depoCikti Hata : ',str(e))
-        #     return False
+                sayfa.cell(satir,column=1,value=item['po'])          
+                sayfa.cell(satir,column=2,value=item['product_date'])
+                sayfa.cell(satir,column=3,value=item['forwarding_date'])
+                sayfa.cell(satir,column=4,value=item['status'])
+                sayfa.cell(satir,column=5,value=item['cost'])
+                sayfa.cell(satir,column=6,value=item['paid'])
+                sayfa.cell(satir,column=7,value=item['balance'])
+                if(len(item['paid_date']) >0):
+                    for date in item['paid_date']:
+                        sayfa.cell(satir,column=8,value=date['date'])
+                        sayfa.cell(satir,column=9,value=float(date['paid']))
+                        
+                        satir += 1
+                        
+                else:
+                    satir += 1
+                    
 
+
+
+            kitap.save(target_path)
+            kitap.close()
+
+            return True
+
+        except Exception as e:
+            print('ExcelCiktiIslem depoCikti Hata : ',str(e))
+            return False
+
+    def __date(self,value):
+        print(value)
+            
     def konteyner_odeme_ciktisi(self,data_list):
 
         try:

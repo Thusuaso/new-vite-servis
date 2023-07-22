@@ -38,6 +38,10 @@ def workmanship_update_emit(data):
 def products_update_emit(productStatus):
     emit('products_update_on',productStatus,broadcast=True)
 
+@socketio.on('products_detail_update_emit')
+def products_detail_update_emit(po):
+    emit('products_detail_update_on',po,broadcast=True)
+
 #Socket IO Selection
 @socketio.on('selection_update_emit')
 def selection_update_emit():

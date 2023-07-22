@@ -48,7 +48,7 @@ class SiparisGiris:
         schema = SiparisGirisSchema()
 
         return schema.dump(model)
-        
+    
     def getSiparis(self,siparisNo):
         model = SiparisGirisModel()
 
@@ -1844,4 +1844,19 @@ class SiparisGiris:
             
         except Exception as e:
             print('getContainerAmount hata',str(e))
+            return False
+        
+    def deleteProforma(self,po):
+        try:
+            id = self.data.getStoreList("""
+                                        select ID from SiparisFaturaKayitTB where SiparisNo=? and YuklemeEvrakID=2                                    
+                                    
+                                    """,(po))[0].ID
+            self.data.update_insert("""
+                                        delete SiparisFaturaKayitTB where ID=?
+
+                                    """,(id))
+            return True
+        except Exception as e:
+            print('deleteProforma hata',str(e))
             return False
