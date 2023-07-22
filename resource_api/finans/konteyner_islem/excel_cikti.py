@@ -74,7 +74,6 @@ class ExcelCiktiIslem:
             return False
 
     def konteyner_ayrinti_ciktisi(self,data_list):
-
         try:
             source_path = 'resource_api/finans/konteyner_islem/sablonlar/konteyner_ayrinti_listesi.xlsx'
             target_path = 'resource_api/finans/konteyner_islem/dosyalar/konteyner_ayrinti_listesi.xlsx'
@@ -83,18 +82,19 @@ class ExcelCiktiIslem:
 
 
             kitap = load_workbook(target_path)
-            sayfa = kitap.get_sheet_by_name('Sheet')
+            sayfa = kitap.get_sheet_by_name('Sayfa1')
 
             satir = 2
 
             for item in data_list:
 
-                sayfa.cell(satir,column=1,value=item['siparisno'])               
-                sayfa.cell(satir,column=2,value=item['yuklemetarihi'])
-                sayfa.cell(satir,column=3,value=item['tip'])
-                sayfa.cell(satir,column=4,value=item['toplam'])
-                sayfa.cell(satir,column=5,value=item['kalan'])
-                sayfa.cell(satir,column=6,value=item['vade'])
+                sayfa.cell(satir,column=1,value=item['po'])          
+                sayfa.cell(satir,column=2,value=item['product_date'])
+                sayfa.cell(satir,column=3,value=item['forwarding_date'])
+                sayfa.cell(satir,column=4,value=item['status'])
+                sayfa.cell(satir,column=5,value=item['cost'])
+                sayfa.cell(satir,column=6,value=item['paid'])
+                sayfa.cell(satir,column=7,value=item['balance'])
 
 
                 satir += 1
