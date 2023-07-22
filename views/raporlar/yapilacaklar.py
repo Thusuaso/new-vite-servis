@@ -20,12 +20,12 @@ class Yapilacaklar:
             liste = list()
             for item in yapildiList:
                 model = YapilacaklarModel()
-                model.giris_tarihi = item.GirisTarihi
-                model.yapildi_tarihi = item.YapildiTarihi
-                model.gorev_veren = item.GorevVerenAdi
-                model.gorev_sahibi = item.GorevSahibiAdi
-                model.gorev = item.Yapilacak
-                model.gorev_oncelik = item.YapilacakOncelik
+                model.girisTarihi = item.GirisTarihi
+                model.yapildiTarihi = item.YapildiTarihi
+                model.gorev_veren_adi = item.GorevVerenAdi
+                model.gorev_sahibi_adi = item.GorevSahibiAdi
+                model.yapilacak = item.Yapilacak
+                model.oncelik = item.YapilacakOncelik
                 liste.append(model)
             schema = YapilacaklarSchema(many=True)
             return schema.dump(liste)
@@ -49,11 +49,11 @@ class Yapilacaklar:
             liste = list()
             for item in yapilacakList:
                 model = YapilacaklarModel()
-                model.giris_tarihi = item.GirisTarihi
-                model.gorev_veren = item.GorevVerenAdi
-                model.gorev_sahibi = item.GorevSahibiAdi
-                model.gorev = item.Yapilacak
-                model.gorev_oncelik = item.YapilacakOncelik
+                model.girisTarihi = item.GirisTarihi
+                model.gorev_veren_adi = item.GorevVerenAdi
+                model.gorev_sahibi_adi = item.GorevSahibiAdi
+                model.yapilacak = item.Yapilacak
+                model.oncelik = item.YapilacakOncelik
                 liste.append(model)
             schema = YapilacaklarSchema(many=True)
             return schema.dump(liste)

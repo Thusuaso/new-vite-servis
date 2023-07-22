@@ -432,6 +432,23 @@ class FinanceTestDetail:
                                                         o.SiparisNo
                                                 """,(customer_id))
 
+        self.paidDateDetail = self.sql.getStoreList("""
+                                                        select 
+                                                        o.Tarih,
+														o.SiparisNo
+                                                    from OdemelerTB o
+                                                    where 
+                                                        o.MusteriID=? and o.SiparisNo in 
+                                                        (
+															select s.SiparisNo from SiparislerTB s where s.SiparisNo = o.SiparisNo
+														)
+                                                    group by 
+                                                        o.Tarih,o.SiparisNo
+                                                    order by
+                                                        o.Tarih desc
+                                                    """,(customer_id))
+        
+        
         self.byDatePaids = self.sql.getStoreList("""
                                                     select 
                                                         sum(o.Tutar) Tutar,
@@ -468,6 +485,7 @@ class FinanceTestDetail:
             model.product_date = item.SiparisTarihi
             model.forwarding_date = item.YuklemeTarihi
             model.maya_control = self.__noneBooleanControl(item.MayaControl)
+            model.paid_date = self.__getPaidDate(item.SiparisNo)
             liste.append(model)
         for item in self.orderForwardingDetail:
             model = FinanceDetailModel()
@@ -487,13 +505,12 @@ class FinanceTestDetail:
             model.product_date = item.SiparisTarihi
             model.forwarding_date = item.YuklemeTarihi
             model.maya_control = self.__noneBooleanControl(item.MayaControl)
+            model.paid_date = self.__getPaidDate(item.SiparisNo)
             liste.append(model)
             
         
             
-        
-        
-        
+
         schema = FinanceDetailSchema(many=True)
         return schema.dump(liste)
     
@@ -524,6 +541,13 @@ class FinanceTestDetail:
         for item in self.paidDetail:
             if(item.SiparisNo == po):
                 return self.__noneControl(item.Tutar)
+            
+    def __getPaidDate(self,po):
+        liste = list()
+        for item in self.paidDateDetail:
+            if(item.SiparisNo == po):
+                liste.append(item.Tarih)
+        return liste
     
     def __noneControl(self,value):
         if(value == None):

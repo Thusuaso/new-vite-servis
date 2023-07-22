@@ -219,7 +219,7 @@ class NakliyeIslem:
 
     def NakliyeDosyaKaydet(self,item):
       
-           
+             print(item)
              for key in item :  
                 
                  urun =  self.__urunId(key)
