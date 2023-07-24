@@ -401,7 +401,7 @@ api.add_resource(EtiketKayitIslemApi,'/islemler/evrak/etiket',methods=['GET','PO
 api.add_resource(EtiketListApi,'/islemler/evrak/etiketList/<string:etiketNo>',methods=['GET'])
 
 api.add_resource(EvrakSilmeIslemApi,'/operasyon/fatura/deleteFaturaEvrak/<int:id>/<string:siparisNo>',methods=['GET'])
-
+api.add_resource(EvrakIscilikTedarikciApi,'/operasyon/islemler/iscilik/tedarikci/list/<string:po>',methods=['GET'])
 #operasyon data işlemleri
 #api.add_resource(KonteynerFaturatIslem,'/konteynerfatura/kayitIslem',methods=['GET','POST','PUT'])
 #api.add_resource(FaturaDetayListeYeni,'/islemler/fatura/getFaturaDetayListeYeni')

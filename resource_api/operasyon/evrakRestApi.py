@@ -26,6 +26,14 @@ class EvrakSiparisListeApi(Resource):
 
         return jsonify(data)
 
+
+class EvrakIscilikTedarikciApi(Resource): 
+    def get(self,po):
+        islem = EvrakListeler()
+        liste = islem.getIscilikTedarikciList(po)
+        return jsonify(liste)
+
+
 class EvrakFaturaListeApi(Resource): 
 
     def get(self,siparisNo):

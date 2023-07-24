@@ -539,5 +539,37 @@ class EvrakListeler:
 
         return schema.dump(liste)
     
+    def getIscilikTedarikciList(self,po):
+        try:
+            result = self.data.getStoreList("""
+                                                select 
+                                                    se.SiparisNo,
+                                                    (select t.ID from TedarikciTB t where t.ID = se.TedarikciID) as ID,
+                                                    (select t.FirmaAdi from TedarikciTB t where t.ID = se.TedarikciID) as FirmaAdi
 
+
+                                                from SiparisEkstraGiderlerTB se
+
+                                                where se.SiparisNo=?
+                                            """,(po))
+
+            liste = list()
+            for item in result: 
+
+                model = TedarikciModel()
+                model.ID = item.ID
+                model.siparisno = item.SiparisNo
+                model.tedarikci = item.FirmaAdi
+
+                liste.append(model)
+
+            schema = TedarikciSchema(many=True)
+
+            return schema.dump(liste)
+        except Exception as e:
+            print('getIscilikTedarikciList hata',str(e))
+            return False
+
+                
+                
             
