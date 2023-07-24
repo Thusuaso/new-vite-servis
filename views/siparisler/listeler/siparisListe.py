@@ -172,9 +172,7 @@ class SiparisListe:
                 (select COUNT(*) from SiparisFaturaKayitTB  f where f.SiparisNo=s.SiparisNo and YuklemeEvrakID=16 ) as evrakc,
                 (select f.FaturaAdi from FaturaKesilmeTB f where f.ID = s.FaturaKesimTurID) as fatura
                 from SiparislerTB s,MusterilerTB m
-                where s.MusteriID = m.ID and s.SiparisDurumID=?  and
-                
-                (Year(s.SiparisTarihi) >= 2021 or year(s.YuklemeTarihi) >=2021)
+                where s.MusteriID = m.ID and s.SiparisDurumID=?
                 order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
             
                 """,(self.siparisDurum)
