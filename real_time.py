@@ -124,6 +124,7 @@ def sample_stock_list_emit():
 @socketio.on('offer_list_emit')
 def offer_list_emit():
     emit('offer_list_on',broadcast=True)
+    
 @socketio.on('offer_detail_list_emit')
 def offer_detail_list_emit():
     emit('offer_detail_list_on',broadcast=True)

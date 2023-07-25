@@ -71,3 +71,12 @@ class KullaniciModel:
     BuYilUretim = 0
     BuYilSevkiyat = 0
    
+   
+   
+class MaliyetKullaniciModel:
+    id = 0
+    name = ""
+    
+class MaliyetKullaniciSchema(Schema):
+    id = fields.Int()
+    name = fields.String()

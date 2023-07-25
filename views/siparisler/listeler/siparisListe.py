@@ -23,10 +23,10 @@ class SiparisListe:
         sorgu = None 
         if self.siparisDurum == 1 or self.siparisDurum == 2:
             sorgu = self.data.getStoreList(
-                "{call PytService_SiparisUrunListesi_t3(?)}",(self.siparisDurum)
+                "{call PytService_SiparisUrunListesi_t5(?)}",(self.siparisDurum)
             )
         if self.siparisDurum == 3:
-            sorgu = self.data.getList("{call PytService_SiparisUrunListesi_Sevk3_Tn3}")
+            sorgu = self.data.getList("{call PytService_SiparisUrunListesi_Sevk3_Tn7}")
             """PytService_SiparisUrunListesi_Sevk3"""
         siparisResult = self.data.getStoreList(
             """
@@ -97,10 +97,10 @@ class SiparisListe:
         sorgu = None
         if self.siparisDurum == 1 or self.siparisDurum == 2:
             sorgu = self.data.getStoreList(
-                "{call PytService_SiparisUrunListesi_t4(?)}",(self.siparisDurum)
+                "{call PytService_SiparisUrunListesi2_t4(?)}",(self.siparisDurum)
             )
         if self.siparisDurum == 3:
-            sorgu = self.data.getList("{call PytService_SiparisUrunListesi_Sevk3_Tn4}")
+            sorgu = self.data.getList("{call PytService_SiparisUrunListesi_Sevk5_Tn4}")
         
         if self.siparisDurum == 2 or self.siparisDurum == 1:  
             if(yil == 'Hepsi'):
@@ -417,7 +417,8 @@ class SiparisListe:
                 model.uretimMiktari = item.UretimMiktari
                 model.tedarikciForm = self.__getTedarikciFormDurum(model.siparisNo,item.TedarikciId)
                 model.urunDurumRenk = self.__getUrunDurumRenk(model.tedarikciForm,model.uretimMiktari,model.siparisMiktari,sure,item.TedarikciId,model.marketing,item.disarda)
-            
+                model.isf_alis_fiyati_durum = self.__getIsfandAlisFiyatiRenkDurum(model.tedarikciForm,item.TedarikciId,model.marketing,item.disarda,item.AlisFiyati)
+
             
             model.birimFiyat = item.SatisFiyati
            
@@ -436,6 +437,20 @@ class SiparisListe:
         return urunListe
 
 
+    def __getIsfandAlisFiyatiRenkDurum(self,tedarikciFormDurum,tedarikciId,marketing,disarda,alisFiyati):
+        renk = 'black'
+        if(marketing == 'Mekmar'):
+            if(tedarikciId != 1 or tedarikciId != 123):
+                if(tedarikciFormDurum == False or tedarikciId==32 or alisFiyati == '' or alisFiyati == None or alisFiyati == 0):
+                    renk = 'red'
+                else:
+                    renk = 'black'
+            else:
+                renk = 'black'
+        else:
+            renk = 'black'
+        return renk
+    
     def __getTedarikciFormDurum(self,siparisNo,tedarikciId):
 
         durum = False

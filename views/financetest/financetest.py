@@ -36,7 +36,7 @@ class FinanceTest:
                                             from SiparislerTB s
                                                 inner join MusterilerTB m on m.ID = s.MusteriID 
                                             where
-                                                m.Mt_No = 2
+                                                m.Mt_No = 2 and s.SiparisDurumID in (1,2,3)
                                             group by
                                                 s.MusteriID,m.MusteriTemsilciId,s.MayaControl
                                        """)

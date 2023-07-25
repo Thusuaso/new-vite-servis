@@ -94,11 +94,11 @@ class MaliyetHatalari:
                 if item.ID == 9:
                     continue
                 else:
-                    model = KullaniciModel()
+                    model = MaliyetKullaniciModel()
                     model.id = item.ID
                     model.name = item.KullaniciAdi
                     liste.append(model)
-            schema = KullaniciSchema(many=True)
+            schema = MaliyetKullaniciSchema(many=True)
             return schema.dump(liste)
         except Exception as e:
             print('maliye hata users',str(e))

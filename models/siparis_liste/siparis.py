@@ -43,6 +43,7 @@ class SiparisUrunListeSchema(Schema):
     newAmount = fields.Float()
     adet=fields.Float()
     mt2=fields.Float()
+    isf_alis_fiyati_durum = fields.String()
 
 class SiparisListeSchema(Schema):
     id = fields.Int()
@@ -112,3 +113,4 @@ class SiparisUrunListeModel:
     newAmount:0
     adet:0
     mt2:0
+    isf_alis_fiyati_durum:""
