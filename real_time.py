@@ -129,9 +129,9 @@ def offer_list_emit():
 def offer_detail_list_emit():
     emit('offer_detail_list_on',broadcast=True)
     
-@socketio.on('offers_detail_all_list_emit')
-def offers_detail_all_list_emit():
-    emit('offers_detail_all_list_on',broadcast=True)
+@socketio.on('offer_detail_list_all_emit')
+def offer_detail_list_all_emit():
+    emit('offer_detail_list_all_on',broadcast=True)
     
 #Socket IO Usa
 @socketio.on('usa_comment_list_emit')
