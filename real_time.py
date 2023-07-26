@@ -140,8 +140,8 @@ def usa_comment_list_emit():
 
 #Socket IO To Do
 @socketio.on('to_do_list_emit')
-def to_do_list_emit(userId):
-    emit('to_do_list_on',userId,broadcast=True)
+def to_do_list_emit():
+    emit('to_do_list_on',broadcast=True)
     
 #Socket IO Cost Error
 @socketio.on('cost_error_list_emit')

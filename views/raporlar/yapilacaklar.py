@@ -230,6 +230,7 @@ class Yapilacaklar:
             return False
     def changeStatus(self,data):
         try:
+            print(data)
             self.sql.update_insert("""
                                     update Yapilacaklar SET Yapildi=?,YapildiTarihi=? where ID=?
                                    """,(data['status'],data['yapildiTarihi'],data['id']))

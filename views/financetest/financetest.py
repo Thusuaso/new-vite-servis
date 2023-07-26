@@ -404,7 +404,8 @@ class FinanceTestDetail:
 														s.Pesinat,
                                                         s.SiparisTarihi,
 														s.YuklemeTarihi,
-                                                        s.MayaControl
+                                                        s.MayaControl,
+                                                        s.SiparisDurumID
                                                     from SiparislerTB s
                                                     where 
                                                         s.MusteriID = ? and s.SiparisDurumID in (1,2)
@@ -480,7 +481,10 @@ class FinanceTestDetail:
                         )
             model.paid = self.__noneControl(self.__getPaid(item.SiparisNo))
             model.balance = (model.cost - model.paid)
-            model.status = 'Üretimde'
+            if(item.SiparisDurumID == 2):
+                model.status = 'Üretim'
+            elif (item.SiparisDurumID == 1):
+                model.status = 'Bekleyen'
             model.advanced_payment = self.__noneControl(item.Pesinat)
             model.product_date = item.SiparisTarihi
             model.forwarding_date = item.YuklemeTarihi
@@ -501,7 +505,7 @@ class FinanceTestDetail:
                         )
             model.paid = self.__noneControl(self.__getPaid(item.SiparisNo))
             model.balance = (model.cost - model.paid)
-            model.status = 'Sevk Edilmiş'
+            model.status = 'Sevk'
             model.product_date = item.SiparisTarihi
             model.forwarding_date = item.YuklemeTarihi
             model.maya_control = self.__noneBooleanControl(item.MayaControl)
