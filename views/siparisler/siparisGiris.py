@@ -1151,7 +1151,7 @@ class SiparisGiris:
                                 {degismeyen[0][4]} {degismeyen[0][7]} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                                {degismeyen[0][2]}
+                                {float(degismeyen[0][2])}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                                 {float(degismeyen[0][3])}
@@ -1271,7 +1271,7 @@ class SiparisGiris:
                    
             sahibi , maili = self.__siparisDetayi(siparis_no)     
             if sahibi != 'Mehmet'  or sahibi != 'Gizem' or sahibi != 'İP': 
-                  MailService(siparis_no +" Düzenlenen Kalemler ", maili  , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+                  MailService(siparis_no +" Düzenlenen Kalemler ",  maili , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
         elif siparis['siparisDurumId'] == 3:
             if len(degisen)==1:
                 
@@ -1297,7 +1297,7 @@ class SiparisGiris:
                                 {degismeyen[0][4]} {degismeyen[0][7]} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                                {degismeyen[0][2]}
+                                {float(degismeyen[0][2])}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                                 {float(degismeyen[0][3])}

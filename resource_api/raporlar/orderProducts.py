@@ -94,7 +94,7 @@ class Order:
                             elif model.en == 'Various' or model.boy == 'Various':
                                 model.kalanMiktar = model.miktar - model.uretimMiktari
                                 model.kalanAdet = 0
-                            elif model.en == 'OZEL' or model.boy == 'OZEL':
+                            elif model.en == 'OZEL' or model.boy == 'OZEL' or model.en == 'Crazy' or model.boy=='Crazy' or model.boy=='Paver':
                                 model.kalanMiktar = model.miktar - model.uretimMiktari
                                 model.kalanAdet = 0
                             elif model.en == 'Mini':
@@ -145,7 +145,7 @@ class Order:
                         elif model.en == 'VAR' or model.boy == 'VAR':
                                 model.kalanMiktar = model.miktar - model.uretimMiktari
                                 model.kalanAdet = 0
-                        elif model.en == 'OZEL' or model.boy == 'OZEL':
+                        elif model.en == 'OZEL' or model.boy == 'OZEL' or model.en == 'Crazy' or model.boy == 'Crazy' or model.boy=='Paver':
                                 model.kalanMiktar = model.miktar - model.uretimMiktari
                                 model.kalanAdet = 0
                         elif self.formatDecimal(model.en) <= 10:
