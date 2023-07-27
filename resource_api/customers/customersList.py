@@ -101,7 +101,7 @@ class MusteriListem:
             model.ulkeAdi = item.UlkeAdi
             model.mail = item.Mail
             model.satisciDurum = 'Musteri'
-            model.takipEt = item.TakipEt
+            model.takipEt = item.Takip
             liste.append(model)
 
         schema = MusteriListeSchema(many=True)

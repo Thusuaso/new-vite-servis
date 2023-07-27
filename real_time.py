@@ -133,6 +133,10 @@ def offer_detail_list_emit():
 def offer_detail_list_all_emit():
     emit('offer_detail_list_all_on',broadcast=True)
     
+@socketio.on('offer_detail_load_list_emit')
+def offer_detail_load_list_emit(userId):
+    emit('offer_detail_load_list_on',userId,broadcast=True)
+    
 #Socket IO Usa
 @socketio.on('usa_comment_list_emit')
 def usa_comment_list_emit():
