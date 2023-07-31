@@ -31,14 +31,13 @@ class FinanceTest:
                                                 sum(s.DetayTutar_3) as Detay3,
                                                 sum(s.sigorta_tutar_satis) as Sigorta,
                                                 s.MusteriID,
-                                                (select k.KullaniciAdi from KullaniciTB k where k.ID = m.MusteriTemsilciId) as Temsilci,
-												s.MayaControl
+                                                (select k.KullaniciAdi from KullaniciTB k where k.ID = m.MusteriTemsilciId) as Temsilci
                                             from SiparislerTB s
                                                 inner join MusterilerTB m on m.ID = s.MusteriID 
                                             where
                                                 m.Mt_No = 2 and s.SiparisDurumID in (1,2,3)
                                             group by
-                                                s.MusteriID,m.MusteriTemsilciId,s.MayaControl
+                                                s.MusteriID,m.MusteriTemsilciId
                                        """)
         self.products = self.sql.getList("""
                                             select 
