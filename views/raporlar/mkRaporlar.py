@@ -693,7 +693,6 @@ class MkRaporlari:
                 sayfa5.cell(satir15,column=1,value=item['musteriadi'])
                 sayfa5.cell(satir15,column=2,value=item['siparisfob'])
                 sayfa5.cell(satir15,column=3,value=item['yuklenenddp'])
-                sayfa5.cell(satir15,column=4,value=item['total'])
                 satir15 += 1
             
 
