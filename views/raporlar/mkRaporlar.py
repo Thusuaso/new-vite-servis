@@ -687,6 +687,17 @@ class MkRaporlari:
             sayfa3.cell(satir12,column=18,value=imperialHomesYuklemeListTotal['fob'])
             sayfa3.cell(satir12,column=19,value=imperialHomesYuklemeListTotal['ddp'])
             
+            sayfa5 = kitap.get_sheet_by_name('Sayfa5')
+            satir15=2
+            for item in data['byYuklemevSiparisler']:
+                sayfa5.cell(satir15,column=1,value=item['musteriadi'])
+                sayfa5.cell(satir15,column=2,value=item['siparisfob'])
+                sayfa5.cell(satir15,column=3,value=item['yuklenenddp'])
+                sayfa5.cell(satir15,column=4,value=item['total'])
+                satir15 += 1
+            
+
+                
             
             
             kitap.save(target_path)
