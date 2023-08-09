@@ -311,7 +311,8 @@ class NumuneIslem:
 
             
  
-    def __numuneKayit(self,item):
+    def __numuneKayit(self,item,userId,musteriler):
+        print(item)
         g_tarihi = item['giristarih']
         y_tarihi = item['yukleme_tarihi']
         
