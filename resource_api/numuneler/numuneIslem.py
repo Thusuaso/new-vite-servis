@@ -232,7 +232,9 @@ class NumuneIslem:
         try:
             g_tarihi = item['giristarih']
             y_tarihi = item['yukleme_tarihi']
+            
             if float(item['Euro_Alis']) >0:
+                
                 item['kuryeAlis'] = float(item['Euro_Alis']) * float(self.__getCrossRange(g_tarihi))
                 item['TL_Alis'] = float(item['kuryeAlis']) * float(self.__getNormalRange(g_tarihi))
                     
