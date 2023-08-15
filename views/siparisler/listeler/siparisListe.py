@@ -148,13 +148,13 @@ class SiparisListe:
                 from SiparislerTB s,MusterilerTB m
                 where s.MusteriID = m.ID and s.SiparisDurumID=?  and
                 
-                (Year(s.SiparisTarihi) =? or year(s.YuklemeTarihi)=?)
+                (Year(s.SiparisTarihi) =?)
                 order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
             
-                """,(self.siparisDurum,yil,yil)
+                """,(self.siparisDurum,yil)
                 )
         elif self.siparisDurum == 3:
-            if yil == '2023':
+            if yil == 'Hepsi':
                 siparisResult = self.data.getStoreList(
                 """
                 Select 
@@ -197,10 +197,10 @@ class SiparisListe:
                 from SiparislerTB s,MusterilerTB m
                 where s.MusteriID = m.ID and s.SiparisDurumID=?  and
                 
-                (Year(s.SiparisTarihi) = ? or Year(s.YuklemeTarihi) = ?)
+                (Year(s.YuklemeTarihi) = ?)
                 order by s.YuklemeTarihi desc ,s.SiparisTarihi desc
             
-                """,(self.siparisDurum,yil,yil)
+                """,(self.siparisDurum,yil)
                 )
         
         urunListesi = list()
