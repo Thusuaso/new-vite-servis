@@ -373,7 +373,7 @@ class TeklifListeler:
                     where
                     t.MusteriId=m.Id and u.Id=m.UlkeId
                     and k.ID=t.KullaniciId and t.TakipEt=1
-                    and t.BList=0  order by t.TeklifOncelik asc
+                    and t.BList=0  order by t.TeklifOncelik , t.Tarih,t.Sira asc
                 """
                 )
         else:
@@ -394,7 +394,7 @@ class TeklifListeler:
                     where
                     t.MusteriId=m.Id and u.Id=m.UlkeId
                     and k.ID=t.KullaniciId and t.TakipEt=1
-                    and k.ID=? and t.BList=0  order by t.TeklifOncelik asc
+                    and k.ID=? and t.BList=0  order by t.TeklifOncelik , t.Tarih,t.Sira asc
                 """,(kullaniciId)
                 )
         
@@ -445,7 +445,7 @@ class TeklifListeler:
                 where
                 t.MusteriId=m.Id and u.Id=m.UlkeId
                 and k.ID=t.KullaniciId and t.TakipEt=1
-                and t.BList=1
+                and t.BList=1 order by t.TeklifOncelik , t.Tarih,t.Sira asc
                 """
             )
         else:
@@ -466,7 +466,7 @@ class TeklifListeler:
                 where
                 t.MusteriId=m.Id and u.Id=m.UlkeId
                 and k.ID=t.KullaniciId and t.TakipEt=1
-                and k.ID=? and t.BList=1
+                and k.ID=? and t.BList=1 order by t.TeklifOncelik , t.Tarih,t.Sira asc
                 """,(kullaniciId)
             )
 
@@ -519,7 +519,7 @@ class TeklifListeler:
             where
             t.MusteriId=m.Id and u.Id=m.UlkeId
             and k.ID=t.KullaniciId and t.TakipEt=1
-            and t.BList=0  order by t.TeklifOncelik , t.Tarih asc
+            and t.BList=0  order by t.TeklifOncelik , t.Tarih,t.Sira asc
             """
         )
 
@@ -579,7 +579,7 @@ class TeklifListeler:
             where
             t.MusteriId=m.Id and u.Id=m.UlkeId
             and k.ID=t.KullaniciId and t.TakipEt=1
-            and t.BList=1
+            and t.BList=1 order by t.TeklifOncelik , t.Tarih,t.Sira asc
             """
         )
 

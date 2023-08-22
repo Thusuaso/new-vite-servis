@@ -295,6 +295,7 @@ class SiparisGiris:
         elif id == 5:
             return 'Sqft'
     def siparisGuncelle(self,siparis,urunlerYeni,urunlerDegisenler,urunlerSilinenler,degisenMasraflar):
+
         
         try:
             if(len(degisenMasraflar)>0):
@@ -319,7 +320,6 @@ class SiparisGiris:
             
             self.__siparisUrunDataKayit(urunlerYeni,siparis['siparisNo'],marketing,siparis['musteriId'])
             if len(urunlerDegisenler) >= 1 : # ürün değiştirme 
-              
               self.mailGonderUpdate(siparis,urunlerDegisenler,siparis['siparisNo'])
             
               info = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' ' +  'Sipariş Ürün Bilgilerini Güncelledi.'
@@ -660,6 +660,7 @@ class SiparisGiris:
 
     def __siparisDataGuncelle(self,siparis):
         try: 
+            print("__siparisDataGuncelle",siparis)
             vade = None 
             siparis['TahminiyuklemeTarihi'] = self.dateConvert(siparis['TahminiyuklemeTarihi'])
             if siparis['vade'] != None:
@@ -673,6 +674,7 @@ class SiparisGiris:
             cprz_kur_dhl = self.data.getStoreList("""
                     select DhlFiyat from DhlFiyatlari where ID = ?
             """,(result[0]))
+            print("cprz_kur_dhl",cprz_kur_dhl)
 
 
             
@@ -685,7 +687,6 @@ class SiparisGiris:
                 yil = yuklemeTarihi.year
                 capraz_kur = d.getDovizKurListe(yil,ay,gun)
                 evrak_gider = float(cprz_kur_dhl[0][0]) *  1.25 * float(capraz_kur) 
-                
                 evrak_gider = round(evrak_gider,2)
 
                 
@@ -745,9 +746,7 @@ class SiparisGiris:
             print('__siparisDurumGuncelle1 Hata : ',str(e))             
 
     def __siparisUrunDataGuncelle(self,urunler):
-
         try:
-           
             for item in urunler:
                     ton = self.decimalDegerKontrol(item['ton'])
                     if(item['pazarlama'] != 'Mekmar'):
@@ -1031,6 +1030,10 @@ class SiparisGiris:
   
        
     def mailGonderUpdate(self,siparis,degisen,siparis_no):
+        print("mailGonderUpdatesiparis",siparis)
+        print("mailGonderUpdatedegisen",degisen)
+        print("mailGonderUpdatesiparis_no",siparis_no)
+        
         degismeyen = list()
         if len(degisen)==1:
             
@@ -1251,27 +1254,30 @@ class SiparisGiris:
                     
                     diger +=1    
 
-            if  (mekmer >=1 ) and siparis['siparisDurumId'] == 2 :
+            # if  (mekmer >=1 ) and siparis['siparisDurumId'] == 2 :
               
-              MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
-            elif (mekmoz>1) and siparis['siparisDurumId'] == 2:
-                MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
+            #   MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
+            # elif (mekmoz>1) and siparis['siparisDurumId'] == 2:
+            #     MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
                 
 
 
 
-            if  (mekmoz + mekmer >=1) and siparis['siparisDurumId'] ==2 :
-                 MailService(siparis_no +" Düzenlenen Kalemler ", "mehmet@mekmer.com",  " "+ baslik + body) #Mehmet
+            # if  (mekmoz + mekmer >=1) and siparis['siparisDurumId'] ==2 :
+            #      MailService(siparis_no +" Düzenlenen Kalemler ", "mehmet@mekmer.com",  " "+ baslik + body) #Mehmet
                  
                  
 
-            if  (diger >=1 ) and  siparis['siparisDurumId'] ==2:
-                   MailService(siparis_no +" Düzenlenen Kalemler ", "info@mekmar.com",  " " +baslik + body) #gizem
+            # if  (diger >=1 ) and  siparis['siparisDurumId'] ==2:
+            #        MailService(siparis_no +" Düzenlenen Kalemler ", "info@mekmar.com",  " " +baslik + body) #gizem
                    
                    
-            sahibi , maili = self.__siparisDetayi(siparis_no)     
-            if sahibi != 'Mehmet'  or sahibi != 'Gizem' or sahibi != 'İP': 
-                  MailService(siparis_no +" Düzenlenen Kalemler ",  maili , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            # sahibi , maili = self.__siparisDetayi(siparis_no)     
+            # if sahibi != 'Mehmet'  or sahibi != 'Gizem' or sahibi != 'İP': 
+            #       MailService(siparis_no +" Düzenlenen Kalemler ",  maili , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            MailService(siparis_no +" Düzenlenen Kalemler ",  'bilgiislem@mekmar.com' , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+                  
+                  
         elif siparis['siparisDurumId'] == 3:
             if len(degisen)==1:
                 

@@ -179,5 +179,10 @@ def finance_test_list_emit():
 def finance_test_advanced_payment_list_emit():
     emit('finance_test_advanced_payment_list_on',broadcast=True)
 
+#Socket IO Panel
+@socketio.on('panel_product_update_emit')
+def panel_product_update_emit(product_id):
+    emit('panel_product_update_on',product_id,broadcast=True)
+
 if __name__ == '__main__':
     socketio.run(app,port=5001)
