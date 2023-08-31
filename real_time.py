@@ -42,6 +42,10 @@ def products_update_emit(productStatus):
 def products_detail_update_emit(po):
     emit('products_detail_update_on',po,broadcast=True)
 
+@socketio.on('products_detail_supplier_update_emit')
+def products_detail_supplier_update_emit():
+    emit('products_detail_supplier_update_on',broadcast=True)
+
 #Socket IO Selection
 @socketio.on('selection_update_emit')
 def selection_update_emit():
@@ -183,6 +187,16 @@ def finance_test_advanced_payment_list_emit():
 @socketio.on('panel_product_update_emit')
 def panel_product_update_emit(product_id):
     emit('panel_product_update_on',product_id,broadcast=True)
+
+#Socket IO Project
+@socketio.on('project_list_update_emit')
+def project_list_update_emit():
+    emit('project_list_update_on',broadcast=True)
+    
+@socketio.on('project_list_detail_update_emit')
+def project_list_detail_update_emit(id):
+    emit('project_list_detail_update_on',id,broadcast=True)
+
 
 if __name__ == '__main__':
     socketio.run(app,port=5001)

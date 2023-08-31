@@ -22,7 +22,7 @@ class Listeler:
             s.Tarih
             
             from SiparisFaturaKayitTB s ,NakliyeFaturaKayitTB n where 
-            s.YuklemeEvrakID=13 and s.SiparisFaturaTurID=11  and Year(s.Tarih) in (2023,2022,2021)  and n.FaturaNo+'.pdf' = s.EvrakAdi
+            s.YuklemeEvrakID=13 and s.SiparisFaturaTurID=11  and Year(s.Tarih) in (2023,2022,2021)  and n.FaturaNo+'.pdf' = s.EvrakAdi and n.ID = s.FaturaKayitID
           
             group by s.ID ,s.SiparisNo , n.FaturaNo , n.FirmaID ,s.Tutar,n.Kur,s.Tarih
 

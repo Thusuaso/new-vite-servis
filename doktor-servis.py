@@ -40,7 +40,7 @@ from resource_api.mekmar_com.Galleria import *
 from resource_api.notification import NotificationIslemApi,NotificationListApi,NotificationIslemAnsweredApi,NotificationIslemFollowApi,NotificationIslemFollowAnsweredApi
 from resource_api.finansTest.finanstestapi import FinanceTestListApi,FinanceTestDetailListApi,FinanceTestListExcelApi
 from resource_api.controls import ProformaKayitKontrolApi
-
+from resource_api.mekmar_com.project import *
 app = Flask(__name__)
 
 api = Api(app)
@@ -158,6 +158,8 @@ api.add_resource(UlkeBazindaExcellCikti,'/raporlar/musteri/ulkebzindaSevkiyat',m
 api.add_resource(SiparisGirisModel,'/siparis/siparisGirisModel/<string:siparisNo>')
 api.add_resource(SiparisGirisBosModel,'/siparis/siparisGirisModel')
 api.add_resource(CustomerDetailList,'/customers/products/detailList/<string:sipNo>',methods=['GET'])
+
+api.add_resource(SiparisTedarikciList,'/siparis/supplier/list',methods=['GET'])
 
 api.add_resource(TemsilciSatislariApi,'/raporlar/temsilciSatislariAll/<string:username>',methods=['GET'])
 api.add_resource(TemsilciSatislariApiDetayTamami,'/raporlar/temsilciSatislariAllDetay/<string:ay>/<string:username>',methods=['GET'])
@@ -773,5 +775,19 @@ api.add_resource(EtaYaklasanTarihBildirimStatusApi,'/eta/yaklasan/bildirim/statu
 #Satışçı ve Operasyon Özet
 api.add_resource(SiparisSatisciInfoApi,'/uretim/satisci/info',methods=['GET'])
 api.add_resource(SsOpChangeApi,'/uretim/satisci/change/<string:po>/<int:ss>/<int:op>',methods=['GET'])
+
+
+#Panel Proje
+
+api.add_resource(ProjectApi,'/mekmarcom/project/list',methods=['GET'])
+api.add_resource(ProjectDetailApi,'/mekmarcom/project/detail/<int:id>',methods=['GET'])
+api.add_resource(ProjectModelApi,'/mekmarcom/project/model',methods=['GET'])
+api.add_resource(ProjectSaveApi,'/mekmarcom/projec/save',methods=['POST'])
+api.add_resource(ProjectDeletePhotosApi,'/mekmarcom/project/delete',methods=['POST'])
+api.add_resource(ProjectAddPhotosApi,'/mekmarcom/project/addPhotos',methods=['POST'])
+api.add_resource(ProjectAddVideoApi,'/mekmarcom/project/addVideo',methods=['POST'])
+api.add_resource(ProjectInformationApi,'/mekmarcom/project/information',methods=['POST','PUT'])
+api.add_resource(ProjectListSuggestedApi,'/mekmarcom/project/list/all/<int:id>',methods=['GET'])
+api.add_resource(ProjectSuggestedApi,'/mekmarcom/project/suggested/send',methods=['POST'])
 if __name__ == '__main__':
     app.run(port=5000,debug=True) #https://doktor-servis.mekmar.com/raporlar/listeler/uretimRaporuHepsi

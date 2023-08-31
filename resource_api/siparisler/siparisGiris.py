@@ -7,7 +7,7 @@ from resource_api.operasyon.evrakYukleme.evrakYuklemeListeler import EvrakListel
 from resource_api.raporlar.orderProducts import Order
 from views import Kullanici 
 from resource_api.kontroller.chat_mail import ChatGiris
-
+from views.listeler import Tedarikci
 from flask_restful import Resource,request
 
 
@@ -50,6 +50,15 @@ class SiparisGirisModel(Resource):
         }
 
         return data
+
+
+class SiparisTedarikciList(Resource):
+    def get(self):
+        tedarikci = Tedarikci()
+        supplier = tedarikci.getTedarikciSiparisList()
+        return supplier
+    
+
 
 class SiparisGirisBosModel(Resource):
     def get(self):
