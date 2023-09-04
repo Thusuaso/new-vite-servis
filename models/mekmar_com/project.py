@@ -6,6 +6,7 @@ class ProjectListSchema(Schema):
     project_country_id = fields.Int()
     project_country_name = fields.String()
     project_image = fields.String()
+    queue = fields.Int()
     
 class ProjectListModel:
     id = 0
@@ -13,6 +14,7 @@ class ProjectListModel:
     project_country_id = 0
     project_country_name = ""
     project_image = ""
+    queue=0
     
 class ProjectListDetailSchema(Schema):
     id = fields.Int()

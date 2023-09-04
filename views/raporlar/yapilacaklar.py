@@ -248,7 +248,7 @@ class Yapilacaklar:
             print('yapilacaklar update hata',str(e))
             return False
         
-    def getYapilacaklarYapilmadiListAll(self):
+    def getYapilacaklarYapilmadiListAllA(self):
         try:
             data = self.sql.getList("""
                                             select 
@@ -265,11 +265,11 @@ class Yapilacaklar:
 
                                             from Yapilacaklar
 
-                                            where Yapildi=0
+                                            where Yapildi=0 and YapilacakOncelik='A'
                                             order by
 												GirisTarihi desc
                                         """)
-            liste = list()
+            listA = list()
             for item in data:
                 model = YapilacaklarModel()
                 model.id = item.ID
@@ -282,12 +282,109 @@ class Yapilacaklar:
                 model.yapildiTarihi = item.YapildiTarihi
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
-                liste.append(model)
+                listA.append(model)
+
             schema = YapilacaklarSchema(many = True)
-            return schema.dump(liste)
+            return schema.dump(listA)
+
+            
+            
         except Exception as e:
             print('getYapilacaklarYapilmadiList hata',str(e))
-            return False               
+            return False     
+        
+        
+    def getYapilacaklarYapilmadiListAllB(self):
+        try:
+            data = self.sql.getList("""
+                                            select 
+                                                ID,
+                                                GorevSahibiAdi,
+                                                GorevSahibiId,
+                                                Yapilacak,
+                                                Yapildi,
+                                                GorevVerenID,
+                                                GorevVerenAdi,
+                                                GirisTarihi,
+                                                YapildiTarihi,
+                                                YapilacakOncelik
+
+                                            from Yapilacaklar
+
+                                            where Yapildi=0 and YapilacakOncelik='B'
+                                            order by
+												GirisTarihi desc
+                                        """)
+            listB = list()
+            for item in data:
+                model = YapilacaklarModel()
+                model.id = item.ID
+                model.gorev_sahibi_adi = item.GorevSahibiAdi
+                model.gorev_sahibi_id = item.GorevSahibiId
+                model.yapilacak = item.Yapilacak
+                model.gorev_veren_id = item.GorevVerenID
+                model.gorev_veren_adi = item.GorevVerenAdi
+                model.girisTarihi = item.GirisTarihi
+                model.yapildiTarihi = item.YapildiTarihi
+                model.oncelik = item.YapilacakOncelik
+                model.userStatus = False
+                listB.append(model)
+
+            schema = YapilacaklarSchema(many = True)
+            return schema.dump(listB)
+
+            
+            
+        except Exception as e:
+            print('getYapilacaklarYapilmadiList hata',str(e))
+            return False
+        
+    def getYapilacaklarYapilmadiListAllC(self):
+        try:
+            data = self.sql.getList("""
+                                            select 
+                                                ID,
+                                                GorevSahibiAdi,
+                                                GorevSahibiId,
+                                                Yapilacak,
+                                                Yapildi,
+                                                GorevVerenID,
+                                                GorevVerenAdi,
+                                                GirisTarihi,
+                                                YapildiTarihi,
+                                                YapilacakOncelik
+
+                                            from Yapilacaklar
+
+                                            where Yapildi=0 and YapilacakOncelik='C'
+                                            order by
+												GirisTarihi desc
+                                        """)
+            listC = list()
+            for item in data:
+                model = YapilacaklarModel()
+                model.id = item.ID
+                model.gorev_sahibi_adi = item.GorevSahibiAdi
+                model.gorev_sahibi_id = item.GorevSahibiId
+                model.yapilacak = item.Yapilacak
+                model.gorev_veren_id = item.GorevVerenID
+                model.gorev_veren_adi = item.GorevVerenAdi
+                model.girisTarihi = item.GirisTarihi
+                model.yapildiTarihi = item.YapildiTarihi
+                model.oncelik = item.YapilacakOncelik
+                model.userStatus = False
+                listC.append(model)
+
+            schema = YapilacaklarSchema(many = True)
+            return schema.dump(listC)
+
+            
+            
+        except Exception as e:
+            print('getYapilacaklarYapilmadiList hata',str(e))
+            return False  
+        
+                  
     def getYapilacaklarYapildiListAll(self):
         try:
             data = self.sql.getList("""

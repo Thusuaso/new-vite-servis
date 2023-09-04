@@ -425,7 +425,7 @@ class EvrakListeler:
 
                 model.adi = "Özel İşçilik"
               
-                model.Draft =  f"https://file-service.mekmar.com/file/download/40/{item.SiparisNo}"
+                model.Draft =  f"https://file-service.mekmar.com/file/download/40/{item.SiparisNo}" + '.pdf'
                
            
 

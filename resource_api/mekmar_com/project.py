@@ -97,3 +97,11 @@ class ProjectSuggestedApi(Resource):
         status = project.setSuggested(data)
         return {'status':status}
     
+class ProjectQueueApi(Resource):
+    def post(self):
+        
+        data = request.get_json()
+        project = Project()
+        status = project.setProjectQueue(data)
+        return {'status':status}
+    

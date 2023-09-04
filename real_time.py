@@ -151,6 +151,10 @@ def usa_comment_list_emit():
 def to_do_list_emit():
     emit('to_do_list_on',broadcast=True)
     
+@socketio.on('to_do_list_emit_all')
+def to_do_list_emit_all():
+    emit('to_do_list_on_all',broadcast=True)
+    
 #Socket IO Cost Error
 @socketio.on('cost_error_list_emit')
 def cost_error_list_emit():

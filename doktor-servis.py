@@ -762,6 +762,7 @@ api.add_resource(YapilacaklarSilApi,'/yapilacaklar/delete/<int:id>',methods=['DE
 api.add_resource(YapilacaklarChangeStatusApi,'/yapilacaklar/yapildi',methods=['PUT'])
 api.add_resource(YapilacaklarDetailApi,'/yapilacaklar/list/detail/<int:id>',methods=['GET'])
 api.add_resource(YapilacaklarAllApi,'/yapilacaklar/list/all',methods=['GET'])
+api.add_resource(YapilacaklarUsersModelApi,'/yapilacaklar/list/users/all',methods=['GET'])
 #Maliyet Hatalar
 api.add_resource(MaliyetHataRaporIslemApi,'/raporlar/maliyet/hatalar',methods=['GET','POST','PUT'])
 api.add_resource(MaliyetHataRaporModelApi,'/raporlar/maliyet/hatalar/model',methods=['GET'])
@@ -789,5 +790,6 @@ api.add_resource(ProjectAddVideoApi,'/mekmarcom/project/addVideo',methods=['POST
 api.add_resource(ProjectInformationApi,'/mekmarcom/project/information',methods=['POST','PUT'])
 api.add_resource(ProjectListSuggestedApi,'/mekmarcom/project/list/all/<int:id>',methods=['GET'])
 api.add_resource(ProjectSuggestedApi,'/mekmarcom/project/suggested/send',methods=['POST'])
+api.add_resource(ProjectQueueApi,'/mekmarcom/project/queue',methods=['POST'])
 if __name__ == '__main__':
     app.run(port=5000,debug=True) #https://doktor-servis.mekmar.com/raporlar/listeler/uretimRaporuHepsi

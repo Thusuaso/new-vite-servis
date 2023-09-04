@@ -23,8 +23,9 @@ class Project:
                                         ProjectName,
                                         CountryId,
                                         CountryName,
-                                        Image 
-                                    from MekmarCom_Projects order by ID desc
+                                        Image,
+                                        Queue
+                                    from MekmarCom_Projects order by ID
                                   """)
         liste = list()
         for item in result:
@@ -34,6 +35,7 @@ class Project:
             model.project_country_id = item.CountryId
             model.project_country_name = item.CountryName
             model.project_image = item.Image
+            model.queue = item.Queue
             liste.append(model)
         schema = ProjectListSchema(many = True)
         return schema.dump(liste)
@@ -286,4 +288,15 @@ class Project:
         except Exception as e:
             print('setSuggested hata',str(e))
             return False
-        
+    
+    def setProjectQueue(self,data):
+        try:
+            for item in data:
+                print(item)
+                self.sql.update_insert("""
+                                        update MekmarCom_Projects SET Queue = ? where ID=?
+                                   """,(item['queue'],item['id']))
+            return True
+        except Exception as e:
+            print('setProjectQueue,hata',str(e))
+            return False

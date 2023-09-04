@@ -248,6 +248,7 @@ class GuRaporlari:
                 model.yil = item.Year
                 model.ay = item.Month
                 model.gun = item.Day
+                model.renk = item.Renk
                 liste.append(model)
             schema = LogsMaliyetSchema(many=True)
             return schema.dump(liste)

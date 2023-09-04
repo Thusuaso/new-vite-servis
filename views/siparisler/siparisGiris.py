@@ -271,9 +271,11 @@ class SiparisGiris:
           urunKayitDurum = self.__siparisUrunDataKayit(urunler,siparis['siparisNo'],marketing,siparis['musteriId'])
           if urunKayitDurum == True:
               self.mailGonderInsert(siparis,siparis['siparisNo']) #yeni sipariş için
-              info2 = siparis['kayit_kisi']  + ' ' + siparis['siparisNo'] + ' siparişini girdi.'
-              yukleme_tarihi=""
-              DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi)
+              if siparis['faturaKesimTurId'] == 1:
+                info2 = siparis['kayit_kisi']  + ' ' + siparis['siparisNo'] + ' siparişini girdi.'
+                yukleme_tarihi=""
+                renk = '#ffec31'
+                DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi,renk)
               
               return True
           else:
@@ -304,10 +306,12 @@ class SiparisGiris:
                 for item in degisenMasraflar:
                     if(item['isChange'] == 1):
                         mailListesi.append(self.__maliyetDegisimSendMail(item,siparis['siparisNo']))
-            
-                for item in mailListesi:
-                    info = item['degisenAdi'] + ' $' + str(item['eskiDeger']) + ' dan $' + str(item['yeniDeger']) + ' e değişti.'
-                    DegisiklikMain().setMaliyetDegisiklik(info,siparis['kayit_kisi'],siparis['siparisNo'],siparis['yuklemeTarihi'])
+
+                if siparis['faturaKesimTurId'] == 1:
+                    for item in mailListesi:
+                        info = item['degisenAdi'] + ' $' + str(item['eskiDeger']) + ' dan $' + str(item['yeniDeger']) + ' e değişti.'
+                        renk = '#ffec31'
+                        DegisiklikMain().setMaliyetDegisiklik(info,siparis['kayit_kisi'],siparis['siparisNo'],siparis['yuklemeTarihi'],renk)
 
             # if(siparis['siparisDurumId']==1 and (siparis['odemeTurId']==1 or siparis['odemeTurId'] ==2) ):
             #     MailService(siparis['siparisNo'] + " nolu Sipariş Tahsil Edilmeli", "huseyin@mekmarmarble.com", siparis['siparisNo'] + ' nolu yeni sipariş bekleyende, tahsilatını gerçekleştirip üretime alınız!') 
@@ -322,11 +326,7 @@ class SiparisGiris:
             if len(urunlerDegisenler) >= 1 : # ürün değiştirme 
               self.mailGonderUpdate(siparis,urunlerDegisenler,siparis['siparisNo'])
             
-              info = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' ' +  'Sipariş Ürün Bilgilerini Güncelledi.'
-              DegisiklikMain().setYapilanDegisiklikBilgisi(siparis['kayit_kisi'],info)
-              yukleme_tarihi=""
-              DegisiklikMain().setMaliyetDegisiklik(info,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi)
-              
+
               
             self.__siparisUrunDataGuncelle(urunlerDegisenler)
             self.__siparisUrunDataSil(urunlerSilinenler)
@@ -338,9 +338,20 @@ class SiparisGiris:
               info = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' ' +  'Yeni Ürün Ekledi.'
               DegisiklikMain().setYapilanDegisiklikBilgisi(siparis['kayit_kisi'],info)
               self.mailGonderNew(siparis,urunlerYeni,siparis['siparisNo'])
-              info2 = siparis['kayit_kisi']  + ' ' + siparis['siparisNo'] + ' siparişine yeni kalem ekledi.'
-              yukleme_tarihi=""
-              DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi)
+              if(siparis['faturaKesimTurId'] == 1):
+                for item in urunlerYeni:
+                    info2 = siparis['kayit_kisi']  + ' ' + item['urunAdi'] +' '+ item['yuzeyIslem'] +' '+ item['en']+'x'+item['boy'] + 'x' + item['kenar'] + ' (' + item['miktar'] + ' ' + item['urunbirimAdi'] + ') $' + item['satisFiyati'] + ' ' + siparis['siparisNo'] + ' Siparişine Yeni Kalem Olarak Ekledi.'
+                    yukleme_tarihi=""
+                    result = self.data.getStoreList("""
+                                                            select YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                                    """,(siparis['siparisNo']))
+                    renk = '#ffec31'
+                    if(result[0][0] == None or result[0][0] == ""):
+                        yukleme_tarihi=""
+                        DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi,renk)
+                    else:
+                        DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],result[0][0],renk)
+                    
             
               if(len(urunlerYeni) == 1):
                 degisiklik = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' siparişine ' + urunlerYeni[0]['uretimAciklama'] + ', ' + str(urunlerYeni[0]['miktar']) +' ' + self.__birim(urunlerYeni[0]['urunBirimId']) + ' $'+str(urunlerYeni[0]['satisFiyati']) +' dan eklemiştir.'
@@ -389,9 +400,22 @@ class SiparisGiris:
               info = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' ' +  'Bir Ürün Kalemi Silindi.'
               DegisiklikMain().setYapilanDegisiklikBilgisi(siparis['kayit_kisi'],info)
               self.mailGonderDelete(siparis,urunlerSilinenler,siparis['siparisNo'])
-              info2 = siparis['kayit_kisi']  + ' ' + siparis['siparisNo'] + ' siparişinden bir kalemi sildi.'
-              yukleme_tarihi=""
-              DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi) 
+              if(siparis['faturaKesimTurId'] == 1):
+                for item in urunlerSilinenler:
+                    
+                    info2 = siparis['kayit_kisi']  + ' ' + urunlerSilinenler[0]['uretimAciklama'] + ' (' + str(urunlerSilinenler[0]['miktar']) +' ' + self.__birim(urunlerSilinenler[0]['urunBirimId']) + ') $'+str(urunlerSilinenler[0]['satisFiyati']) +' ' +siparis['siparisNo'] + ' siparişinden bir kalemi sildi.'
+                    
+                    result = self.data.getStoreList("""
+                                                        select YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                                """,(siparis['siparisNo']))
+                    renk = '#ffec31'
+                    if(result[0][0] == None or result[0][0] == ""):
+                        yukleme_tarihi = ""
+                        DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],yukleme_tarihi,renk)
+                    else:
+                        DegisiklikMain().setMaliyetDegisiklik(info2,siparis['kayit_kisi'],siparis['siparisNo'],result[0][0],renk)
+                    
+                
               if(len(urunlerSilinenler) == 1):
                 degisiklik = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' siparişine ' + urunlerSilinenler[0]['uretimAciklama'] + ', ' + str(urunlerSilinenler[0]['miktar']) +' ' + self.__birim(urunlerSilinenler[0]['urunBirimId']) + ' $'+str(urunlerSilinenler[0]['satisFiyati']) +' dan silinmiştir.'
                 degisiklikAlani = 'Siparişler'
@@ -1030,9 +1054,6 @@ class SiparisGiris:
   
        
     def mailGonderUpdate(self,siparis,degisen,siparis_no):
-        print("mailGonderUpdatesiparis",siparis)
-        print("mailGonderUpdatedegisen",degisen)
-        print("mailGonderUpdatesiparis_no",siparis_no)
         
         degismeyen = list()
         if len(degisen)==1:
@@ -1163,6 +1184,8 @@ class SiparisGiris:
                 
                 
                         """
+            
+            
             else:
                 for i in range(0,len(degisen)):
                     body += f"""
@@ -1175,7 +1198,7 @@ class SiparisGiris:
                             {degismeyen[i][0][1]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                                {degismeyen[i][0][8]}
+                            {degismeyen[i][0][8]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                             {degismeyen[i][0][6]}
@@ -1207,22 +1230,22 @@ class SiparisGiris:
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:#ddd;">
                             {siparis_no}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['tedarikciAdi'],sayac,degismeyen,1)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['tedarikciAdi'],sayac,degismeyen,1,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {item['tedarikciAdi']}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['musteriAciklama'],sayac,degismeyen,7)};">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['musteriAciklama'],sayac,degismeyen,7,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])};">
                             {item['musteriAciklama']}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 150px;background-color:{self.__kontrol(item['uretimAciklama'],sayac,degismeyen,2)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 150px;background-color:{self.__kontrol(item['uretimAciklama'],sayac,degismeyen,2,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {item['uretimAciklama']}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['miktar'],sayac,degismeyen,3)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['miktar'],sayac,degismeyen,3,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {float(item['miktar'])} {item['urunbirimAdi']} 
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['alisFiyati'],sayac,degismeyen,5)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['alisFiyati'],sayac,degismeyen,5,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {float(item['alisFiyati'])}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['satisFiyati'],sayac,degismeyen,6)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['satisFiyati'],sayac,degismeyen,6,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {float(item['satisFiyati'])}
                         </td>
                     </tr>
@@ -1230,8 +1253,7 @@ class SiparisGiris:
             
                 """
                 sayac += 1
-                
-            
+
             body = body + "</table>"
             mekmer = 0
             mekmoz = 0
@@ -1254,28 +1276,28 @@ class SiparisGiris:
                     
                     diger +=1    
 
-            # if  (mekmer >=1 ) and siparis['siparisDurumId'] == 2 :
+            if  (mekmer >=1 ) and siparis['siparisDurumId'] == 2 :
               
-            #   MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
-            # elif (mekmoz>1) and siparis['siparisDurumId'] == 2:
-            #     MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
+              MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
+            elif (mekmoz>1) and siparis['siparisDurumId'] == 2:
+                MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
                 
 
 
 
-            # if  (mekmoz + mekmer >=1) and siparis['siparisDurumId'] ==2 :
-            #      MailService(siparis_no +" Düzenlenen Kalemler ", "mehmet@mekmer.com",  " "+ baslik + body) #Mehmet
+            if  (mekmoz + mekmer >=1) and siparis['siparisDurumId'] ==2 :
+                 MailService(siparis_no +" Düzenlenen Kalemler ", "mehmet@mekmer.com",  " "+ baslik + body) #Mehmet
                  
                  
 
-            # if  (diger >=1 ) and  siparis['siparisDurumId'] ==2:
-            #        MailService(siparis_no +" Düzenlenen Kalemler ", "info@mekmar.com",  " " +baslik + body) #gizem
+            if  (diger >=1 ) and  siparis['siparisDurumId'] ==2:
+                   MailService(siparis_no +" Düzenlenen Kalemler ", "info@mekmar.com",  " " +baslik + body) #gizem
                    
                    
-            # sahibi , maili = self.__siparisDetayi(siparis_no)     
-            # if sahibi != 'Mehmet'  or sahibi != 'Gizem' or sahibi != 'İP': 
-            #       MailService(siparis_no +" Düzenlenen Kalemler ",  maili , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
-            MailService(siparis_no +" Düzenlenen Kalemler ",  'bilgiislem@mekmar.com' , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            sahibi , maili = self.__siparisDetayi(siparis_no)     
+            if sahibi != 'Mehmet'  or sahibi != 'Gizem' or sahibi != 'İP': 
+                  MailService(siparis_no +" Düzenlenen Kalemler ",  maili , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            # MailService(siparis_no +" Düzenlenen Kalemler ",  'bilgiislem@mekmar.com' , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
                   
                   
         elif siparis['siparisDurumId'] == 3:
@@ -1357,22 +1379,22 @@ class SiparisGiris:
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:#ddd;">
                             {siparis_no}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['tedarikciAdi'],sayac,degismeyen,1)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['tedarikciAdi'],sayac,degismeyen,1,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {item['tedarikciAdi']}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['musteriAciklama'],sayac,degismeyen,7)};">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['musteriAciklama'],sayac,degismeyen,7,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])};">
                             {item['musteriAciklama']}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 150px;background-color:{self.__kontrol(item['uretimAciklama'],sayac,degismeyen,2)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 150px;background-color:{self.__kontrol(item['uretimAciklama'],sayac,degismeyen,2,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {item['uretimAciklama']}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['miktar'],sayac,degismeyen,3)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['miktar'],sayac,degismeyen,3,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {float(item['miktar'])} {item['urunbirimAdi']} 
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['alisFiyati'],sayac,degismeyen,5)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['alisFiyati'],sayac,degismeyen,5,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {float(item['alisFiyati'])}
                         </td>
-                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['satisFiyati'],sayac,degismeyen,6)}">
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['satisFiyati'],sayac,degismeyen,6,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {float(item['satisFiyati'])}
                         </td>
                     </tr>
@@ -1380,6 +1402,8 @@ class SiparisGiris:
             
                 """
                 sayac += 1
+                
+                
             sahibi , maili = self.__siparisDetayi(siparis_no)
             MailService(siparis_no +" Düzenlenen Kalemler ", maili  , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
             
@@ -1594,7 +1618,7 @@ class SiparisGiris:
  
              
 	
-    def __kontrol(self,item,sayac,degismeyen,durum):
+    def __kontrol(self,item,sayac,degismeyen,durum,siparis_no,kayit_kisi,fatura_kesim_tur_id):
         if len(degismeyen)== 1:
             
             if durum == 1:
@@ -1625,6 +1649,22 @@ class SiparisGiris:
                     second = now.strftime("%S")
                     watch = str(hour) + ' : ' + str(minute) + ' : ' + str(second)
                     islem2.kaydet(degisiklik,degisiklikAlani,fatura,year,month,day,watch)
+                    
+                    if fatura_kesim_tur_id == 1:
+                        degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][4],2)) + ' ' + str(degismeyen[sayac][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][7]) +  ' e değiştirildi'
+                        
+                        result = self.data.getStoreList("""
+                                                        select YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                                """,(siparis_no))
+                        renk = '#ffec31'
+                        if(result[0][0] == None or result[0][0] == ""):
+                            
+                            yukleme_tarihi=""
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,yukleme_tarihi,renk)
+                        else:
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,result[0][0],renk)
+                    
+                    
                     return "red"
                 else:
                     return "#ddd"
@@ -1648,6 +1688,19 @@ class SiparisGiris:
                     second = now.strftime("%S")
                     watch = str(hour) + ' : ' + str(minute) + ' : ' + str(second)
                     islem2.kaydet(degisiklik,degisiklikAlani,fatura,year,month,day,watch)
+                    if fatura_kesim_tur_id == 1:
+                        degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][4],2)) + ' ' + str(degismeyen[sayac][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][7]) +  ' e değiştirildi'
+                        
+                        result = self.data.getStoreList("""
+                                                        select YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                                """,(siparis_no))
+                        renk = '#ffec31'
+                        if(result[0][0] == None or result[0][0] == ""):
+                            
+                            yukleme_tarihi=""
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,yukleme_tarihi,renk)
+                        else:
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,result[0][0],renk)
                     return "red"
                 else:
                     return "#ddd"
@@ -1667,6 +1720,19 @@ class SiparisGiris:
                     second = now.strftime("%S")
                     watch = str(hour) + ' : ' + str(minute) + ' : ' + str(second)
                     islem2.kaydet(degisiklik,degisiklikAlani,fatura,year,month,day,watch)
+                    if(fatura_kesim_tur_id == 1):
+                        degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][4],2)) + ' ' + str(degismeyen[sayac][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][7]) +  ' e değiştirildi'
+                        
+                        result = self.data.getStoreList("""
+                                                        select YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                                """,(siparis_no))
+                        renk = '#ffec31'
+                        if(result[0][0] == None or result[0][0] == ""):
+                            
+                            yukleme_tarihi=""
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,yukleme_tarihi,renk)
+                        else:
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,result[0][0],renk)
                     return "red"
                 else:
                     return "#ddd"
@@ -1705,6 +1771,19 @@ class SiparisGiris:
                     second = now.strftime("%S")
                     watch = str(hour) + ' : ' + str(minute) + ' : ' + str(second)
                     islem2.kaydet(degisiklik,degisiklikAlani,fatura,year,month,day,watch)
+                    if fatura_kesim_tur_id == 1:
+                        degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][4],2)) + ' ' + str(degismeyen[sayac][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][7]) +  ' e değiştirildi'
+                        
+                        result = self.data.getStoreList("""
+                                                        select YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                                """,(siparis_no))
+                        renk = '#ffec31'
+                        if(result[0][0] == None or result[0][0] == ""):
+                            
+                            yukleme_tarihi=""
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,yukleme_tarihi,renk)
+                        else:
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,result[0][0],renk)
                     return "red"
                 else:
                     return "#ddd"
@@ -1729,6 +1808,19 @@ class SiparisGiris:
                     second = now.strftime("%S")
                     watch = str(hour) + ' : ' + str(minute) + ' : ' + str(second)
                     islem2.kaydet(degisiklik,degisiklikAlani,fatura,year,month,day,watch)
+                    if fatura_kesim_tur_id == 1:
+                        degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][4],2)) + ' ' + str(degismeyen[sayac][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][7]) +  ' e değiştirildi'
+                        
+                        result = self.data.getStoreList("""
+                                                        select YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                                """,(siparis_no))
+                        renk = '#ffec31'
+                        if(result[0][0] == None or result[0][0] == ""):
+                            
+                            yukleme_tarihi=""
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,yukleme_tarihi,renk)
+                        else:
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,result[0][0],renk)
                     return "red"
                 else:
                     return "#ddd"
@@ -1748,6 +1840,19 @@ class SiparisGiris:
                     second = now.strftime("%S")
                     watch = str(hour) + ' : ' + str(minute) + ' : ' + str(second)
                     islem2.kaydet(degisiklik,degisiklikAlani,fatura,year,month,day,watch)
+                    if fatura_kesim_tur_id == 1:
+                        degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][4],2)) + ' ' + str(degismeyen[sayac][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][7]) +  ' e değiştirildi'
+                        
+                        result = self.data.getStoreList("""
+                                                        select YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                                """,(siparis_no))
+                        renk = '#ffec31'
+                        if(result[0][0] == None or result[0][0] == ""):
+                            
+                            yukleme_tarihi=""
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,yukleme_tarihi,renk)
+                        else:
+                            DegisiklikMain().setMaliyetDegisiklik(degisiklik,kayit_kisi,siparis_no,result[0][0],renk)
                     return "red"
                 else:
                     return "#ddd"

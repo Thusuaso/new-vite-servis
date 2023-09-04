@@ -104,6 +104,7 @@ class LogsMaliyetSchema(Schema):
     yil = fields.String()
     ay = fields.String()
     gun = fields.String()
+    renk = fields.String()
     
 class LogsMaliyetModel:
     id = 0
@@ -115,6 +116,7 @@ class LogsMaliyetModel:
     yil = ""
     ay = ""
     gun = ""
+    renk = ""
     
 class MusteriyeGoreSchema(Schema):
     id = fields.Int()

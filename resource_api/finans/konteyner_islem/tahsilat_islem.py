@@ -93,9 +93,15 @@ class TahsilatIslem:
                 )
             )
             self.mailGonder(item['siparisno'],'Yeni Tahsilat Girişi',item['tutar'],item['tarih'],item['masraf'],item['kullaniciadi'])
-            info =item['kullaniciadi'].capitalize() + ', ' + item['siparisno'] + ' $' + str(item['tutar']) +' Tahsilat Girişi Yaptı'
-            yukleme_tarihi=""
-            DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],yukleme_tarihi)
+            info =item['kullaniciadi'].capitalize() + ', ' + item['siparisno'] + ' $' + str(item['tutar']) +' Tahsilat Girişi Yaptı'            
+            result = self.data.getStoreList("""
+                                                    select YuklemeTarihi from SiparislerTB where SiparisNo=?
+                                              """,(item['siparisno']))
+            if(result[0][0] == None or result[0][0] == ""):
+                yukleme_tarihi=""
+                DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],yukleme_tarihi)
+            else:
+                DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],result[0][0])
 
             data = {
                 'status':True,

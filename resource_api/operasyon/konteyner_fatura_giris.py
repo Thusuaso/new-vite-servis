@@ -141,7 +141,8 @@ class KonteynerFaturalar:
                                    
                                    """,(item['siparisno']))
             info = item['siparisno'] + ' po ya ' + item['faturaNo'] + ' fatura no ile ' + item['fatura_tur_list']['name'] + ' faturası $ ' + item['Tutar_dolar'] + ' ve $ ' +  item['kur'] + ' kur girilmiştir.'
-            DegisiklikMain().setMaliyetDegisiklik(info,'Huseyin',item['siparisno'],result[0][1])
+            renk='#ffec31'
+            DegisiklikMain().setMaliyetDegisiklik(info,'Huseyin',item['siparisno'],result[0][1],renk)
             
             
             info = 'Huseyin Konteyner Fatura Girişi Yaptı.'

@@ -108,7 +108,8 @@ class NakliyeIslem:
                                             select FaturaKesimTurID,YuklemeTarihi from SiparislerTB where SiparisNo=?
                                        """,(key['siparisno']))
                     info = key['siparisno'] + ' po ya ' + key['faturaNo'] + ' fatura no ile ' + ' Nakliye faturası $ ' + key['Tutar_dolar'] + ' ve $ ' +  key['kur'] + ' kur girilmiştir.'
-                    DegisiklikMain().setMaliyetDegisiklik(info,'Huseyin',key['siparisno'],result[0][1])
+                    renk = '#ffec31'
+                    DegisiklikMain().setMaliyetDegisiklik(info,'Huseyin',key['siparisno'],result[0][1],renk)
                 
             info = "Huseyin Nakliye Faturası Girişi Yaptı"
             DegisiklikMain().setYapilanDegisiklikBilgisi('Huseyin',info)

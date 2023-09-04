@@ -36,7 +36,8 @@ class FinansPesinatIslem:
            
             info =item['kullaniciadi'].capitalize() + ', ' + item['siparis_no'] + ' $' + str(item['tutar']) + ' Peşinat Girişi Yaptı'
             yukleme_tarihi=""
-            DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparis_no'],yukleme_tarihi)
+            renk = ""
+            DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparis_no'],yukleme_tarihi,renk)
             MailService('Peşinat Tahsilat Bildirimi ',"huseyin@mekmarmarble.com",mail_konu)
             MailService('Peşinat Tahsilat Bildirimi ',"mehmet@mekmer.com",mail_konu)
           
