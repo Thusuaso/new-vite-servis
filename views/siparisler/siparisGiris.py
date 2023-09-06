@@ -1186,7 +1186,6 @@ class SiparisGiris:
             
             
             else:
-                
                 for i in range(0,len(degisen)):
                     body += f"""
                         <tr style ="background-color: #ddd;">
@@ -1406,6 +1405,8 @@ class SiparisGiris:
                 
             sahibi , maili = self.__siparisDetayi(siparis_no)
             MailService(siparis_no +" Düzenlenen Kalemler ", maili  , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            MailService(siparis_no +" Düzenlenen Kalemler ", 'info@mekmar.com'  , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            
             
     def degisimKontrol(self,degisen,degismeyen,itemName):
 
@@ -1814,7 +1815,7 @@ class SiparisGiris:
                     watch = str(hour) + ' : ' + str(minute) + ' : ' + str(second)
                     islem2.kaydet(degisiklik,degisiklikAlani,fatura,year,month,day,watch)
                     if fatura_kesim_tur_id == 1:
-                        degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][4],2)) + ' ' + str(degismeyen[sayac][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][7]) +  ' e değiştirildi'
+                        degisiklik = str(degismeyen[sayac][0][1]) + ' siparişinin ' + str(degismeyen[sayac][0][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][0][4],2)) + ' ' + str(degismeyen[sayac][0][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][0][7]) +  ' e değiştirildi'
                         
                         result = self.data.getStoreList("""
                                                         select YuklemeTarihi from SiparislerTB where SiparisNo=?
@@ -1846,7 +1847,7 @@ class SiparisGiris:
                     watch = str(hour) + ' : ' + str(minute) + ' : ' + str(second)
                     islem2.kaydet(degisiklik,degisiklikAlani,fatura,year,month,day,watch)
                     if fatura_kesim_tur_id == 1:
-                        degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][4],2)) + ' ' + str(degismeyen[sayac][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][7]) +  ' e değiştirildi'
+                        degisiklik = str(degismeyen[sayac][0][1]) + ' siparişinin ' + str(degismeyen[sayac][0][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][0][4],2)) + ' ' + str(degismeyen[sayac][0][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][0][7]) +  ' e değiştirildi'
                         
                         result = self.data.getStoreList("""
                                                         select YuklemeTarihi from SiparislerTB where SiparisNo=?

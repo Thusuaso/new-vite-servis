@@ -11,47 +11,51 @@ class GuRaporlari:
         self.sql = SqlConnect().data
         self.siparisler = []
     def getMaliyetListesiKar(self,year):
-        self.__getMaliyetListesi(year)
-        liste = []
-        
-        siparisler_musteri = self.sql.getStoreList("""
-                                                        select 
-                                                            s.MusteriID,
-                                                            m.FirmaAdi
-                                                        from SiparislerTB s
-                                                            inner join MusterilerTB m on m.ID = s.MusteriID
-
-                                                        where
-                                                            YEAR(s.YuklemeTarihi) = ? and
-                                                            s.SiparisDurumID=3 and
-                                                            m.Marketing = 'Mekmar'
-                                                        group by
-                                                            s.MusteriID,
-                                                            m.FirmaAdi
-                                                    
-                                                    """,(year))
-        
-        liste = list()
-        for item in siparisler_musteri:
-            model = OzelMaliyetListeKarModel()
-            model.musteri_id = item.MusteriID
-            model.musteri_adi = item.FirmaAdi
-            toplam_bedel,masraf_toplam,odenen_usd_tutar,odenen_try_tutar,kar_zarar,kar_zarar_tl = self.__getSiparisler(item.MusteriID)
-            model.toplam_bedel = toplam_bedel
-            model.masraf_toplam = masraf_toplam
-            model.odenen_usd_tutar = odenen_usd_tutar
-            model.odenen_try_tutar = odenen_try_tutar
-            model.kar_zarar =kar_zarar
-            model.kar_zarar_tl = kar_zarar_tl
-            model.kalan_bedel = model.toplam_bedel - model.odenen_usd_tutar
-            if(odenen_usd_tutar != 0):
-                model.kar_zarar_orani = round((kar_zarar / odenen_usd_tutar * 100),2)
-            else:
-                model.kar_zarar_orani = 0
-            liste.append(model)
+        try:
+            self.__getMaliyetListesi(year)
+            liste = []
             
-        schema = OzelMaliyetListeKarSchema(many=True)
-        return schema.dump(liste)
+            siparisler_musteri = self.sql.getStoreList("""
+                                                            select 
+                                                                s.MusteriID,
+                                                                m.FirmaAdi
+                                                            from SiparislerTB s
+                                                                inner join MusterilerTB m on m.ID = s.MusteriID
+
+                                                            where
+                                                                YEAR(s.YuklemeTarihi) = ? and
+                                                                s.SiparisDurumID=3 and
+                                                                m.Marketing = 'Mekmar'
+                                                            group by
+                                                                s.MusteriID,
+                                                                m.FirmaAdi
+                                                        
+                                                        """,(year))
+            
+            liste = list()
+            for item in siparisler_musteri:
+                model = OzelMaliyetListeKarModel()
+                model.musteri_id = item.MusteriID
+                model.musteri_adi = item.FirmaAdi
+                toplam_bedel,masraf_toplam,odenen_usd_tutar,odenen_try_tutar,kar_zarar,kar_zarar_tl = self.__getSiparisler(item.MusteriID)
+                model.toplam_bedel = toplam_bedel
+                model.masraf_toplam = masraf_toplam
+                model.odenen_usd_tutar = odenen_usd_tutar
+                model.odenen_try_tutar = odenen_try_tutar
+                model.kar_zarar =kar_zarar
+                model.kar_zarar_tl = kar_zarar_tl
+                model.kalan_bedel = model.toplam_bedel - model.odenen_usd_tutar
+                if(odenen_usd_tutar != 0):
+                    model.kar_zarar_orani = round((kar_zarar / odenen_usd_tutar * 100),2)
+                else:
+                    model.kar_zarar_orani = 0
+                liste.append(model)
+                
+            schema = OzelMaliyetListeKarSchema(many=True)
+            return schema.dump(liste)
+        except Exception as e:
+            print('getMaliyetListesiKar hata',str(e))
+            return False
     def __getMaliyetListesi(self,year):
         self.siparisler = SiparislerKar(year).siparis_listesi
     def __getSiparisler(self,musteri_id):

@@ -140,9 +140,7 @@ class OzelMaliyetListeModel:
     mekmar_alim_evrak = list()
     mekmar_alim_evrak_sayisi = 0
     mekmoz_alim_evrak = list()
-    mekmoz_alim_evrak = 0
     dis_alim_evrak = list()
-    dis_alim_evrak = 0
     dis_alim_tedarikci = list()
     dis_alim_tedarikci_sayisi = 0
     tedarikci_sayisi = 0
