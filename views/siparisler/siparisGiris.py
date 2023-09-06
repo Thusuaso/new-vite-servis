@@ -1188,7 +1188,6 @@ class SiparisGiris:
             else:
                 
                 for i in range(0,len(degisen)):
-                    print(i)
                     body += f"""
                         <tr style ="background-color: #ddd;">
                             <td style ="border: 1px solid #ddd;background-color:red;color:white;padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
@@ -1222,9 +1221,7 @@ class SiparisGiris:
                         """
 
             sayac = 0
-            print(degisen)
             for item in degisen:
-                print(item)
                 body += f"""
                     <tr style ="background-color: #ddd;">
                         <td style ="border: 1px solid #ddd;background-color:#2fc289;color:white; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
@@ -1279,28 +1276,28 @@ class SiparisGiris:
                     
                     diger +=1    
 
-            # if  (mekmer >=1 ) and siparis['siparisDurumId'] == 2 :
+            if  (mekmer >=1 ) and siparis['siparisDurumId'] == 2 :
               
-            #   MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
-            # elif (mekmoz>1) and siparis['siparisDurumId'] == 2:
-            #     MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
+              MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
+            elif (mekmoz>1) and siparis['siparisDurumId'] == 2:
+                MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
                 
 
 
 
-            # if  (mekmoz + mekmer >=1) and siparis['siparisDurumId'] ==2 :
-            #      MailService(siparis_no +" Düzenlenen Kalemler ", "mehmet@mekmer.com",  " "+ baslik + body) #Mehmet
+            if  (mekmoz + mekmer >=1) and siparis['siparisDurumId'] ==2 :
+                 MailService(siparis_no +" Düzenlenen Kalemler ", "mehmet@mekmer.com",  " "+ baslik + body) #Mehmet
                  
                  
 
-            # if  (diger >=1 ) and  siparis['siparisDurumId'] ==2:
-            #        MailService(siparis_no +" Düzenlenen Kalemler ", "info@mekmar.com",  " " +baslik + body) #gizem
+            if  (diger >=1 ) and  siparis['siparisDurumId'] ==2:
+                   MailService(siparis_no +" Düzenlenen Kalemler ", "info@mekmar.com",  " " +baslik + body) #gizem
                    
                    
-            # sahibi , maili = self.__siparisDetayi(siparis_no)     
-            # if sahibi != 'Mehmet'  or sahibi != 'Gizem' or sahibi != 'İP': 
-            #       MailService(siparis_no +" Düzenlenen Kalemler ",  maili , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
-            MailService(siparis_no +" Düzenlenen Kalemler ",  'bilgiislem@mekmar.com' , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            sahibi , maili = self.__siparisDetayi(siparis_no)     
+            if sahibi != 'Mehmet'  or sahibi != 'Gizem' or sahibi != 'İP': 
+                  MailService(siparis_no +" Düzenlenen Kalemler ",  maili , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            # MailService(siparis_no +" Düzenlenen Kalemler ",  'bilgiislem@mekmar.com' , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
                   
                   
         elif siparis['siparisDurumId'] == 3:
@@ -1622,13 +1619,7 @@ class SiparisGiris:
              
 	
     def __kontrol(self,item,sayac,degismeyen,durum,siparis_no,kayit_kisi,fatura_kesim_tur_id):
-        print(item)
-        print(sayac)
-        print(degismeyen)
-        print(durum)
-        print(siparis_no)
-        print(kayit_kisi)
-        print(fatura_kesim_tur_id)
+
         
         
         
