@@ -684,7 +684,6 @@ class SiparisGiris:
 
     def __siparisDataGuncelle(self,siparis):
         try: 
-            print("__siparisDataGuncelle",siparis)
             vade = None 
             siparis['TahminiyuklemeTarihi'] = self.dateConvert(siparis['TahminiyuklemeTarihi'])
             if siparis['vade'] != None:
@@ -1187,7 +1186,9 @@ class SiparisGiris:
             
             
             else:
+                
                 for i in range(0,len(degisen)):
+                    print(i)
                     body += f"""
                         <tr style ="background-color: #ddd;">
                             <td style ="border: 1px solid #ddd;background-color:red;color:white;padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
@@ -1207,13 +1208,13 @@ class SiparisGiris:
                             {degismeyen[i][0][5]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {float(degismeyen[i][0][4])} {degismeyen[i][0][7]} 
+                            {str(float(degismeyen[i][0][4]))} {degismeyen[i][0][7]} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {float(degismeyen[i][0][2])}
+                            {str(float(degismeyen[i][0][2]))}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {float(degismeyen[i][0][3])}
+                            {str(float(degismeyen[i][0][3]))}
                             </td>
                         </tr>
                 
@@ -1221,7 +1222,9 @@ class SiparisGiris:
                         """
 
             sayac = 0
+            print(degisen)
             for item in degisen:
+                print(item)
                 body += f"""
                     <tr style ="background-color: #ddd;">
                         <td style ="border: 1px solid #ddd;background-color:#2fc289;color:white; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
@@ -1240,13 +1243,13 @@ class SiparisGiris:
                             {item['uretimAciklama']}
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['miktar'],sayac,degismeyen,3,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {float(item['miktar'])} {item['urunbirimAdi']} 
+                            {str(float(item['miktar']))} {item['urunbirimAdi']} 
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['alisFiyati'],sayac,degismeyen,5,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {float(item['alisFiyati'])}
+                            {str(float(item['alisFiyati']))}
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['satisFiyati'],sayac,degismeyen,6,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {float(item['satisFiyati'])}
+                            {str(float(item['satisFiyati']))}
                         </td>
                     </tr>
             
@@ -1276,28 +1279,28 @@ class SiparisGiris:
                     
                     diger +=1    
 
-            if  (mekmer >=1 ) and siparis['siparisDurumId'] == 2 :
+            # if  (mekmer >=1 ) and siparis['siparisDurumId'] == 2 :
               
-              MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
-            elif (mekmoz>1) and siparis['siparisDurumId'] == 2:
-                MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
+            #   MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
+            # elif (mekmoz>1) and siparis['siparisDurumId'] == 2:
+            #     MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
                 
 
 
 
-            if  (mekmoz + mekmer >=1) and siparis['siparisDurumId'] ==2 :
-                 MailService(siparis_no +" Düzenlenen Kalemler ", "mehmet@mekmer.com",  " "+ baslik + body) #Mehmet
+            # if  (mekmoz + mekmer >=1) and siparis['siparisDurumId'] ==2 :
+            #      MailService(siparis_no +" Düzenlenen Kalemler ", "mehmet@mekmer.com",  " "+ baslik + body) #Mehmet
                  
                  
 
-            if  (diger >=1 ) and  siparis['siparisDurumId'] ==2:
-                   MailService(siparis_no +" Düzenlenen Kalemler ", "info@mekmar.com",  " " +baslik + body) #gizem
+            # if  (diger >=1 ) and  siparis['siparisDurumId'] ==2:
+            #        MailService(siparis_no +" Düzenlenen Kalemler ", "info@mekmar.com",  " " +baslik + body) #gizem
                    
                    
-            sahibi , maili = self.__siparisDetayi(siparis_no)     
-            if sahibi != 'Mehmet'  or sahibi != 'Gizem' or sahibi != 'İP': 
-                  MailService(siparis_no +" Düzenlenen Kalemler ",  maili , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
-            # MailService(siparis_no +" Düzenlenen Kalemler ",  'bilgiislem@mekmar.com' , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            # sahibi , maili = self.__siparisDetayi(siparis_no)     
+            # if sahibi != 'Mehmet'  or sahibi != 'Gizem' or sahibi != 'İP': 
+            #       MailService(siparis_no +" Düzenlenen Kalemler ",  maili , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            MailService(siparis_no +" Düzenlenen Kalemler ",  'bilgiislem@mekmar.com' , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
                   
                   
         elif siparis['siparisDurumId'] == 3:
@@ -1619,6 +1622,17 @@ class SiparisGiris:
              
 	
     def __kontrol(self,item,sayac,degismeyen,durum,siparis_no,kayit_kisi,fatura_kesim_tur_id):
+        print(item)
+        print(sayac)
+        print(degismeyen)
+        print(durum)
+        print(siparis_no)
+        print(kayit_kisi)
+        print(fatura_kesim_tur_id)
+        
+        
+        
+        
         if len(degismeyen)== 1:
             
             if durum == 1:
@@ -1772,7 +1786,7 @@ class SiparisGiris:
                     watch = str(hour) + ' : ' + str(minute) + ' : ' + str(second)
                     islem2.kaydet(degisiklik,degisiklikAlani,fatura,year,month,day,watch)
                     if fatura_kesim_tur_id == 1:
-                        degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][4],2)) + ' ' + str(degismeyen[sayac][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][7]) +  ' e değiştirildi'
+                        degisiklik = str(degismeyen[sayac][0][1]) + ' siparişinin ' + str(degismeyen[sayac][0][5]) + ' kaleminin miktarı ' + str(round(degismeyen[sayac][0][4],2)) + ' ' + str(degismeyen[sayac][0][7]) +  ' ==> ' + str(item)  + ' ' + str(degismeyen[sayac][0][7]) +  ' e değiştirildi'
                         
                         result = self.data.getStoreList("""
                                                         select YuklemeTarihi from SiparislerTB where SiparisNo=?
