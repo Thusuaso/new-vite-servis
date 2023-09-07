@@ -37,7 +37,6 @@ class MaliyetRaporIslemKarAyrintiApi(Resource):
 class MaliyetRaporIslemYilApi(Resource):
     
     def get(self,yil):
-        print(yil)
 
         islem = MaliyetRaporIslem_Yil(yil)
 

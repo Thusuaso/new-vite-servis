@@ -122,10 +122,10 @@ class Odemeler:
         
             return (doviz_kur)
         else:
-            # doviz = DovizListem()
-            # dovizKur = doviz.getDovizKurListe(str(year),str(month),str(day))
-            # return dovizKur
-            return 0
+            doviz = DovizListem()
+            dovizKur = doviz.getDovizKurListe(str(year),str(month),str(day))
+            print(dovizKur)
+            return dovizKur
 
 class OdemelerKar:
     def __init__(self,yil):
