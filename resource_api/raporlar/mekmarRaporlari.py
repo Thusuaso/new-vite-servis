@@ -84,7 +84,7 @@ class GuRaporlariApi(Resource):
     def get(self,year):
         islem = MaliyetRaporIslemKarAyrinti(year)
         gu = GuRaporlari()
-        # ayo = gu.getMaliyetListesiKar(year)
+        ayo = gu.getMaliyetListesiKar(year)
         ayoDetail = islem.getMaliyetListesiKarAyrinti()
         ulke = gu.getUlkeRaporlari(year)
         musteri = gu.getMusteriRaporlari(year)
@@ -92,7 +92,7 @@ class GuRaporlariApi(Resource):
         mekus = gu.getMekusMasraflar(year)
         logs = gu.getLogsMaliyet(year)
         data = {
-            # 'ayo':ayo,
+            'ayo':ayo,
             'ayoDetail':ayoDetail,
             'ulke':ulke,
             'musteri':musteri,
