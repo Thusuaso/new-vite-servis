@@ -75,6 +75,7 @@ class DovizListem:
         
     def getDovizKurListe(self,yil,ay,gun):
         try:
+            print("getDovizKurListe",yil,ay,gun)
             api_url = "https://dovizkurlari-l6vtviaacq-uc.a.run.app/api/doviz"
             x = datetime.datetime.now()
             nowDay = x.strftime('%d')
@@ -107,6 +108,7 @@ class DovizListem:
             return result["BanknoteSelling"]
         except Exception as e:
             print('Doviz Kur Hatası',str(e))
+            return False
             
     
 
