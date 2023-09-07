@@ -683,7 +683,7 @@ api.add_resource(MaliyetRaporIslemKarApi,'/maliyet/listeler/maliyetListesiKar/<i
 api.add_resource(MaliyetRaporIslemKarAyrintiApi,'/maliyet/listeler/maliyetListesiKarAyrinti/<int:yil>',methods=['GET'])
 
 
-api.add_resource(MaliyetRaporIslemYilApi,'/maliyet/listeler/maliyetListesiAll/<int:yil>',methods=['GET'])
+api.add_resource(MaliyetRaporIslemYilApi,'/maliyet/listeler/maliyetListesi/<int:yil>',methods=['GET'])
 api.add_resource(MaliyetRaporYilListApi,'/maliyet/listeler/maliyetYilListesi',methods=['GET'])
 api.add_resource(MaliyetRaporIslemAyListesi,'/maliyet/listeler/maliyetAyListesi/<int:yil>',methods=['GET'])
 api.add_resource(MaliyetRaporExcelApi, '/maliyet/dosyalar/maliyetRaporExcelListe', methods=['GET','POST'])
