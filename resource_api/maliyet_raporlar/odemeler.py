@@ -124,7 +124,6 @@ class Odemeler:
         else:
             doviz = DovizListem()
             dovizKur = doviz.getDovizKurListe(str(year),str(month),str(day))
-            print(dovizKur)
             return dovizKur
 
 class OdemelerKar:

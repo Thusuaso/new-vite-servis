@@ -91,6 +91,7 @@ class GuRaporlariApi(Resource):
         tedarikci = gu.getTedarikciRaporlari(year)
         mekus = gu.getMekusMasraflar(year)
         logs = gu.getLogsMaliyet(year)
+        forwarding = gu.getForwardingSummary()
         data = {
             'ayo':ayo,
             'ayoDetail':ayoDetail,
@@ -98,7 +99,8 @@ class GuRaporlariApi(Resource):
             'musteri':musteri,
             'tedarikci':tedarikci,
             'mekus':mekus,
-            'logs':logs
+            'logs':logs,
+            'forwarding':forwarding
         }
         return jsonify(data)
         

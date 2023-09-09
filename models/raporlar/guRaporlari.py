@@ -143,3 +143,18 @@ class TedarikciyeGoreModel:
     firma_adi = ""
     total_alis = 0
     yuklenen_tedarikci_sayisi = 0
+    
+class ForwardingSummarySchema(Schema):
+    month = fields.Int()
+    month_str = fields.String()
+    fob = fields.Float()
+    ddp = fields.Float()
+    total = fields.Float()
+
+class ForwardingSummaryModel:
+    month = 0
+    month_str = ""
+    fob = 0
+    ddp = 0
+    total = 0
+    
