@@ -147,6 +147,7 @@ class TedarikciyeGoreModel:
 class ForwardingSummarySchema(Schema):
     month = fields.Int()
     month_str = fields.String()
+    year = fields.Int()
     fob = fields.Float()
     ddp = fields.Float()
     total = fields.Float()
@@ -154,7 +155,11 @@ class ForwardingSummarySchema(Schema):
 class ForwardingSummaryModel:
     month = 0
     month_str = ""
+    year = 0
     fob = 0
     ddp = 0
     total = 0
+
+
+    
     

@@ -16,36 +16,39 @@ class GuRaporlari:
                                         sum(s.NavlunSatis) as Navlun,
                                         sum(s.DetayTutar_1) as Detail1, 
                                         sum(s.DetayTutar_2) as Detail2,
-                                        sum(s.DetayTutar_3) as Detail3 
+                                        sum(s.DetayTutar_3) as Detail3,
+										YEAR(s.YuklemeTarihi) as Year
                                         from SiparislerTB s 
                                         inner join MusterilerTB m on m.ID=s.MusteriID
 
-                                        where YEAR(s.YuklemeTarihi) >= YEAR(GETDATE())-10 and
+                                        where YEAR(s.YuklemeTarihi) >= YEAR(GETDATE())-9 and
                                         m.Marketing='Mekmar'
 
                                         group by
-                                        MONTH(s.YuklemeTarihi)
+                                        MONTH(s.YuklemeTarihi),YEAR(s.YuklemeTarihi)
 
                                         order by
-                                            Month(s.YuklemeTarihi)
+                                            YEAR(s.YuklemeTarihi)
                                       """) 
         self.forwardingOrders = self.sql.getList("""
                                                     select 
                                                     MONTH(s.YuklemeTarihi) as Month,
-                                                    sum(su.SatisToplam) as Total
+                                                    sum(su.SatisToplam) as Total,
+													YEAR(s.YuklemeTarihi) as Year
                                                     from SiparislerTB s 
                                                     inner join SiparisUrunTB su on su.SiparisNo = s.SiparisNo
                                                     inner join MusterilerTB m on m.ID = s.MusteriID
+													
 
                                                     where 
-                                                    YEAR(s.YuklemeTarihi) >= YEAR(GETDate()) - 10 and
+                                                    YEAR(s.YuklemeTarihi) >= YEAR(GETDate()) - 9 and
                                                     m.Marketing='Mekmar'
 
                                                     group by
-                                                    MONTH(s.YuklemeTarihi)
+                                                    MONTH(s.YuklemeTarihi),YEAR(s.YuklemeTarihi)
 
                                                     order by
-                                                        Month(s.YuklemeTarihi)
+                                                        YEAR(s.YuklemeTarihi)
                                       """)
     
     def getMaliyetListesiKar(self,year):
@@ -305,11 +308,16 @@ class GuRaporlari:
                 model = ForwardingSummaryModel()
                 model.month = item.Month
                 model.month_str = self.__getMonth(item.Month)
-                model.fob = self.__getFobTotal(item.Month)
+                model.year = item.Year
+                model.fob = self.__getDdpTotal(item.Month,item.Year)
                 model.ddp = float(model.fob) + float(item.Navlun) + float(item.Detail1) + float(item.Detail2) + float(item.Detail3)
                 liste.append(model)
             schema = ForwardingSummarySchema(many=True)
             return schema.dump(liste)
+
+            
+        
+
         
         
         except Exception as e:
@@ -320,9 +328,9 @@ class GuRaporlari:
         month = {1:'Ocak',2:'Şubat',3:'Mart',4:'Nisan',5:'Mayıs',6:'Haziran',7:'Temmuz',8:'Ağustos',9:'Eylül',10:'Ekim',11:'Kasım',12:'Aralık'}
         return month[month_id]
     
-    def __getFobTotal(self,month):
+    def __getDdpTotal(self,month,year):
         for item in self.forwardingOrders:
-            if(item.Month == month):
+            if(item.Month == month and item.Year == year):
                 return item.Total
         
         
