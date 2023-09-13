@@ -13,7 +13,6 @@ class DovizListem:
 
     def getDovizKurListe(self,yil,ay,gun):
         try:
-            
             # SSl sertifikasi hatalarini engellemek
             ctx = ssl.create_default_context()
             ctx.check_hostname = False
@@ -49,7 +48,6 @@ class DovizListem:
                 return
                     
             
-        
             # URL = "https://www.tcmb.gov.tr/kurlar/202111/02112021.xml"
             URL = "https://www.tcmb.gov.tr/kurlar/"+str(yil)+str(ay)+"/"+str(gun)+str(ay)+str(yil)+".xml"
 
@@ -71,7 +69,7 @@ class DovizListem:
             return format(dolar)
         except Exception as e:
             print(str(e))
-            return
+            return 0
         
     # def getDovizKurListe(self,yil,ay,gun):
     #     try:
