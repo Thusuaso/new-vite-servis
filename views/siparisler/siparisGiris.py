@@ -697,7 +697,6 @@ class SiparisGiris:
             cprz_kur_dhl = self.data.getStoreList("""
                     select DhlFiyat from DhlFiyatlari where ID = ?
             """,(result[0]))
-            print("cprz_kur_dhl",cprz_kur_dhl)
 
 
             
@@ -716,7 +715,6 @@ class SiparisGiris:
 
             else:
                 evrak_gider = 0
-            
             result=self.data.update_insert(
                 """
                 update SiparislerTB set OdemeTurID=?,TeslimTurID=?,Pesinat=?,NavlunFirma=?,NavlunMekmarNot=?,

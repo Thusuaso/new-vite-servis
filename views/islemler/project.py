@@ -180,7 +180,7 @@ class Project:
         
     def findQueue(self,id):
         queue = self.sql.getStoreList("""
-                                select Queue from  MekmarCom_Project_Detail where ProjectId=? order by Queue desc
+                                select Queue from  MekmarCom_Project_Detail where ProjectId=? and ImageStatus=1 order by Queue desc
                               """,(id))
         if(len(queue)>0):
             return int(queue[0].Queue) + 1

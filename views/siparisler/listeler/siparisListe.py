@@ -470,6 +470,10 @@ class SiparisListe:
                 renk = 'green'
             elif uretimMiktari >= siparisMiktari:
                 renk = 'black'
+            
+            elif siparisMiktari > uretimMiktari and uretimMiktari >0:
+                renk = 'orange'    
+            
             else:
                 renk = 'transparent'
         else:
@@ -486,7 +490,7 @@ class SiparisListe:
                              renk = 'transparent'
                 if uretimMiktari > siparisMiktari:
                     renk = 'black'
-                if siparisMiktari > uretimMiktari and sure > 30:
+                if siparisMiktari > uretimMiktari and uretimMiktari > 0:
                     renk = 'orange'
              
         return renk
