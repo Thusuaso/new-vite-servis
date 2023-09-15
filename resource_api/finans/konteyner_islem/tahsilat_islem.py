@@ -97,11 +97,12 @@ class TahsilatIslem:
             result = self.data.getStoreList("""
                                                     select YuklemeTarihi from SiparislerTB where SiparisNo=?
                                               """,(item['siparisno']))
+            renk = ""
             if(result[0][0] == None or result[0][0] == ""):
                 yukleme_tarihi=""
-                DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],yukleme_tarihi)
+                DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],yukleme_tarihi,renk)
             else:
-                DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],result[0][0])
+                DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],result[0][0],renk)
 
             data = {
                 'status':True,
@@ -133,7 +134,8 @@ class TahsilatIslem:
             info =item['kullaniciadi'] + ' ' + item['siparisno'] + ' ' + 'ya Tahsilat Değişikliği Yaptı'
             DegisiklikMain().setYapilanDegisiklikBilgisi(item['kullaniciadi'],info)
             yukleme_tarihi=""
-            DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],yukleme_tarihi)
+            renk = ""
+            DegisiklikMain().setMaliyetDegisiklik(info,item['kullaniciadi'].capitalize(),item['siparisno'],yukleme_tarihi,renk)
             data = {
                 'status':True,
             }
@@ -156,21 +158,22 @@ class TahsilatIslem:
                 """,(id)
             )
             self.mailGonder(result[0][3],'Tahsilat Silme İşlemi',str(float(result[0][7])),result[0][1],result[0][8],result[0][10])
+            renk = ""
             if result[0][10] == 12:
                 info ='Hüseyin' + ' ' + result[0][3] + ' ' + 'nın Tahsilatını Sildi.'
                 DegisiklikMain().setYapilanDegisiklikBilgisi('Hüseyin',info)
                 yukleme_tarihi=""
-                DegisiklikMain().setMaliyetDegisiklik(info,'Hüseyin',result[0][3],yukleme_tarihi)
+                DegisiklikMain().setMaliyetDegisiklik(info,'Hüseyin',result[0][3],yukleme_tarihi,renk)
             elif result[0][10] == 10:
                 info ='Gizem' + ' ' + result[0][3] + ' ' + 'nın Tahsilatını Sildi.'
                 DegisiklikMain().setYapilanDegisiklikBilgisi('Gizem',info)
                 yukleme_tarihi=""
-                DegisiklikMain().setMaliyetDegisiklik(info,'Gizem',result[0][3],yukleme_tarihi)
+                DegisiklikMain().setMaliyetDegisiklik(info,'Gizem',result[0][3],yukleme_tarihi,renk)
             elif result[0][10] == 47:
                 info ='Semih' + ' ' + result[0][3] + ' ' + 'nın Tahsilatını Sildi.'
                 DegisiklikMain().setYapilanDegisiklikBilgisi('Semih',info)
                 yukleme_tarihi=""
-                DegisiklikMain().setMaliyetDegisiklik(info,'Semih',result[0][3],yukleme_tarihi)
+                DegisiklikMain().setMaliyetDegisiklik(info,'Semih',result[0][3],yukleme_tarihi,renk)
                 
             return True
         except Exception as e:

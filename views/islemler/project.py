@@ -138,9 +138,9 @@ class Project:
         try:
             self.sql.update_insert("""
                                     insert into MekmarCom_Projects
-                                        (ProjectName,CountryName,CountryId,Image) 
-                                    VALUES(?,?,?,?) 
-                                   """,(data['project_name'],data['project_country_name'],data['project_country_id'],data['project_image']))
+                                        (ProjectName,CountryName,CountryId,Image,Queue) 
+                                    VALUES(?,?,?,?,?) 
+                                   """,(data['project_name'],data['project_country_name'],data['project_country_id'],data['project_image'],self.findQueueProject()))
             return True
         except Exception as e:
             print('setNewProject hata',str(e))
@@ -186,6 +186,12 @@ class Project:
             return int(queue[0].Queue) + 1
         else:
             return 1
+    
+    def findQueueProject(self):
+        queue = self.sql.getList("""
+                                    select Queue from MekmarCom_Projects where Queue != 30 order by Queue desc
+                                  """)
+        return int(queue[0].Queue) + 1
     
     
     def addVideo(self,data):
