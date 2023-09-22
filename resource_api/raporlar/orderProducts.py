@@ -145,7 +145,7 @@ class Order:
                         elif model.en == 'VAR' or model.boy == 'VAR':
                                 model.kalanMiktar = model.miktar - model.uretimMiktari
                                 model.kalanAdet = 0
-                        elif model.en == 'OZEL' or model.boy == 'OZEL' or model.en == 'Crazy' or model.boy == 'Crazy' or model.boy=='Paver':
+                        elif model.en == 'OZEL' or model.boy == 'OZEL' or model.en == 'Crazy' or model.boy == 'Crazy' or model.boy=='Paver' or model.boy=='1 LT':
                                 model.kalanMiktar = model.miktar - model.uretimMiktari
                                 model.kalanAdet = 0
                         elif self.formatDecimal(model.en) <= 10:
