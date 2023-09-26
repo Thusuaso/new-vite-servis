@@ -584,6 +584,7 @@ class MusteriEta:
                 MailService(siparisno + "Po'ya Ait Eta Yaklaşan Süre",siparisSahibiMail[0].SiparisSahibi,body)
                 MailService(siparisno + "Po'ya Ait Eta Yaklaşan Süre",siparisSahibiMail[0].SiparisSahibi,body)
                 MailService(siparisno + "Po'ya Ait Eta Yaklaşan Süre",operasyonMail[0].SiparisSahibi,body)
+                
             return True
         except Exception as e:
             print("sendMailEta Hata",str(e))

@@ -231,7 +231,10 @@ api.add_resource(TeklifKayitIslem,'/islemler/teklif/teklifModel')
 api.add_resource(TeklifSilmeIslem,'/islemler/teklif/teklifSil/<int:teklifid>')
 api.add_resource(TeklifFormModel,'/islemler/teklif/teklifModel/<int:teklifId>')
 api.add_resource(TeklifAyrintiListe,'/listeler/teklif/kullaniciAyrintiListe/<int:kullaniciId>')
-api.add_resource(TeklifAyrintiListeHepsi,'/listeler/teklif/kullaniciAyrintiListe')
+
+
+
+api.add_resource(TeklifAyrintiListeHepsi,'/listeler/teklif/kullaniciAyrintiListe2')
 api.add_resource(TeklifProformaKaydet,'/islemler/teklif/proformaKaydet',methods=['GET','POST','PUT'])
 api.add_resource(TeklifDosyaKaydet,'/islemler/teklif/teklifDosyaKaydet',methods=['GET','POST','PUT'])
 api.add_resource(TeklifSonGorulmeKaydet,'/islemler/teklif/teklifSonGorulmeKaydet',methods=['GET','POST','PUT'])

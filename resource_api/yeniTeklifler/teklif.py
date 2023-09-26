@@ -354,30 +354,8 @@ class TeklifListeler:
 
     def getKullaniciListeAyrinti(self,kullaniciId):
         liste = list()
-        if(kullaniciId == 10 or kullaniciId == 47):
-            
-            result = self.data.getList(
-                """
-                    select
-                    t.Tarih,
-                    t.Id,
-                    m.MusteriAdi,
-                    u.UlkeAdi,
-                    t.TeklifOncelik,
-                    k.KullaniciAdi,
-                    t.Goruldu,
-                    t.Sira
-                    from
-                    YeniTeklifTB t,YeniTeklif_MusterilerTB m,
-                    YeniTeklif_UlkeTB u,KullaniciTB k
-                    where
-                    t.MusteriId=m.Id and u.Id=m.UlkeId
-                    and k.ID=t.KullaniciId and t.TakipEt=1
-                    and t.BList=0  order by t.TeklifOncelik , t.Tarih,t.Sira asc
-                """
-                )
-        else:
-            result = self.data.getStoreList(
+
+        result = self.data.getStoreList(
                 """
                     select
                     t.Tarih,
@@ -426,30 +404,8 @@ class TeklifListeler:
     def getKullaniciListeAyrinti_BList(self,kullaniciId):
         liste = list()
 
-        if(kullaniciId==10 or kullaniciId == 47):
-            
-            result = self.data.getList(
-                """
-                select
-                t.Tarih,
-                t.Id,
-                m.MusteriAdi,
-                u.UlkeAdi,
-                t.TeklifOncelik,
-                k.KullaniciAdi,
-                t.Goruldu,
-                t.Sira
-                from
-                YeniTeklifTB t,YeniTeklif_MusterilerTB m,
-                YeniTeklif_UlkeTB u,KullaniciTB k
-                where
-                t.MusteriId=m.Id and u.Id=m.UlkeId
-                and k.ID=t.KullaniciId and t.TakipEt=1
-                and t.BList=1 order by t.TeklifOncelik , t.Tarih,t.Sira asc
-                """
-            )
-        else:
-                result = self.data.getStoreList(
+      
+        result = self.data.getStoreList(
                 """
                 select
                 t.Tarih,
