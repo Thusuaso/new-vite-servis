@@ -1,4 +1,4 @@
-from models import TakvimSchema,TakvimModel
+from models import TakvimSchema,TakvimModel,TeklifUlkeSchema,TeklifUlkeModel
 from models.yeniTeklifler import *
 from helpers import SqlConnect,TarihIslemler
 from flask_restful import Resource
@@ -17,7 +17,8 @@ class TeklifAnaSayfaData(Resource):
             'takvimList' : teklif.getTakvimList(),
             'temsilciOzetList' : teklif.getTemsilciListOzet(),
             'hatirlatmaList' : teklif.getHatirlatmaList(),
-            'musteriOzetList' : teklif.getMusteriOzetList()
+            'musteriOzetList' : teklif.getMusteriOzetList(),
+            'ulkelerToplamTeklif':teklif.getTeklifUlkeler()
         }
 
         return jsonify(data)
@@ -257,6 +258,39 @@ class Teklif:
 
         return schema.dump(liste)
 
+    def getTeklifUlkeler(self):
+        try:
+            result = self.data.getList("""
+                                            select 
+                                                count(yu.Id) UlkeTop,
+                                                yu.Id as UlkeId,
+                                                yu.UlkeAdi
+                                            from YeniTeklifTB yt
+
+                                            inner join YeniTeklif_MusterilerTB ym on ym.Id = yt.MusteriId
+                                            inner join YeniTeklif_UlkeTB yu on yu.Id = ym.UlkeId
+
+                                            where 
+                                                YEAR(yt.Tarih) = 2023
+
+                                            group by
+                                                yu.Id,yu.UlkeAdi
+                                       
+                                       """)
+            liste = list()
+            for item in result:
+                model = TeklifUlkeModel()
+                model.id = item.UlkeId
+                model.country = item.UlkeAdi
+                model.countryTop = item.UlkeTop
+                liste.append(model)
+            schema = TeklifUlkeSchema(many=True)
+            return schema.dump(liste)
+            
+        
+        except Exception as e:
+            print('e',str(e))
+            return False
 
     def __getTakipTeklifSayisi(self,kullaniciId):
 

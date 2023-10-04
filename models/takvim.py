@@ -30,3 +30,14 @@ class TakvimModel:
     hatirlatmaAciklama = ""
     hatirlatmaDurum = False
     
+    
+    
+class TeklifUlkeSchema(Schema):
+    id = fields.Int()
+    country = fields.String()
+    countryTop = fields.Int()
+    
+class TeklifUlkeModel:
+    id = 0
+    country = ""
+    countryTop = 0

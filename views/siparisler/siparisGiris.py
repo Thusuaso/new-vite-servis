@@ -1132,6 +1132,10 @@ class SiparisGiris:
                  <th  style ="color: white;background-color: orange ;text-align: left;  padding-bottom: 12px; padding-top: 12px; padding-top: 12px;padding: 8px; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;width: 100px;">
                  Ürün Miktarı
                 </th>
+                </th>
+                 <th  style ="color: white;background-color: orange ;text-align: left;  padding-bottom: 12px; padding-top: 12px; padding-top: 12px;padding: 8px; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;width: 100px;">
+                 Ürün Birim
+                </th>
                 <th  style ="color: white;background-color: orange ;text-align: left;  padding-bottom: 12px; padding-top: 12px; padding-top: 12px;padding: 8px; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;width: 100px;">
                  Alış Fiyatı
                 </th>
@@ -1169,7 +1173,10 @@ class SiparisGiris:
                                 {degismeyen[0][5]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                                {degismeyen[0][4]} {degismeyen[0][7]} 
+                                {degismeyen[0][4]} 
+                            </td>
+                            <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
+                                {degismeyen[0][7]} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                                 {float(degismeyen[0][2])}
@@ -1204,7 +1211,10 @@ class SiparisGiris:
                             {degismeyen[i][0][5]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {str(float(degismeyen[i][0][4]))} {degismeyen[i][0][7]} 
+                            {str(float(degismeyen[i][0][4]))}  
+                            </td>
+                            <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
+                            {degismeyen[i][0][7]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                             {str(float(degismeyen[i][0][2]))}
@@ -1237,7 +1247,10 @@ class SiparisGiris:
                             {item['uretimAciklama']}
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['miktar'],sayac,degismeyen,3,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {str(float(item['miktar']))} {item['urunbirimAdi']} 
+                            {str(float(item['miktar']))}
+                        </td>
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['urunbirimAdi'],sayac,degismeyen,8,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
+                            {item['urunbirimAdi']} 
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['alisFiyati'],sayac,degismeyen,5,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {str(float(item['alisFiyati']))}
@@ -1279,9 +1292,6 @@ class SiparisGiris:
             elif (mekmoz>1) and siparis['siparisDurumId'] == 2:
                 MailService(siparis_no +" Düzenlenen Kalemler ", "muhsin@mekmer.com"," "+ baslik + body) #muhsin
                 
-
-
-
             if  (mekmoz + mekmer >=1) and siparis['siparisDurumId'] ==2 :
                  MailService(siparis_no +" Düzenlenen Kalemler ", "mehmet@mekmer.com",  " "+ baslik + body) #Mehmet
                  
@@ -1298,6 +1308,7 @@ class SiparisGiris:
                   
                   
         elif siparis['siparisDurumId'] == 3:
+ 
             if len(degisen)==1:
                 
                 body += f"""
@@ -1319,7 +1330,10 @@ class SiparisGiris:
                                 {degismeyen[0][5]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                                {degismeyen[0][4]} {degismeyen[0][7]} 
+                                {degismeyen[0][4]} 
+                            </td>
+                            <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
+                                {degismeyen[0][7]} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                                 {float(degismeyen[0][2])}
@@ -1352,7 +1366,10 @@ class SiparisGiris:
                             {degismeyen[i][0][5]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {float(degismeyen[i][0][4])} {degismeyen[i][0][7]} 
+                            {float(degismeyen[i][0][4])} 
+                            </td>
+                            <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
+                            {degismeyen[i][0][7]} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                             {float(degismeyen[i][0][2])}
@@ -1386,7 +1403,10 @@ class SiparisGiris:
                             {item['uretimAciklama']}
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['miktar'],sayac,degismeyen,3,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {float(item['miktar'])} {item['urunbirimAdi']} 
+                            {float(item['miktar'])} 
+                        </td>
+                        <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['urunbirimAdi'],sayac,degismeyen,8,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
+                            {item['urunbirimAdi']} 
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['alisFiyati'],sayac,degismeyen,5,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {float(item['alisFiyati'])}
@@ -1404,6 +1424,8 @@ class SiparisGiris:
             sahibi , maili = self.__siparisDetayi(siparis_no)
             MailService(siparis_no +" Düzenlenen Kalemler ", maili  , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
             MailService(siparis_no +" Düzenlenen Kalemler ", 'info@mekmar.com'  , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            # MailService(siparis_no +" Düzenlenen Kalemler ", 'bilgiislem@mekmar.com'  , " "+ baslik + body) #satıs temsilcisi(self,siparis,siparis_no):
+            
             
             
     def degisimKontrol(self,degisen,degismeyen,itemName):
@@ -1746,6 +1768,12 @@ class SiparisGiris:
                     return "red"
                 else:
                     return "#ddd"
+            elif durum == 8:
+                if item != degismeyen[sayac][7]:
+                    
+                    return "red"
+                else:
+                    return "#ddd"
         else:
             if durum == 1:
                 
@@ -1862,6 +1890,11 @@ class SiparisGiris:
                     return "#ddd"
             elif durum == 7:
                     if item != degismeyen[sayac][0][6]:
+                        return "red"
+                    else:
+                        return "#ddd"
+            elif durum == 8:
+                    if item != degismeyen[sayac][0][7]:
                         return "red"
                     else:
                         return "#ddd"
