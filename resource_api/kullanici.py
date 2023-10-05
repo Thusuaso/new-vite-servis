@@ -12,7 +12,6 @@ class Kullanici(Resource):
 
         username = user['username']
         password = user['password']
-        print(user)
         data = SqlConnect().data
         result = data.getStoreList('Select count(*) as Durum from KullaniciTB where KullaniciAdi=? and YSifre=?',(username,password))
         username = username.capitalize()
@@ -33,7 +32,7 @@ class Kullanici(Resource):
             model.kullaniciSoyAd = user.KullaniciSoyAd 
             model.satisci = user.Satisci
             model.teklif = user.Teklif
-            model.token = token.decode('UTF-8')
+            model.token = token
             model.image = user.Image
             model.id = user.ID
             schema = KullaniciSchema()

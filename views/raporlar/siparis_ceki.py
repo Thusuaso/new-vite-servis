@@ -30,7 +30,20 @@ class SiparisCeki:
             model.tedarikciAdi = item.TedarikciAdi 
             model.urunAdi = item.UrunAdi 
             model.yuzeyIslem = item.YuzeyIslem
-            model.urunKart = item.UrunKartID 
+            model.urunKart = item.UrunKartID
+            if(item.BirimAdi == 'M2'):
+                model.kasaAdet= 0
+                model.kasaMt = 0
+                model.kasaM2 = item.Miktar
+            elif(item.BirimAdi == 'Adet'):
+                model.kasaAdet = item.Miktar
+                model.kasaMt = 0
+                model.kasaM2 = 0
+            elif(item.BirimAdi == 'Mt'):
+                model.kasaAdet = 0
+                model.kasaMt = item.Miktar
+                model.kasaM2 = 0
+            
             model.tonaj = self.__getTonaj(item.KategoriAdi,item.BirimAdi,item.Adet,item.Miktar,item.En,item.Boy,item.Kenar)
             cekiList.append(model)
 

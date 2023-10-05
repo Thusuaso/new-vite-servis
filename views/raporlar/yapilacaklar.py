@@ -13,7 +13,8 @@ class Yapilacaklar:
                                                 y.GorevVerenAdi,
                                                 y.GorevSahibiAdi,
                                                 y.Yapilacak,
-                                                y.YapilacakOncelik
+                                                y.YapilacakOncelik,
+                                                y.Acil
                                             from Yapilacaklar y where y.Yapildi=1
                                             order by y.GirisTarihi desc
                                         """)
@@ -26,6 +27,7 @@ class Yapilacaklar:
                 model.gorev_sahibi_adi = item.GorevSahibiAdi
                 model.yapilacak = item.Yapilacak
                 model.oncelik = item.YapilacakOncelik
+                model.aciliyet = item.Acil
                 liste.append(model)
             schema = YapilacaklarSchema(many=True)
             return schema.dump(liste)
@@ -41,7 +43,8 @@ class Yapilacaklar:
                                                 y.GorevVerenAdi,
                                                 y.GorevSahibiAdi,
                                                 y.Yapilacak,
-                                                y.YapilacakOncelik
+                                                y.YapilacakOncelik,
+                                                y.Acil
                                             from Yapilacaklar y where y.Yapildi=0
                                             order by y.GirisTarihi desc
 
@@ -54,6 +57,7 @@ class Yapilacaklar:
                 model.gorev_sahibi_adi = item.GorevSahibiAdi
                 model.yapilacak = item.Yapilacak
                 model.oncelik = item.YapilacakOncelik
+                model.aciliyet = item.Acil
                 liste.append(model)
             schema = YapilacaklarSchema(many=True)
             return schema.dump(liste)
@@ -74,7 +78,8 @@ class Yapilacaklar:
                                                 GorevVerenAdi,
                                                 GirisTarihi,
                                                 YapildiTarihi,
-                                                YapilacakOncelik
+                                                YapilacakOncelik,
+                                                Acil
 
                                             from Yapilacaklar
 
@@ -95,6 +100,7 @@ class Yapilacaklar:
                 model.yapildiTarihi = item.YapildiTarihi
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
+                model.aciliyet = item.Acil
                 liste.append(model)
             schema = YapilacaklarSchema(many = True)
             return schema.dump(liste)
@@ -115,8 +121,8 @@ class Yapilacaklar:
                                                 GorevVerenAdi,
                                                 GirisTarihi,
                                                 YapildiTarihi,
-                                                YapilacakOncelik
-
+                                                YapilacakOncelik,
+                                                Acil
                                             from Yapilacaklar
 
                                             where GorevSahibiId =? and Yapildi=0
@@ -136,6 +142,8 @@ class Yapilacaklar:
                 model.yapildiTarihi = item.YapildiTarihi
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
+                model.aciliyet = item.Acil
+                
                 liste.append(model)
             schema = YapilacaklarSchema(many = True)
             return schema.dump(liste)
@@ -182,6 +190,7 @@ class Yapilacaklar:
                 model.gorev_sahibi_id = item.GorevSahibiId
                 model.yapilacak = item.Yapilacak
                 model.oncelik = item.YapilacakOncelik
+                model.aciliyet = item.Acil
                 liste.append(model)
             schema = YapilacaklarSchema(many = True)
             return schema.dump(liste)
@@ -200,8 +209,9 @@ class Yapilacaklar:
                                         GorevVerenAdi,
                                         GorevVerenID,
                                         GirisTarihi,
-                                        YapilacakOncelik
-                                        ) VALUES(?,?,?,?,?,?,?,?)
+                                        YapilacakOncelik,
+                                        Acil
+                                        ) VALUES(?,?,?,?,?,?,?,?,?)
 
                                     """,(
                                             data['gorev_sahibi_adi'],
@@ -212,6 +222,7 @@ class Yapilacaklar:
                                             data['gorev_veren_id'],
                                             data['girisTarihi'],
                                             data['oncelik'],
+                                            data['aciliyet']
                                         )
                                    )
             return True
@@ -230,7 +241,6 @@ class Yapilacaklar:
             return False
     def changeStatus(self,data):
         try:
-            print(data)
             self.sql.update_insert("""
                                     update Yapilacaklar SET Yapildi=?,YapildiTarihi=? where ID=?
                                    """,(data['status'],data['yapildiTarihi'],data['id']))
@@ -241,8 +251,8 @@ class Yapilacaklar:
     def update(self,data):
         try:
             self.sql.update_insert("""
-                                    update Yapilacaklar SET GorevSahibiAdi=?,GorevSahibiId=?,Yapilacak=?,YapilacakOncelik=? where ID=? 
-                                """,(data['gorev_sahibi_adi'],data['gorev_sahibi_id'],data['yapilacak'],data['oncelik'],data['id']))
+                                    update Yapilacaklar SET GorevSahibiAdi=?,GorevSahibiId=?,Yapilacak=?,YapilacakOncelik=?,Acil=? where ID=? 
+                                """,(data['gorev_sahibi_adi'],data['gorev_sahibi_id'],data['yapilacak'],data['oncelik'],data['aciliyet'],data['id']))
             return True
         except Exception as e:
             print('yapilacaklar update hata',str(e))
@@ -261,7 +271,8 @@ class Yapilacaklar:
                                                 GorevVerenAdi,
                                                 GirisTarihi,
                                                 YapildiTarihi,
-                                                YapilacakOncelik
+                                                YapilacakOncelik,
+                                                Acil
 
                                             from Yapilacaklar
 
@@ -282,6 +293,7 @@ class Yapilacaklar:
                 model.yapildiTarihi = item.YapildiTarihi
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
+                model.aciliyet = item.Acil
                 listA.append(model)
 
             schema = YapilacaklarSchema(many = True)
@@ -307,7 +319,8 @@ class Yapilacaklar:
                                                 GorevVerenAdi,
                                                 GirisTarihi,
                                                 YapildiTarihi,
-                                                YapilacakOncelik
+                                                YapilacakOncelik,
+                                                Acil
 
                                             from Yapilacaklar
 
@@ -328,6 +341,7 @@ class Yapilacaklar:
                 model.yapildiTarihi = item.YapildiTarihi
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
+                model.aciliyet = item.Acil
                 listB.append(model)
 
             schema = YapilacaklarSchema(many = True)
@@ -352,7 +366,8 @@ class Yapilacaklar:
                                                 GorevVerenAdi,
                                                 GirisTarihi,
                                                 YapildiTarihi,
-                                                YapilacakOncelik
+                                                YapilacakOncelik,
+                                                Acil
 
                                             from Yapilacaklar
 
@@ -373,6 +388,7 @@ class Yapilacaklar:
                 model.yapildiTarihi = item.YapildiTarihi
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
+                model.aciliyet = item.Acil
                 listC.append(model)
 
             schema = YapilacaklarSchema(many = True)
@@ -398,7 +414,8 @@ class Yapilacaklar:
                                                 GorevVerenAdi,
                                                 GirisTarihi,
                                                 YapildiTarihi,
-                                                YapilacakOncelik
+                                                YapilacakOncelik,
+                                                Acil
 
                                             from Yapilacaklar
 
@@ -419,6 +436,7 @@ class Yapilacaklar:
                 model.yapildiTarihi = item.YapildiTarihi
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
+                model.aciliyet = item.Acil
                 liste.append(model)
             schema = YapilacaklarSchema(many = True)
             return schema.dump(liste)

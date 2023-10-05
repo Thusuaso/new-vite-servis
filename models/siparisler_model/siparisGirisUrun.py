@@ -18,7 +18,9 @@ class SiparisGirisUrunSchema(SiparisUrunSchema):
     newAmountadet = fields.Float()
     newAmountmiktar = fields.Float()
     isChange = fields.Boolean()
-
+    whatMultiplyM2 = fields.String()
+    whatMultiplyAdet = fields.String()
+    whatMultiplyMt = fields.String()
 class SiparisGirisUrunModel(SiparisUrunModel):
     urunAdi = ""
     en = ""
@@ -35,6 +37,9 @@ class SiparisGirisUrunModel(SiparisUrunModel):
     newAmountadet = 0
     newAmountmiktar = 0
     isChange = False
+    whatMultiplyM2 = ""
+    whatMultiplyAdet = ""
+    whatMultiplyMt = ""
     
     
 

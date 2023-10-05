@@ -12,6 +12,7 @@ class YapilacaklarSchema(Schema):
     yapildiTarihi = fields.String()
     oncelik = fields.String()
     userStatus = fields.Boolean()
+    aciliyet = fields.Boolean()
 class YapilacaklarModel:
     id = 0
     gorev_sahibi_adi = ""
@@ -24,6 +25,7 @@ class YapilacaklarModel:
     yapildiTarihi = ""
     oncelik = ""
     userStatus = False
+    aciliyet = False
 
 class YapilacaklarKullanicilarSchema(Schema):
     

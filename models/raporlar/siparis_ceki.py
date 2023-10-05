@@ -17,7 +17,11 @@ class SiparisCekiSchema(Schema):
     kutuAdet = fields.Int()
     urunKart = fields.Int()
     tonaj = fields.Float()
-
+    kasaAdet=fields.Float()
+    kasaM2 = fields.Float()
+    kasaMt = fields.Float()
+    
+    
 class SiparisCekiModel:
     id = None
     sira = 0
@@ -35,3 +39,6 @@ class SiparisCekiModel:
     kutuAdet = 0
     urunKart = 0
     tonaj = 0
+    kasaAdet=0
+    kasaM2 = 0
+    kasaMt = 0

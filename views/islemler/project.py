@@ -25,7 +25,7 @@ class Project:
                                         CountryName,
                                         Image,
                                         Queue
-                                    from MekmarCom_Projects order by ID
+                                    from MekmarCom_Projects order by Queue
                                   """)
         liste = list()
         for item in result:
@@ -230,10 +230,12 @@ class Project:
     def getNotSuggested(self,id):
         try:
             result = self.sql.getStoreList("""
-                                            select mp.ID,mp.ProjectName,mp.Image from MekmarCom_Projects mp where  mp.ID not in (
+                                            select mp.ID,mp.ProjectName,mp.Image,mp.Queue from MekmarCom_Projects mp where  mp.ID not in (
 
-                                                        select mps.SuggestedId from MekmarCom_Projects_Suggested mps where mps.ProjectId=?
-                                                    )
+                                                        select mps.SuggestedId from MekmarCom_Projects_Suggested mps where mps.ProjectId=15
+														
+														)
+									order by mp.Queue 
                                            """,(id))
             liste = list()
             for item in result:
@@ -298,7 +300,6 @@ class Project:
     def setProjectQueue(self,data):
         try:
             for item in data:
-                print(item)
                 self.sql.update_insert("""
                                         update MekmarCom_Projects SET Queue = ? where ID=?
                                    """,(item['queue'],item['id']))

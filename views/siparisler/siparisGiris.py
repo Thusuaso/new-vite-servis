@@ -230,10 +230,32 @@ class SiparisGiris:
             model.siraNo = item.SiraNo 
             model.tedarikciAdi = item.TedarikciAdi
             m2,mt,ton,adet = self.__getMiktar(model.urunBirimId,model.miktar)
-            model.m2 = m2
-            model.mt = mt 
+            
+            if(model.urunBirimId == 1):
+                model.m2 = m2
+                model. adet = self.__getAdetHesaplama(item.En,item.Boy,item.Miktar)
+                model.mt = mt
+                model.whatMultiplyM2 = '#fcaca7'
+                model.whatMultiplyAdet = ""
+                model.whatMultiplyMt = ""
+                
+            elif(model.urunBirimId == 2):
+                model.m2 = self.__getM2Hesaplama(item.En,item.Boy,item.Miktar)
+                model.adet = item.Miktar
+                model.mt = mt
+                model.whatMultiplyM2 = ''
+                model.whatMultiplyAdet = "#fcaca7"
+                model.whatMultiplyMt = ""
+                
+            else:
+                getAdet,getM2 = self.__getMtHesaplama(item.En,item.Boy,item.Miktar)
+                model.m2 = getM2
+                model.mt = mt 
+                model.adet = getAdet
+                model.whatMultiplyM2 = ''
+                model.whatMultiplyAdet = ""
+                model.whatMultiplyMt = "#fcaca7"
             model.ton = item.Ton
-            model.adet = adet 
             model.urunAdi = item.UrunAdi
             model.en = item.En 
             model.boy = item.Boy 
@@ -260,6 +282,80 @@ class SiparisGiris:
             ton = miktar
 
         return m2,mt,ton,adet
+    
+    def __getAdetHesaplama(self,en,boy,miktar):
+        if(en == 'FR' or
+           en == 'FRENCH' or
+           en == 'VAR' or 
+           en =='Various' or 
+           en =='ANT' or 
+           en == 'SLAB' or 
+           en == '1 LT' or 
+           en == 'Crazy' or 
+           boy=='Free' or 
+           boy == 'FREE' or
+           en == 'Other' or 
+           boy=='Other' or
+           en == 'SET' or
+           boy == 'MINI' or 
+           boy =='SET' or
+           en =='MINI'
+           ):
+            return 0
+        else:
+            
+            return int((float(str(miktar).replace(',','.')) / (float(str(en).replace(',','.'))/100) / (float(str(boy).replace(',','.'))/100)))
+    
+    def __getM2Hesaplama(self,en,boy,miktar):
+        if(en == 'FR' or
+           en == 'FRENCH' or
+           en == 'VAR' or 
+           en =='Various' or 
+           en =='ANT' or 
+           en == 'SLAB' or 
+           en == '1 LT' or 
+           en == 'Crazy' or 
+           boy=='Free' or 
+           boy == 'FREE' or
+           en == 'Other' or 
+           boy=='Other' or
+           en == 'SET' or
+           boy == 'MINI' or 
+           boy =='SET' or
+           en =='MINI'
+           ):
+            return 0
+        else:
+            
+            return (float(str(miktar).replace(',','.')) * (float(str(en).replace(',','.'))/100) * (float(str(boy).replace(',','.'))/100))
+    
+    def __getMtHesaplama(self,en,boy,miktar):
+        if(en == 'FR' or
+           en == 'FRENCH' or
+           en == 'VAR' or 
+           en =='Various' or 
+           en =='ANT' or 
+           en == 'SLAB' or 
+           en == '1 LT' or 
+           en == 'Crazy' or 
+           en == 'Other' or 
+           boy=='Other' or
+           en == 'SET' or
+           boy == 'MINI' or 
+           boy =='SET' or
+           en =='MINI'
+           ):
+            return 0,0
+        elif (boy == 'Free' or boy == 'FREE'):
+            adet = 0
+            m2 = float(str(miktar).replace(',','.')) * (float(str(en).replace(',','.'))/100)
+            return adet, m2
+        else:
+            m2 = float(str(miktar).replace(',','.')) * (float(str(en).replace(',','.'))/100)
+            adet = int(m2 / (float(str(en).replace(',','.'))/100) / (float(str(boy).replace(',','.'))/100))
+            return adet, m2
+    
+    
     
     def siparisKaydet(self,urunler,siparis):
        
