@@ -794,5 +794,6 @@ api.add_resource(ProjectInformationApi,'/mekmarcom/project/information',methods=
 api.add_resource(ProjectListSuggestedApi,'/mekmarcom/project/list/all/<int:id>',methods=['GET'])
 api.add_resource(ProjectSuggestedApi,'/mekmarcom/project/suggested/send',methods=['POST'])
 api.add_resource(ProjectQueueApi,'/mekmarcom/project/queue',methods=['POST'])
+api.add_resource(ProjectMainPhotosChaneApi,'/panel/projec/main/photos',methods=['POST'])
 if __name__ == '__main__':
     app.run(port=5000,debug=True) #https://doktor-servis.mekmar.com/raporlar/listeler/uretimRaporuHepsi

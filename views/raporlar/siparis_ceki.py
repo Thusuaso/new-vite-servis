@@ -18,7 +18,7 @@ class SiparisCeki:
             model = SiparisCekiModel()
             model.id = item.ID
             model.sira = sira 
-            model.adet = item.Adet 
+             
             model.birimAdi = item.BirimAdi 
             model.boy = item.Boy 
             model.en = item.En 
@@ -31,18 +31,35 @@ class SiparisCeki:
             model.urunAdi = item.UrunAdi 
             model.yuzeyIslem = item.YuzeyIslem
             model.urunKart = item.UrunKartID
+            model.adet = item.Adet
+            # if(item.BirimAdi == 'M2'):
+            #     model.kasaAdet= self.__getAdetHesaplama(item.En,item.Boy,item.Miktar)
+            #     model.kasaMt = 0
+            #     model.kasaM2 = item.Miktar
+            #     model.adet = model.kasaAdet
+            # elif(item.BirimAdi == 'Adet'):
+            #     if(model.kutuAdet != None or model.kutuAdet != 0):
+            #         model.kasaAdet = item.Adet
+            #         model.kutuAdet = item.Adet
+            #     else:
+            #         model.kasaAdet = item.Miktar
+            #         model.kasaMt = 0
+            #         model.kasaM2 = self.__getM2Hesaplama(item.En,item.Boy,item.Miktar)
+            #         model.adet = item.Adet
+            #         model.miktar = model.kasaM2
+            # elif(item.BirimAdi == 'Mt'):
+            #     model.kasaAdet = 0
+            #     model.kasaMt = item.Miktar
+            #     model.kasaM2 = 0
             if(item.BirimAdi == 'M2'):
-                model.kasaAdet= 0
-                model.kasaMt = 0
                 model.kasaM2 = item.Miktar
-            elif(item.BirimAdi == 'Adet'):
-                model.kasaAdet = item.Miktar
-                model.kasaMt = 0
-                model.kasaM2 = 0
-            elif(item.BirimAdi == 'Mt'):
-                model.kasaAdet = 0
-                model.kasaMt = item.Miktar
-                model.kasaM2 = 0
+                if(model.adet == None or model.adet == 0):
+                    model.adet = self.__getAdetHesaplama(item.En,item.Boy,item.Miktar)
+            
+            if(item.BirimAdi == 'Adet'):
+                model.adet = item.Miktar
+                model.miktar = self.__getM2Hesaplama(item.En,item.Boy,item.Miktar)
+                model.kasaM2 = model.miktar
             
             model.tonaj = self.__getTonaj(item.KategoriAdi,item.BirimAdi,item.Adet,item.Miktar,item.En,item.Boy,item.Kenar)
             cekiList.append(model)
@@ -85,4 +102,56 @@ class SiparisCeki:
             return 2.5
         else:
             return 0
+        
+    def __getAdetHesaplama(self,en,boy,miktar):
+        if(
+            en=='VAR' or
+            en == 'Var' or
+            en == 'Various' or
+            en == 'VARIOUS' or
+            en == 'ANT' or
+            en =='Free' or
+            en =='FREE' or
+            en == 'Slabs' or
+            en == 'Slab' or
+            en == 'SLAB' or
+            en == 'SLABS' or
+            en == '1 LT' or
+            en == 'Crazy' or
+            boy == 'Free' or
+            boy == 'FREE' or
+            boy == 'Set' or
+            boy == 'SET'  or
+            boy == 'VAR'
+        ):
+            return 0
+        else:
+            return int(float(str(miktar).replace(',','.')) / (float(str(en).replace(',','.'))/100) / (float(str(boy).replace(',','.'))/100))
+    
+    def __getM2Hesaplama(self,en,boy,miktar):
+        
+        if(
+            en=='VAR' or
+            en == 'Var' or
+            en == 'Various' or
+            en == 'VARIOUS' or
+            en == 'ANT' or
+            en =='Free' or
+            en =='FREE' or
+            en == 'Slabs' or
+            en == 'Slab' or
+            en == 'SLAB' or
+            en == 'SLABS' or
+            en == '1 LT' or
+            en == 'Crazy' or
+            boy == 'Free' or
+            boy == 'FREE' or
+            boy == 'Set' or
+            boy == 'SET' or
+            boy == 'VAR'
+        ):
+            return 0
+        else:
+            return round(float(float(str(miktar).replace(',','.')) * (float(str(en).replace(',','.'))/100) * (float(str(boy).replace(',','.'))/100)),2)
+    
     

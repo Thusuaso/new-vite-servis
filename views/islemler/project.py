@@ -307,3 +307,15 @@ class Project:
         except Exception as e:
             print('setProjectQueue,hata',str(e))
             return False
+        
+    def setChangeMainPhotos(self,data):
+        try:
+            image = 'https://mekmar-image.fra1.cdn.digitaloceanspaces.com/galleria-project_photos/' + data['newFileName']
+            self.sql.update_insert("""
+                                        update MekmarCom_Projects SET Image=? where ID=? 
+                                   """,(image,data['project_id'])
+                                    )
+            return True
+        except Exception as e:
+            print('setChangeMainPhotos',(str(e)))
+            return False

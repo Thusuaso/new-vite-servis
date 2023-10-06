@@ -233,7 +233,7 @@ class SiparisGiris:
             
             if(model.urunBirimId == 1):
                 model.m2 = m2
-                model. adet = self.__getAdetHesaplama(item.En,item.Boy,item.Miktar)
+                model.adet = item.Adet
                 model.mt = mt
                 model.whatMultiplyM2 = '#fcaca7'
                 model.whatMultiplyAdet = ""
@@ -322,7 +322,8 @@ class SiparisGiris:
            en == 'SET' or
            boy == 'MINI' or 
            boy =='SET' or
-           en =='MINI'
+           en =='MINI' or
+           boy == 'VAR'
            ):
             return 0
         else:
@@ -343,7 +344,8 @@ class SiparisGiris:
            en == 'SET' or
            boy == 'MINI' or 
            boy =='SET' or
-           en =='MINI'
+           en =='MINI' or 
+           boy == 'VAR' 
            ):
             return 0,0
         elif (boy == 'Free' or boy == 'FREE'):
@@ -722,15 +724,15 @@ class SiparisGiris:
                     insert into SiparisUrunTB (
                         SiparisNo,TedarikciID,UrunKartID,UrunBirimID,Miktar,OzelMiktar,KasaAdet,
                         SatisFiyati,SatisToplam,UretimAciklama,MusteriAciklama,
-                        AlisFiyati,AlisFiyati_TL,SiraNo,Ton,musteriID
+                        AlisFiyati,AlisFiyati_TL,SiraNo,Ton,musteriID,Adet
                     )
                     values
-                    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                     """,(
                         siparisNo,item['tedarikciId'],item['urunKartId'],item['urunBirimId'],
                         item['miktar'],ozelMiktar,item['kasaAdet'],item['satisFiyati'],
                         item['satisToplam'],item['uretimAciklama'],item['musteriAciklama'],
-                        item['alisFiyati'],item['alisFiyati_Tl'],item['siraNo'],ton,musteriid
+                        item['alisFiyati'],item['alisFiyati_Tl'],item['siraNo'],ton,musteriid,item['adet']
                     )
                 )
            
@@ -876,12 +878,12 @@ class SiparisGiris:
                         update SiparisUrunTB set TedarikciID=?,UrunKartID=?,UrunBirimID=?,Miktar=?,
                         OzelMiktar=?,KasaAdet=?,SatisFiyati=?,SatisToplam=?,UretimAciklama=?,
                         MusteriAciklama=?,Notlar=?,KullaniciID=?,AlisFiyati=?,AlisFiyati_TL=?,
-                        SiraNo=?,Ton=? where ID=?
+                        SiraNo=?,Ton=?,Adet=? where ID=?
                         """,(
                             item['tedarikciId'],item['urunKartId'],item['urunBirimId'],item['miktar'],
                             item['ozelMiktar'],item['kasaAdet'],item['satisFiyati'],item['satisToplam'],
                             item['uretimAciklama'],item['musteriAciklama'],item['notlar'],
-                            item['kullaniciId'],item['alisFiyati'],item['alisFiyati_Tl'],item['siraNo'],ton,
+                            item['kullaniciId'],item['alisFiyati'],item['alisFiyati_Tl'],item['siraNo'],ton,item['adet'],
                             item['id']
                         )
                     )
