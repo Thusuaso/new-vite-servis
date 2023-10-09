@@ -52,40 +52,124 @@ class Iscilik:
         return schema.dump(model)
 
     def kaydet(self,data):
-        self.data.update_insert(
-            """
-            insert into SiparisEkstraGiderlerTB (
-                Tarih,siparisNo,UrunKartID,TedarikciID,
-                SiparisEkstraGiderTurID,Aciklama,Tutar
+        try:
+            self.data.update_insert(
+                """
+                insert into SiparisEkstraGiderlerTB (
+                    Tarih,siparisNo,UrunKartID,TedarikciID,
+                    SiparisEkstraGiderTurID,Aciklama,Tutar
+                )
+                values
+                (?,?,?,?,?,?,?)
+                """,(
+                    
+                    data['tarih'],data['siparisNo'],data['urunKartId'],
+                    data['tedarikciId'],data['siparisEkstraGiderTurId'],
+                    data['aciklama'],data['tutar']
+                )
             )
-            values
-            (?,?,?,?,?,?,?)
-            """,(
+            iscilik = self.data.getStoreList("""
+                                        select * from SiparisEkstraGiderlerTB where SiparisNo=?
+                                    """,(data['siparisNo']))
+            liste = list()
+            for item in iscilik:
+                model = IscilikModel()
+                model.tutar = item.Tutar
+                liste.append(model)
                 
-                data['tarih'],data['siparisNo'],data['urunKartId'],
-                data['tedarikciId'],data['siparisEkstraGiderTurId'],
-                data['aciklama'],data['tutar']
-            )
-        )
-
+            schema  = IscilikSchema(many = True)
+            
+            data = {
+                'status':True,
+                'iscilik':schema.dump(liste)
+            }
+            
+        
+            return data
+        except Exception as e:
+            print('iscilik kaydet hata',str(e))
+            data = {
+                'status':False
+            }
+            return data
 
     def guncelle(self,data):
-        print(data)
-        self.data.update_insert(
-            """
-            update SiparisEkstraGiderlerTB set Tarih=?,TedarikciID=?,
-            SiparisEkstraGiderTurID=?,Aciklama=?,Tutar=?
-            where ID=?
-            """,(
-                data['tarih'],data['tedarikciId'],data['siparisEkstraGiderTurId'],
-                data['aciklama'],data['tutar'],data['id']
+        try:
+            print(data['siparisNo'])
+            self.data.update_insert(
+                """
+                update SiparisEkstraGiderlerTB set Tarih=?,TedarikciID=?,
+                SiparisEkstraGiderTurID=?,Aciklama=?,Tutar=?
+                where ID=?
+                """,(
+                    data['tarih'],data['tedarikciId'],data['siparisEkstraGiderTurId'],
+                    data['aciklama'],data['tutar'],data['id']
+                )
             )
-        )
 
-    def sil(self,id):
+            iscilik = self.data.getStoreList("""
+                                    select * from SiparisEkstraGiderlerTB where SiparisNo=?
+                                """,(data['siparisNo']))
+            print(iscilik)
+            liste = list()
+            for item in iscilik:
+                model = IscilikModel()
+                model.tutar = item.Tutar
+                liste.append(model)
+                
+            schema  = IscilikSchema(many = True)
+            
+            data = {
+                'status':True,
+                'iscilik':schema.dump(liste)
+            }
+            
+            
+            return data
+        except Exception as e:
+            print('iscilik güncelle hata',str(e))
+            data = {
+                'status':False
+            }
+            return data
+            
         
-        self.data.update_insert(
+    def sil(self,id):
+    
+        
+        try:
+            
+            siparisNo = self.data.getStoreList("""
+                                                    select SiparisNo from SiparisEkstraGiderlerTB where ID=?
+                                               """,(id))
+            
+            self.data.update_insert(
             """
-            delete from SiparisEkstraGiderlerTB where ID=?
-            """,(id)
-        )
+                delete from SiparisEkstraGiderlerTB where ID=?
+                """,(id)
+            )
+
+            iscilik = self.data.getStoreList("""
+                                    select * from SiparisEkstraGiderlerTB where SiparisNo=?
+                                """,(siparisNo[0][0]))
+            liste = list()
+            for item in iscilik:
+                model = IscilikModel()
+                model.tutar = item.Tutar
+                liste.append(model)
+                
+            schema  = IscilikSchema(many = True)
+            
+            data = {
+                'status':True,
+                'iscilik':schema.dump(liste)
+            }
+            
+            
+            return data
+        except Exception as e:
+            print('iscilik sil hata',str(e))
+            data = {
+                'status':False
+            }
+            return data

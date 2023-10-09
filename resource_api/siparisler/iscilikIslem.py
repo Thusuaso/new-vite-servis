@@ -2,7 +2,6 @@ from views.siparisler import Iscilik
 from flask_restful import Resource
 from flask import request,jsonify
 from helpers import DegisiklikMain
-
 class IscilikList(Resource): 
     def get(self,siparisNo,urunKartId):
 
@@ -26,22 +25,22 @@ class IscilikDataIslem(Resource):
         try:
             iscilik = Iscilik()
             giderVeri = request.get_json()
-            iscilik.kaydet(giderVeri)
+            result = iscilik.kaydet(giderVeri)
 
-            return jsonify({'status' : True})
+            return jsonify(result)
         except:
-            return jsonify({'status' : False})
+            return jsonify(result)
 
     def put(self):
 
         try:
             iscilik = Iscilik()
             giderVeri = request.get_json()
-            iscilik.guncelle(giderVeri)
+            result = iscilik.guncelle(giderVeri)
 
-            return jsonify({'status' : True})
+            return jsonify(result)
         except:
-            return jsonify({'status' : False})
+            return jsonify(result)
 
     
 
@@ -51,8 +50,8 @@ class IscilikKayitSil(Resource):
         try:
             iscilik = Iscilik()
             
-            iscilik.sil(id)
-            return jsonify({'status' : True})
+            result = iscilik.sil(id)
+            return jsonify(result)
         except Exception as e:
             print('delete : ', str(e))
-            return jsonify({'status' : False})
+            return jsonify(result)
