@@ -323,7 +323,8 @@ class SiparisGiris:
            boy == 'MINI' or 
            boy =='SET' or
            en =='MINI' or
-           boy == 'VAR'
+           boy == 'VAR' or
+           boy == 'Various'
            ):
             return 0
         else:
