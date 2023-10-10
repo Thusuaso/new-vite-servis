@@ -73,13 +73,13 @@ class SiparisCeki:
     def __getTonaj(self,kategori,birim,adet,miktar,en,boy,kenar):
         tonaj = 0
         if(birim == 'M2'):
-            if(en == 'VAR' or en == 'Var' or boy=='Free' or boy == 'FREE' or en == 'Various' or en == 'VARIOUS' or en == 'SLAB' or en == 'Slab' or en=='Other' or boy== 'Other' or en == 'OZEL' or boy == 'OZEL' or boy == 'Various' or en =='1 LT'):
+            if(en == 'VAR' or en == 'Var' or boy=='Free' or boy == 'FREE' or en == 'Various' or en == 'VARIOUS' or en == 'SLAB' or en == 'Slab' or en=='Other' or boy== 'Other' or en == 'OZEL' or boy == 'OZEL' or boy == 'Various' or en =='1 LT' or boy=='VAR' or boy=='Var'):
                 pass
             else:
                 
                 tonaj = self.__getKategoriKatsayisi(kategori) * float(str(kenar).replace(',','.')) * float(str(miktar).replace(',','.')) * 10
         elif (birim == 'Adet'):
-            if(en == 'VAR' or en == 'Var' or boy=='Free' or boy == 'FREE' or en == 'Various' or en == 'VARIOUS' or en == 'SLAB' or en == 'Slab' or en=='Other' or boy== 'Other' or en == 'OZEL' or boy == 'OZEL' or boy == 'Various' or kenar =='Various' or en=='1 LT'):
+            if(en == 'VAR' or en == 'Var' or boy=='Free' or boy == 'FREE' or en == 'Various' or en == 'VARIOUS' or en == 'SLAB' or en == 'Slab' or en=='Other' or boy== 'Other' or en == 'OZEL' or boy == 'OZEL' or boy == 'Various' or kenar =='Various' or en=='1 LT' or boy=='VAR' or boy=='Var'):
                 pass
             else:
                 m2 = (float(str(en).replace(',','.')) * float(str(boy).replace(',','.')) * float(str(adet).replace(',','.'))) / 10000
