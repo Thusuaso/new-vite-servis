@@ -65,9 +65,15 @@ class SiparisGirisBosModel(Resource):
 
         siparis = SiparisGiris()
 
-        result = siparis.getSiparisModel()
+        model = siparis.getSiparisModel()
+        productNoList = siparis.getSiparisNoList()
+        data = {
+            'model':model,
+            'productNoList':productNoList,
+            
+        }
 
-        return result
+        return data
     
 class ContainerAddApi(Resource):
     def post(self):

@@ -8,6 +8,7 @@ from helpers import MailService,DegisiklikMain
 import datetime
 from resource_api.finans.caprazkur import DovizListem
 from views.shared.degisiklikTahmin import DegisiklikTahmin
+from models.siparisler_model.siparisGiris import SiparisNoListModel,SiparisNoListSchema
 class SiparisGiris:
     
     def __init__(self):
@@ -48,6 +49,22 @@ class SiparisGiris:
         schema = SiparisGirisSchema()
 
         return schema.dump(model)
+    
+    def getSiparisNoList(self):
+        try:
+            siparisNoListe = self.data.getList("""
+                                                select SiparisNo from SiparislerTB
+                                               """)
+            liste = list()
+            for item in siparisNoListe:
+                model = SiparisNoListModel()
+                model.siparisNo = item.SiparisNo
+                liste.append(model)
+            schema = SiparisNoListSchema(many = True)
+            return schema.dump(liste)
+        except Exception as e:
+            print('getSiparisNoList hata',str(e))
+            return False
     
     def getSiparis(self,siparisNo):
         model = SiparisGirisModel()

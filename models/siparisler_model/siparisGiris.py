@@ -24,3 +24,10 @@ class ContainerAmountSchema(Schema):
     
 class ContainerAmountModel:
     container_amount = 0
+    
+    
+class SiparisNoListSchema(Schema):
+    siparisNo = fields.String()
+    
+class SiparisNoListModel:
+    siparisNo = ""

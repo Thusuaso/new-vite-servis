@@ -148,7 +148,10 @@ class SiparisCeki:
             boy == 'FREE' or
             boy == 'Set' or
             boy == 'SET' or
-            boy == 'VAR'
+            boy == 'VAR' or
+            boy=='Various' or
+            boy =='Var' or
+            boy =='VARIOUS'
         ):
             return 0
         else:
