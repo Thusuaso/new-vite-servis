@@ -7,3 +7,4 @@ class UretimSipSchema(Schema):
 
 class UretimSipModel:
     sipNo=""
+    

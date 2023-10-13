@@ -319,3 +319,22 @@ class Project:
         except Exception as e:
             print('setChangeMainPhotos',(str(e)))
             return False
+    def setChangeMainPhotosData(self,data):
+        try:
+            projectOldMainImage = self.sql.getStoreList("""
+                                select Image from MekmarCom_Projects where ID=?
+
+                             """,(data['project_id']))[0][0]
+            self.sql.update_insert("""
+                                        update MekmarCom_Projects SET Image = ? where ID=?
+                                   """,(data['image_link'],data['project_id']))
+            self.sql.update_insert("""
+                                        update MekmarCom_Project_Detail SET ImageLink=? where ID=?
+                                   """,(projectOldMainImage,data['id']))
+            
+            print('Ana Fotoğraf Değiştirildi...')
+            return True
+            
+        except Exception as e:
+            print('setChangeMainPhotosData hata')
+            return False

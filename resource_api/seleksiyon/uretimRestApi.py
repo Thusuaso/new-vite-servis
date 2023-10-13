@@ -6,6 +6,7 @@ from flask import request,jsonify
 from resource_api.seleksiyon.kasa_detay import KasaDetayListesi,KasaDetayExcell,KasaDetayGuncelle,TedarikciList,KasaDetayKaydet,KasaDetaySil
 from flask_restful import Resource
 from flask import jsonify,request,send_file
+from resource_api.seleksiyon.listeler import *
 class SeleksiyonKasaDetay(Resource):
     def get(self):
         kasa_detay = KasaDetayListesi()
@@ -411,3 +412,30 @@ class UretimUrunKartKasaKontrolApi(Resource):
         islem = UretimUrunKartKasaKontrol()
         result = islem.getUretimUrunKartKasaKontrol(urunKartId)
         return jsonify(result)
+    
+class KasaOlculeriApi(Resource):
+    def get(self):
+        islem = KasaOlculeri()
+        result = islem.getKasaOlculeri()
+        return jsonify(result)
+    
+class KasaOlculeriKayitApi(Resource):
+    def post(self):
+        data = request.get_json()
+        islem = KasaOlculeri()
+        status = islem.save(data)
+        return {'status':status}
+    
+    def put(self):
+        data = request.get_json()
+        islem = KasaOlculeri()
+        status = islem.update(data)
+        return {'status':status}
+    
+class KasaOlculeriDeleteApi(Resource):
+    def delete(self,id):
+        islem = KasaOlculeri()
+        status = islem.delete(id)
+        return {'status':status}
+        
+        

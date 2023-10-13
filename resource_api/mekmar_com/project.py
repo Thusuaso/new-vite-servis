@@ -112,3 +112,11 @@ class ProjectMainPhotosChaneApi(Resource):
         status = project.setChangeMainPhotos(data)
         return {'status':status}
     
+    
+class ProjectMainPhotosChangeApi(Resource):
+    def post(self):
+        data = request.get_json()
+        project = Project()
+        status = project.setChangeMainPhotosData(data)
+        return {'status',status}
+    

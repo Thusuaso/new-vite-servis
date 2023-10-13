@@ -5,3 +5,4 @@ from models.seleksiyon.uretim import UretimModel,UretimSchema,UretimFazlaMiSchem
 from models.seleksiyon.kasa_detay_olculeri import *
 from models.seleksiyon.uretimSipList import *
 from models.seleksiyon.uretim import *
+from models.seleksiyon.kasa_olculeri import *

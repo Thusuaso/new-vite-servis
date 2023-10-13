@@ -313,8 +313,9 @@ api.add_resource(PoProductList,'/islemler/seleksiyon/seleksiyonProductList/<stri
 api.add_resource(UretimSeleksiyonUrunKartApi,'/seleksiyon/islemler/urunKartBilgileri',methods=['GET'])
 
 api.add_resource(UretimSeleksiyonFazlasiMiApi,'/seleksiyon/islemler/uretimFazlasiMi/<string:po>/<int:urunkartid>',methods=['POST','GET'])
-
-
+api.add_resource(KasaOlculeriApi,'/seleksiyon/islemler/kasa/olculer',methods=['GET'])
+api.add_resource(KasaOlculeriKayitApi,'/seleksiyon/islemler/kasa/olculer/save',methods=['POST','PUT'])
+api.add_resource(KasaOlculeriDeleteApi,'/seleksiyon/islemler/kasa/olculer/delete/<int:id>',methods=['DELETE'])
 
 api.add_resource(UretimOzetListApi,'/seleksiyon/listeler/uretimOzetList',methods=['GET'])
 api.add_resource(UretimSiparisKalemDetay,'/seleksiyon/listeler/siparisUretimDetay/<string:siparisno>',methods=['GET'])
@@ -795,5 +796,9 @@ api.add_resource(ProjectListSuggestedApi,'/mekmarcom/project/list/all/<int:id>',
 api.add_resource(ProjectSuggestedApi,'/mekmarcom/project/suggested/send',methods=['POST'])
 api.add_resource(ProjectQueueApi,'/mekmarcom/project/queue',methods=['POST'])
 api.add_resource(ProjectMainPhotosChaneApi,'/panel/projec/main/photos',methods=['POST'])
+api.add_resource(ProjectMainPhotosChangeApi,'/panel/project/main/photos/change',methods=['POST'])
+#Mail Control
+api.add_resource(TodoMailControlApi,'/todo/mail/control',methods=['GET'])
+
 if __name__ == '__main__':
     app.run(port=5000,debug=True) #https://doktor-servis.mekmar.com/raporlar/listeler/uretimRaporuHepsi

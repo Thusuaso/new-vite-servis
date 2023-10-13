@@ -202,5 +202,10 @@ def project_list_detail_update_emit(id):
     emit('project_list_detail_update_on',id,broadcast=True)
 
 
+#Socket IO Create Size
+@socketio.on('create_size_list_update_emit')
+def create_size_list_update_emit():
+    emit('create_size_list_update_on',broadcast=True)
+
 if __name__ == '__main__':
     socketio.run(app,port=5001)

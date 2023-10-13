@@ -4,7 +4,7 @@ from models.seleksiyon import SiparisAyrintiSchema,SiparisAyrintiModel
 from models.seleksiyon import UretimOzetSchema,UretimOzetModel
 from models.seleksiyon import UretimSipModel,UretimSipSchema
 import datetime
-
+from models.seleksiyon import *
 
 class SeleksiyonListeler:
     def __init__(self):
@@ -407,3 +407,67 @@ class UretimUrunKartKasaKontrol:
         except Exception as e:
             print("getUretimUrunKartKasaKontrol",str(e))
             return False
+class KasaOlculeri:
+    def __init__(self):
+        self.data = SqlConnect().data
+        
+    def getKasaOlculeri(self):
+        try:
+            result = self.data.getList("""
+                                            select 
+                                                k.Id,
+                                                k.Ebat,
+                                                k.Tedarikci,
+                                                (select t.FirmaAdi from TedarikciTB t where t.ID=k.Tedarikci) as TedarikciAdi,
+                                                k.KasaOlculeri,
+                                                k.Adet
+                                            from kasa_detay_olculeri k
+                                       """)
+            liste = list()
+            for item in result:
+                model = KasaOlcuDetaylariModel()
+                model.id = item.Id
+                model.ebat = item.Ebat
+                model.tedarikci = item.Tedarikci
+                model.tedarikci_adi = item.TedarikciAdi
+                model.kasa_olculeri = item.KasaOlculeri
+                model.adet = item.Adet
+                liste.append(model)
+            
+            schema = KasaOlcuDetaylariSchema(many=True)
+            return schema.dump(liste)
+        except Exception as e:
+            print('getKasaOlculeri hata',str(e))
+            return False
+        
+    def save(self,data):
+        try:
+            self.data.update_insert("""
+                                        insert into kasa_detay_olculeri(Ebat,Tedarikci,KasaOlculeri,Adet) VALUES(?,?,?,?)
+                                    """,(data['ebat'],data['tedarikci'],data['kasa_olculeri'],data['adet']))
+            return True
+        except Exception as e:
+            print('kasa ölçüleri kayıt hata',str(e))
+            return False
+    def update(self,data):
+        try:
+            self.data.update_insert("""
+                                        update kasa_detay_olculeri SET Ebat=?,Tedarikci=?,KasaOlculeri=?,Adet=? where Id=?
+                                    """,(data['ebat'],data['tedarikci'],data['kasa_olculeri'],data['adet'],data['id']))
+            
+            return True
+            
+        except Exception as e:
+            print('kasa ölcüleri güncelleme hata',str(e))
+            return False
+        
+    def delete(self,id):
+        try:
+            self.data.update_insert("""
+                                        delete kasa_detay_olculeri where Id=?
+                                    """,(id))
+            return True
+        except Exception as e:
+            print('kasa ölcüleri silme hata',str(e))
+            return False
+            
