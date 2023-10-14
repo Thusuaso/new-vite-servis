@@ -118,5 +118,5 @@ class ProjectMainPhotosChangeApi(Resource):
         data = request.get_json()
         project = Project()
         status = project.setChangeMainPhotosData(data)
-        return {'status',status}
+        return {'status':status}
     

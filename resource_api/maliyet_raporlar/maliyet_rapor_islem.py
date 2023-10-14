@@ -109,9 +109,9 @@ class MaliyetRaporIslem:
         )
     def getMaliyetListesi(self):
         try:
-            
             liste = list()
             for item in self.siparisler:
+                
                 urun_model = self.urunler.getUrunModel(item.siparis_no)
             
                 item.toplam_bedel += urun_model.toplam_bedel
@@ -150,47 +150,42 @@ class MaliyetRaporIslem:
                 for ted_fatura in self.dtDisFaturaList:
                     if ted_fatura.SiparisNo == item.siparis_no:
                         model = TedarikciFaturaModel()
-                        model = TedarikciFaturaModel()
                     
                         model.link =  f"https://file-service.mekmar.com/file/download/3/{item.siparis_no}"
-                    
                         item.dis_alim_evrak.append(model)
 
                 for ted_fatura in self.dtTedarikciFatura:
                     if ted_fatura.SiparisNo == item.siparis_no:
                         model = TedarikciFaturaModel()
-                        model = TedarikciFaturaModel()
                     
                         model.link =  f"https://file-service.mekmar.com/file/download/40/{item.siparis_no}"
-                    
+
                         item.dis_alim_tedarikci.append(model)    
                 
                 for ted_fatura in self.dtTedarikciTum:
                     if ted_fatura.SiparisNo == item.siparis_no:
                         model = TedarikciFaturaModel()
-                        model = TedarikciFaturaModel()
                     
                         model.link =  f"https://file-service.mekmar.com/file/download/40/{item.siparis_no}"
-                    
+
                         item.tedarikci_sayisi_evrak.append(model)            
 
                 for ted_fatura in self.dtMekmarFaturaList:
                     if ted_fatura.SiparisNo == item.siparis_no:
                         model = TedarikciFaturaModel()
-                        model = TedarikciFaturaModel()
                     
                         model.link =  f"https://file-service.mekmar.com/file/download/3/{item.siparis_no}"
-                    
+
                         item.mekmar_alim_evrak.append(model)
 
-                for ted_fatura in self.dtOzeliscilikFaturaList:
-                    if ted_fatura.SiparisNo == item.siparis_no:
-                        model = TedarikciFaturaModel()
-                        model = TedarikciFaturaModel()
-                        model.id = ted_fatura.ID
-                        model.link = f"https://file-service.mekmar.com/file/download/40/{item.siparis_no}"
-                        model.evrak_adi = ted_fatura.SiparisNo
-                        item.ozel_iscilik_evrak.append(model) 
+                # for ted_fatura in self.dtOzeliscilikFaturaList:
+                #     if ted_fatura.SiparisNo == item.siparis_no:
+                #         model = TedarikciFaturaModel()
+                #         model.id = ted_fatura.ID
+                #         model.link = f"https://file-service.mekmar.com/file/download/40/{item.siparis_no}"
+                #         model.evrak_adi = ted_fatura.SiparisNo
+
+                #         item.ozel_iscilik_evrak.append(model)
 
                         
                 
@@ -303,7 +298,7 @@ class MaliyetRaporIslem:
                     item.dis_alim_tedarikci_sayisi = 0
                     item.tedarikci_sayisi = 0
                     item.dis_alim_fatura_sayisi = 0
-                
+                print("item",item)
                 liste.append(item)
 
 

@@ -232,7 +232,7 @@ class Project:
             result = self.sql.getStoreList("""
                                             select mp.ID,mp.ProjectName,mp.Image,mp.Queue from MekmarCom_Projects mp where  mp.ID not in (
 
-                                                        select mps.SuggestedId from MekmarCom_Projects_Suggested mps where mps.ProjectId=15
+                                                        select mps.SuggestedId from MekmarCom_Projects_Suggested mps where mps.ProjectId=?
 														
 														)
 									order by mp.Queue 
