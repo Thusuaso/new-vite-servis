@@ -37,6 +37,18 @@ def workmanship_update_emit(data):
 @socketio.on('products_update_emit')
 def products_update_emit(productStatus):
     emit('products_update_on',productStatus,broadcast=True)
+    
+@socketio.on('products_update_waiting_emit')
+def products_update_waiting_emit(productStatus):
+    emit('products_update_waiting_on',productStatus,broadcast=True)
+
+@socketio.on('products_update_products_emit')
+def products_update_products_emit(productStatus):
+    emit('products_update_products_on',productStatus,broadcast=True)
+
+@socketio.on('products_update_forwarding_emit')
+def products_update_forwarding_emit(productStatus):
+    emit('products_update_forwarding_on',productStatus,broadcast=True)
 
 @socketio.on('products_detail_update_emit')
 def products_detail_update_emit(po):
