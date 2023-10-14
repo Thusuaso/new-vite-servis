@@ -495,14 +495,14 @@ class MaliyetRaporIslem_Yil: # hepsi butonna basıldıgında bu alan çalışır
                     
                         item.mekmar_alim_evrak.append(model)
 
-                for ted_fatura in self.dtOzeliscilikFaturaList:
-                    if ted_fatura.SiparisNo == item.siparis_no:
-                        model = TedarikciFaturaModel()
-                        model = TedarikciFaturaModel()
-                        model.id = ted_fatura.ID
-                        model.link = f"https://file-service.mekmar.com/file/download/40/{item.siparis_no}"
-                        model.evrak_adi = ted_fatura.SiparisNo
-                        item.ozel_iscilik_evrak.append(model) 
+                # for ted_fatura in self.dtOzeliscilikFaturaList:
+                #     if ted_fatura.SiparisNo == item.siparis_no:
+                #         model = TedarikciFaturaModel()
+                #         model = TedarikciFaturaModel()
+                #         model.id = ted_fatura.ID
+                #         model.link = f"https://file-service.mekmar.com/file/download/40/{item.siparis_no}"
+                #         model.evrak_adi = ted_fatura.SiparisNo
+                #         item.ozel_iscilik_evrak.append(model) 
 
                         
                 
