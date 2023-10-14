@@ -297,6 +297,24 @@ class Project:
             print('setSuggested hata',str(e))
             return False
     
+    
+    def deleteSuggested(self,data):
+        try:
+            result = None
+            for item in data:
+                result = self.sql.getStoreList("""
+                                            select * from MekmarCom_Projects_Suggested where ProjectId=? and SuggestedId=?
+                                      """,(item['project_id'],item['id']))
+            if(result):
+                self.sql.update_insert("""
+                                            delete MekmarCom_Projects_Suggested WHERE ID=?
+                                        """,(result[0][0]))
+                
+        except Exception as e:
+            print('e',str(e))
+            return False
+    
+    
     def setProjectQueue(self,data):
         try:
             for item in data:
