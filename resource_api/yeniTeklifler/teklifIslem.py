@@ -716,7 +716,7 @@ class TeklifIslem:
             return False
 
     def __dateControl(self,value):
-        if(value == None or value == ""):
+        if(value == None or value == "" or value == "NaN-NaN-NaN"):
             return None
         else:
             date = value.split('-')
@@ -753,7 +753,7 @@ class TeklifIslem:
     def __teklifGuncelleme(self,item):
         
         try:
-            
+            print("__teklifGuncelleme",item)
             musteriId = item['musteriId']
             if musteriId == None:
                 musteriId = self.__musteriKayit(item['musteriAdi'],item['ulkeId'])
@@ -1035,7 +1035,7 @@ class TeklifIslem:
         return kalinlikId  
 
     def __yuzeyisleMId(self,item):
-        
+        print(item['yuzeyIslem'])
         yuzeyIslemId = None
        
         kontrol = self.data.getStoreList("Select count(*) as durum from YeniTeklif_YuzeyIslemTB where IslemAdi=?",item['yuzeyIslem'])[0].durum 
