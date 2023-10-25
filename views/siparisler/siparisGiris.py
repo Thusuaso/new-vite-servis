@@ -854,6 +854,8 @@ class SiparisGiris:
             )
             
             
+            print(siparis['siparisDurumId'])
+            print(siparis['odemeTurId'])
             
             if siparis['siparisDurumId'] == 1 and siparis['odemeTurId']  == 3 :
                 self.__siparisDurumGuncelle1(siparis['siparisNo']) 
