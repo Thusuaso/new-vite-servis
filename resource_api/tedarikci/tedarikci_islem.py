@@ -119,7 +119,7 @@ class TedarikciIslem:
     def IcSiparisDosyaKaydet(self,item):
         
         date = datetime.datetime.now()
-        
+        print(item)
         urunID = self.__evrakId(item)
         try:
             self.data.update_insert(
