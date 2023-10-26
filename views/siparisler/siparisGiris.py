@@ -840,7 +840,7 @@ class SiparisGiris:
                 DetayAciklama_2=?,DetayMekmarNot_2=?,DetayTutar_2=?,DetayAlis_2=?,
                 DetayAciklama_3=?,DetayMekmarNot_3=?,DetayTutar_3=?,DetayTutar_4=?,DetayAciklama_4=?,DetayAlis_3=?,SiparisSahibi=?,EvrakGideri=?,
                 KonteynerAyrinti=?,KonteynerNo=?,FaturaKesimTurID =? ,AktarmaLimanAdi =? , depo_yukleme=? ,sigorta_id=?,sigorta_Tutar=?, Operasyon =? , 
-                Finansman =?, Iade=?,sigorta_tutar_satis=?, MalBedeli=? , TahminiEtaTarihi=?,MayaControl = ? where SiparisNo=?
+                Finansman =?, Iade=?,sigorta_tutar_satis=?, MalBedeli=? , TahminiEtaTarihi=?,MayaControl = ?,SiparisDurumId=? where SiparisNo=?
                 """,(
                     siparis['odemeTurId'],siparis['teslimTurId'],siparis['pesinat'],siparis['navlunFirma'],siparis['navlunMekmarNot'],
                     float(siparis['navlunAlis']),float(siparis['navlunSatis']),siparis['kullaniciId'],siparis['uretimAciklama'],siparis['sevkiyatAciklama'],siparis['finansAciklama'],
@@ -849,13 +849,11 @@ class SiparisGiris:
                     siparis['detayAciklama_2'],siparis['detayMekmarNot_2'],float(siparis['detayTutar_2']),float(siparis['detayAlis_2']),
                     siparis['detayAciklama_3'],siparis['detayMekmarNot_3'],float(siparis['detayTutar_3']),float(siparis['detayTutar_4']),siparis['detayAciklama_4'],float(siparis['detayAlis_3']),
                     siparis['siparisSahibi'],evrak_gider,siparis['konteynerAyrinti'],siparis['konteynerNo'], siparis['faturaKesimTurId'],siparis['liman'],siparis['depo'], siparis['sigorta_id'],
-                    float(siparis['sigorta_tutar']), siparis['operasyon'], siparis['finansman'],siparis['iade'],float(siparis['sigorta_tutar_satis']),siparis['malBedeli'],tahmini_eta,siparis['maya'],siparis['siparisNo']
+                    float(siparis['sigorta_tutar']), siparis['operasyon'], siparis['finansman'],siparis['iade'],float(siparis['sigorta_tutar_satis']),siparis['malBedeli'],tahmini_eta,siparis['maya'],siparis['siparisDurumId'],siparis['siparisNo']
                 )
             )
             
             
-            print(siparis['siparisDurumId'])
-            print(siparis['odemeTurId'])
             
             if siparis['siparisDurumId'] == 1 and siparis['odemeTurId']  == 3 :
                 self.__siparisDurumGuncelle1(siparis['siparisNo']) 
