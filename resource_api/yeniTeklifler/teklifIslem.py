@@ -470,7 +470,7 @@ class TeklifIslem:
                                             FobFiyat=? and 
                                             Birim=?
                                         
-                                        """,(int(teklifid),int(kategoriId),int(urunId),int(enBoyId),int(yuzeyIslemId),int(kalinlik),int(fobFiyat),birim))
+                                        """,(int(teklifid),int(kategoriId),int(urunId),int(enBoyId),int(yuzeyIslemId),int(kalinlik),float(fobFiyat),birim))
         if len(result)>0:
             return True
     
