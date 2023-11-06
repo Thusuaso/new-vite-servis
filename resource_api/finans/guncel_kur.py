@@ -21,17 +21,20 @@ class DovizListem:
             nowDay = x.strftime('%d')
             nowMonth = x.strftime('%m')
             xy = datetime.datetime(int(yil),int(ay),int(gun))
-            
-            if(int(gun) == int(nowDay)):
+            if(int(gun) == 29 and int(ay)==10):
+                gun = 30
+            if(int(gun) == int(nowDay) and int(ay) == int(nowMonth)):
                 gun = int(gun) -1
             
             if (xy.strftime("%A") == "Saturday"):
                 gun = str(int(gun) - 1)
-            if len(gun) == 1:
+                
+            if len(str(gun)) == 1:
                 gun = "0" + str(gun)
                 
-            if len(ay) == 1:
+            if len(str(ay)) == 1:
                 ay = "0"+ str(ay)
+
 
             
             else:
@@ -39,7 +42,7 @@ class DovizListem:
                 if len(str(gun)) ==1:
                     gun = "0" + str(gun)
                     
-                if len(ay) ==1:
+                if len(str(ay)) ==1:
                     ay = "0"+ str(ay)
             
             if(int(nowDay) == int(gun) and int(ay) == int(nowMonth)):
