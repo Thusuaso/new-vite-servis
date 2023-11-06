@@ -518,7 +518,7 @@ class SiparisGiris:
               self.mailGonderDelete(siparis,urunlerSilinenler,siparis['siparisNo'])
               if(siparis['faturaKesimTurId'] == 1):
                 for item in urunlerSilinenler:
-                    
+                    self.__iscilikSilme(siparis['siparisNo'],item['urunKartId'])
                     info2 = siparis['kayit_kisi']  + ' ' + urunlerSilinenler[0]['uretimAciklama'] + ' (' + str(urunlerSilinenler[0]['miktar']) +' ' + self.__birim(urunlerSilinenler[0]['urunBirimId']) + ') $'+str(urunlerSilinenler[0]['satisFiyati']) +' ' +siparis['siparisNo'] + ' siparişinden bir kalemi sildi.'
                     
                     result = self.data.getStoreList("""
@@ -533,6 +533,7 @@ class SiparisGiris:
                     
                 
               if(len(urunlerSilinenler) == 1):
+                self.__iscilikSilme(siparis['siparisNo'],urunlerSilinenler[0]['urunKartId'])
                 degisiklik = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' siparişine ' + urunlerSilinenler[0]['uretimAciklama'] + ', ' + str(urunlerSilinenler[0]['miktar']) +' ' + self.__birim(urunlerSilinenler[0]['urunBirimId']) + ' $'+str(urunlerSilinenler[0]['satisFiyati']) +' dan silinmiştir.'
                 degisiklikAlani = 'Siparişler'
                 islem2 = DegisiklikTahmin()
@@ -554,6 +555,8 @@ class SiparisGiris:
                 islem2.kaydet(degisiklik,degisiklikAlani,pazarlama,year,month,day,watch)     
               else:
                   for item in urunlerSilinenler:
+                      self.__iscilikSilme(siparis['siparisNo'],item['urunKartId'])
+                      
                       degisiklik = siparis['kayit_kisi'].capitalize() + ', ' + siparis['siparisNo'] + ' siparişine ' + item['uretimAciklama'] + ', ' + str(item['miktar']) +' ' + self.__birim(item['urunBirimId']) + ' $'+str(item['satisFiyati']) +' dan silinmiştir.'
                       degisiklikAlani = 'Siparişler'
                       islem2 = DegisiklikTahmin()
@@ -665,6 +668,14 @@ class SiparisGiris:
         else:
             return 0
     
+    def __iscilikSilme(self,siparisNo,urunId):
+        try:
+            self.data.update_insert("""
+                                        delete SiparisEkstraGiderlerTB where UrunKartId =? and SiparisNo=?
+                                    
+                                    """,(urunId,siparisNo))
+        except Exception as e:
+            print('__iscilikSilme hata',str(e))
     
     def dateConvert(self,date_v):
         if (date_v) : 

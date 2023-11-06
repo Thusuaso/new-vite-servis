@@ -52,7 +52,7 @@ class ExcellCiktiIslem:
                 kg = 0
                 
                 if(item['kenar']):
-                    if (item['kenar']=='VAR') or (item['kenar'] == 'Various'):
+                    if (item['kenar']=='VAR') or (item['kenar'] == 'Various') or (item['kenar'] == 'Other'):
                         kenar = 1
                     else: 
                         kenar = item['kenar'].replace(',','.')
