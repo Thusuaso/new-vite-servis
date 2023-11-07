@@ -154,7 +154,11 @@ class TedarikciSiparisUrunListe:
             model.musteriAciklama = item.MusteriAciklama 
             model.notlar = item.Notlar 
             model.kullaniciId = item.KullaniciID 
-            model.alisFiyati = item.Tutar / item.Miktar 
+            if(item.Tutar != 0 and item.Miktar != 0):
+                
+                model.alisFiyati = item.Tutar / item.Miktar
+            else:
+                model.alisFiyati = 0
             model.alisFiyati_Tl = item.AlisFiyati_TL
             model.siraNo = item.SiraNo 
             model.tedarikciAdi = item.TedarikciAdi
