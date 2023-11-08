@@ -85,7 +85,7 @@ class Yapilacaklar:
 
                                             where GorevSahibiId =? and Yapildi=1
                                             order by
-												GirisTarihi desc 
+												YapilacakOncelik 
                                         """,(userId))
             liste = list()
             for item in data:
@@ -127,7 +127,7 @@ class Yapilacaklar:
 
                                             where GorevSahibiId =? and Yapildi=0
                                             order by
-												GirisTarihi desc 
+												YapilacakOncelik 
                                         """,(userId))
             liste = list()
             for item in data:
