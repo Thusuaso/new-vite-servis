@@ -48,6 +48,8 @@ class TeklifSchema(Schema):
     phone = fields.String()
     adress = fields.String()
     hatirlatmaDurum = fields.Boolean()
+    acil = fields.Boolean()
+    
 class TeklifModel:
     id = None
     tarih = ""
@@ -95,3 +97,4 @@ class TeklifModel:
     phone = ""
     adress = ""
     hatirlatmaDurum = False
+    acil = False

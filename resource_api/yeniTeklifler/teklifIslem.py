@@ -258,6 +258,10 @@ class TeklifIslem:
         model.email = item.MailN
         model.phone = item.PhoneN
         model.adress = item.Adress
+        if(item.Acil == None):
+            model.acil = False
+        else:   
+            model.acil = item.Acil
         schema = TeklifSchema()
 
         return schema.dump(model)
@@ -624,10 +628,12 @@ class TeklifIslem:
                     BList,
                     Company,
                     Email,
-                    Phone
+                    Phone,
+                    Acil
                 )
                 values
                 (
+                    ?,
                     ?,
                     ?,
                     ?,
@@ -704,7 +710,8 @@ class TeklifIslem:
                     item['teklifOncelik'],
                     item['proformaNot'],
                     item['numuneNot'],
-                    item['blist'],item['company'],item['email'],item['phone']
+                    item['blist'],item['company'],item['email'],item['phone'],
+                    item['acil']
                 )
             )
             
@@ -806,7 +813,8 @@ class TeklifIslem:
                 HatirlatilmaDurumu=?,
                 Company=?,
                 Email=?,
-                Phone=?
+                Phone=?,
+                Acil=?
                 where Id=?
                 """,
                 (
@@ -851,7 +859,7 @@ class TeklifIslem:
                     item['company'],
                     item['email'],
                     item['phone'],
-                    
+                    item['acil'],
                     item['id']
                 )
             )

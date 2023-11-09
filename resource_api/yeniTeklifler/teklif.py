@@ -399,7 +399,8 @@ class TeklifListeler:
                     t.TeklifOncelik,
                     k.KullaniciAdi,
                     t.Goruldu,
-                    t.Sira
+                    t.Sira,
+                    t.Acil
                     from
                     YeniTeklifTB t,YeniTeklif_MusterilerTB m,
                     YeniTeklif_UlkeTB u,KullaniciTB k
@@ -419,6 +420,7 @@ class TeklifListeler:
             model.teklifOncelik = item.TeklifOncelik
             model.goruldu = item.Goruldu 
             model.sira = item.Sira
+            model.acil = item.Acil
             kullaniciAdi = ""
             if item.KullaniciAdi == 'Gizem':
                 kullaniciAdi = "GU"
@@ -449,7 +451,8 @@ class TeklifListeler:
                 t.TeklifOncelik,
                 k.KullaniciAdi,
                 t.Goruldu,
-                t.Sira
+                t.Sira,
+                t.Acil
                 from
                 YeniTeklifTB t,YeniTeklif_MusterilerTB m,
                 YeniTeklif_UlkeTB u,KullaniciTB k
@@ -470,6 +473,10 @@ class TeklifListeler:
             model.teklifOncelik = item.TeklifOncelik
             model.goruldu = item.Goruldu 
             model.sira = item.Sira
+            if(item.Acil == None):
+                model.acil = False
+            else:   
+                model.acil = item.Acil
             kullaniciAdi = ""
             if item.KullaniciAdi == "Gizem":
                 kullaniciAdi = "GU"
@@ -562,7 +569,8 @@ class TeklifListeler:
             t.TeklifOncelik,
             k.KullaniciAdi,
             t.Goruldu,
-            t.Sira
+            t.Sira,
+            t.Acil
             from
             YeniTeklifTB t,YeniTeklif_MusterilerTB m,
             YeniTeklif_UlkeTB u,KullaniciTB k
@@ -584,6 +592,10 @@ class TeklifListeler:
             kullaniciAdi = ""
             model.sira = item.Sira
             model.goruldu = item.Goruldu
+            if(item.Acil == None):
+                model.acil = False
+            else:
+                model.acil = item.Acil
             if item.KullaniciAdi == "Gizem":
                 kullaniciAdi = "GU"
             if item.KullaniciAdi == "Fadime":

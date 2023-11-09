@@ -12,6 +12,7 @@ class KullaniciListeAyrintiSchema(Schema):
     goruldu = fields.Boolean()
     style = fields.Nested(StyleSchema)
     sira = fields.Int()
+    acil = fields.Boolean()
     
 
 class KullaniciListeAyrintiModel:
@@ -24,3 +25,4 @@ class KullaniciListeAyrintiModel:
     goruldu = False
     style = StyleModel
     sira = 0
+    acil = False
