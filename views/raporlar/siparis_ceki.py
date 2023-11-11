@@ -79,7 +79,7 @@ class SiparisCeki:
                 
                 tonaj = self.__getKategoriKatsayisi(kategori) * float(str(kenar).replace(',','.')) * float(str(miktar).replace(',','.')) * 10
         elif (birim == 'Adet'):
-            if(en == 'VAR' or en == 'Var' or boy=='Free' or boy == 'FREE' or en == 'Various' or en == 'VARIOUS' or en == 'SLAB' or en == 'Slab' or en=='Other' or boy== 'Other' or en == 'OZEL' or boy == 'OZEL' or boy == 'Various' or kenar =='Various' or en=='1 LT' or boy=='VAR' or boy=='Var'):
+            if(en=='1 LT' or en == None or en == 'VAR' or en == 'Var' or boy=='Free' or boy == 'FREE' or en == 'Various' or en == 'VARIOUS' or en == 'SLAB' or en == 'Slab' or en=='Other' or boy== 'Other' or en == 'OZEL' or boy == 'OZEL' or boy == 'Various' or kenar =='Various' or en=='1 LT' or boy=='VAR' or boy=='Var'):
                 pass
             else:
                 m2 = (float(str(en).replace(',','.')) * float(str(boy).replace(',','.')) * float(str(adet).replace(',','.'))) / 10000
@@ -129,7 +129,6 @@ class SiparisCeki:
             return int(float(str(miktar).replace(',','.')) / (float(str(en).replace(',','.'))/100) / (float(str(boy).replace(',','.'))/100))
     
     def __getM2Hesaplama(self,en,boy,miktar):
-        
         if(
             en=='VAR' or
             en == 'Var' or
@@ -155,7 +154,10 @@ class SiparisCeki:
             boy=='Other' or
             boy =='OTHER' or
             en =='Other' or
-            en =='OTHER'
+            en =='OTHER' or
+            en == None or
+            boy == None or
+            miktar == None
         ):
             return 0
         else:
