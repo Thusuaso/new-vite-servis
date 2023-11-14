@@ -122,7 +122,11 @@ class SiparisCeki:
             boy == 'FREE' or
             boy == 'Set' or
             boy == 'SET'  or
-            boy == 'VAR'
+            boy == 'VAR' or
+            en == 'Fr' or
+            en == 'FR' or
+            boy == 'Fr' or
+            boy == 'FR'
         ):
             return 0
         else:
@@ -157,7 +161,11 @@ class SiparisCeki:
             en =='OTHER' or
             en == None or
             boy == None or
-            miktar == None
+            miktar == None or
+            en == 'Fr' or
+            en == 'FR' or
+            boy == 'Fr' or
+            boy == 'FR'
         ):
             return 0
         else:
