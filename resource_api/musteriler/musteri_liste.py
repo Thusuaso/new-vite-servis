@@ -106,7 +106,6 @@ class MusteriIslem:
         satir = 2
 
         musteri_listesi = data_list
-
         for item in musteri_listesi:
 
             sayfa.cell(satir,column=1,value=item['id'])
@@ -117,8 +116,9 @@ class MusteriIslem:
             sayfa.cell(satir,column=6,value=item['ulkeadi'])
             sayfa.cell(satir,column=7,value=item['telefon'])
             sayfa.cell(satir,column=8,value=item['temsilci'])
-            sayfa.cell(satir,column=9,value=item['devir'])
-            sayfa.cell(satir,column=10,value=item['ozel'])
+            sayfa.cell(satir,column=9,value=item['satisci'])
+            sayfa.cell(satir,column=10,value=item['devir'])
+            sayfa.cell(satir,column=11,value=item['ozel'])
 
             satir += 1
         kitap.save(target_path)
