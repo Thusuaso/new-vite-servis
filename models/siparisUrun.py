@@ -36,6 +36,7 @@ class SiparisUrunSchema(Schema):
     uretimMiktari = fields.Float()
     tedarikci = fields.Nested(TedarikciSchema)
     iscilik = fields.String()
+    alisFiyatiKontrol = fields.Boolean()
     
 
 
@@ -70,6 +71,7 @@ class SiparisUrunModel:
     uretimMiktari = 0
     tedarikci = None
     iscilik = ""
+    alisFiyatiKontrol = False
     
     
     

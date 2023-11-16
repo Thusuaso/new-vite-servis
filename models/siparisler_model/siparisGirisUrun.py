@@ -21,6 +21,7 @@ class SiparisGirisUrunSchema(SiparisUrunSchema):
     whatMultiplyM2 = fields.String()
     whatMultiplyAdet = fields.String()
     whatMultiplyMt = fields.String()
+    alisFiyatiKontrol = fields.Boolean()
 class SiparisGirisUrunModel(SiparisUrunModel):
     urunAdi = ""
     en = ""
@@ -40,6 +41,7 @@ class SiparisGirisUrunModel(SiparisUrunModel):
     whatMultiplyM2 = ""
     whatMultiplyAdet = ""
     whatMultiplyMt = ""
+    alisFiyatiKontrol = False
     
     
 

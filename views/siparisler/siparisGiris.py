@@ -243,6 +243,11 @@ class SiparisGiris:
             model.notlar = item.Notlar 
             model.kullaniciId = item.KullaniciID 
             model.alisFiyati = item.AlisFiyati 
+            if item.AlisFiyati > 0:
+                model.alisFiyatiKontrol = True
+            else:
+                model.alisFiyatiKontrol = False
+                
             model.alisFiyati_Tl = item.AlisFiyati_TL
             model.siraNo = item.SiraNo 
             model.tedarikciAdi = item.TedarikciAdi
