@@ -129,7 +129,9 @@ class SiparisCeki:
             boy == 'Fr' or
             boy == 'FR' or
             en == 'özel' or
-            en == 'ozel'
+            en == 'ozel' or 
+            en == 'Mini' or
+            boy == 'Mini'
         ):
             return 0
         else:
