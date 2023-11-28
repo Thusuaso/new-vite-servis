@@ -220,7 +220,6 @@ class NakliyeIslem:
 
     def NakliyeDosyaKaydet(self,item):
       
-             print(item)
              for key in item :  
                 
                  urun =  self.__urunId(key)
@@ -245,7 +244,7 @@ class NakliyeIslem:
                     )   
                         values
                         (?,?,?, ?,?,?,?,?,?,?,?,?)
-                    """,(key['tarih'],urun,11,key['siparisno'],key['Tutar_dolar'],1,13,evrak_id+201,2,key['tarih'],key['faturaNo']+'.pdf',key['kullaniciId'])
+                    """,(key['tarih'],urun,11,key['siparisno'],key['Tutar_dolar'],1,13,evrak_id + 201,2,key['tarih'],key['faturaNo']+'.pdf',key['kullaniciId'])
                 )
              info = "Huseyin Nakliye Faturası Evrağı Yükledi"
              DegisiklikMain().setYapilanDegisiklikBilgisi('Huseyin',info)

@@ -83,7 +83,7 @@ class Yapilacaklar:
 
                                             from Yapilacaklar
 
-                                            where GorevSahibiId =? and Yapildi=1
+                                            where OrtakGorev LIKE '%' + ? + '%' and Yapildi=1
                                             order by
 												YapilacakOncelik 
                                         """,(userId))
@@ -125,7 +125,7 @@ class Yapilacaklar:
                                                 Acil
                                             from Yapilacaklar
 
-                                            where GorevSahibiId =? and Yapildi=0
+                                            where OrtakGorev LIKE '%' + ? + '%' and Yapildi=0
                                             order by
 												YapilacakOncelik 
                                         """,(userId))
@@ -191,6 +191,7 @@ class Yapilacaklar:
                 model.yapilacak = item.Yapilacak
                 model.oncelik = item.YapilacakOncelik
                 model.aciliyet = item.Acil
+                model.ortak_gorev = item.OrtakGorev
                 liste.append(model)
             schema = YapilacaklarSchema(many = True)
             return schema.dump(liste)
@@ -202,27 +203,27 @@ class Yapilacaklar:
         try:
             self.sql.update_insert("""
                                         insert into Yapilacaklar
-                                        (GorevSahibiAdi,
-                                        GorevSahibiId,
+                                        (
                                         Yapilacak,
                                         Yapildi,
                                         GorevVerenAdi,
                                         GorevVerenID,
                                         GirisTarihi,
                                         YapilacakOncelik,
-                                        Acil
-                                        ) VALUES(?,?,?,?,?,?,?,?,?)
+                                        Acil,
+                                        OrtakGorev
+                                        ) VALUES(?,?,?,?,?,?,?,?)
 
                                     """,(
-                                            data['gorev_sahibi_adi'],
-                                            data['gorev_sahibi_id'],
+  
                                             data['yapilacak'],
                                             data['yapildi'],
                                             data['gorev_veren_adi'],
                                             data['gorev_veren_id'],
                                             data['girisTarihi'],
                                             data['oncelik'],
-                                            data['aciliyet']
+                                            data['aciliyet'],
+                                            data['ortak_gorev']
                                         )
                                    )
             return True
@@ -251,8 +252,8 @@ class Yapilacaklar:
     def update(self,data):
         try:
             self.sql.update_insert("""
-                                    update Yapilacaklar SET GorevSahibiAdi=?,GorevSahibiId=?,Yapilacak=?,YapilacakOncelik=?,Acil=? where ID=? 
-                                """,(data['gorev_sahibi_adi'],data['gorev_sahibi_id'],data['yapilacak'],data['oncelik'],data['aciliyet'],data['id']))
+                                    update Yapilacaklar SET Yapilacak=?,YapilacakOncelik=?,Acil=?,OrtakGorev=? where ID=? 
+                                """,(data['yapilacak'],data['oncelik'],data['aciliyet'],data['ortak_gorev'],data['id']))
             return True
         except Exception as e:
             print('yapilacaklar update hata',str(e))
@@ -272,11 +273,12 @@ class Yapilacaklar:
                                                 GirisTarihi,
                                                 YapildiTarihi,
                                                 YapilacakOncelik,
-                                                Acil
+                                                Acil,
+                                                OrtakGorev
 
                                             from Yapilacaklar
 
-                                            where Yapildi=0 and YapilacakOncelik='A'
+                                            where Yapildi=0 and YapilacakOncelik in ('A','B')
                                             order by
 												GirisTarihi desc
                                         """)
@@ -294,6 +296,7 @@ class Yapilacaklar:
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
                 model.aciliyet = item.Acil
+                model.ortak_gorev  = item.OrtakGorev
                 listA.append(model)
 
             schema = YapilacaklarSchema(many = True)
@@ -306,52 +309,55 @@ class Yapilacaklar:
             return False     
         
         
-    def getYapilacaklarYapilmadiListAllB(self):
-        try:
-            data = self.sql.getList("""
-                                            select 
-                                                ID,
-                                                GorevSahibiAdi,
-                                                GorevSahibiId,
-                                                Yapilacak,
-                                                Yapildi,
-                                                GorevVerenID,
-                                                GorevVerenAdi,
-                                                GirisTarihi,
-                                                YapildiTarihi,
-                                                YapilacakOncelik,
-                                                Acil
+    # def getYapilacaklarYapilmadiListAllB(self):
+    #     try:
+    #         data = self.sql.getList("""
+    #                                         select 
+    #                                             ID,
+    #                                             GorevSahibiAdi,
+    #                                             GorevSahibiId,
+    #                                             Yapilacak,
+    #                                             Yapildi,
+    #                                             GorevVerenID,
+    #                                             GorevVerenAdi,
+    #                                             GirisTarihi,
+    #                                             YapildiTarihi,
+    #                                             YapilacakOncelik,
+    #                                             Acil,
+    #                                             OrtakGorev
 
-                                            from Yapilacaklar
+    #                                         from Yapilacaklar
 
-                                            where Yapildi=0 and YapilacakOncelik='B'
-                                            order by
-												GirisTarihi desc
-                                        """)
-            listB = list()
-            for item in data:
-                model = YapilacaklarModel()
-                model.id = item.ID
-                model.gorev_sahibi_adi = item.GorevSahibiAdi
-                model.gorev_sahibi_id = item.GorevSahibiId
-                model.yapilacak = item.Yapilacak
-                model.gorev_veren_id = item.GorevVerenID
-                model.gorev_veren_adi = item.GorevVerenAdi
-                model.girisTarihi = item.GirisTarihi
-                model.yapildiTarihi = item.YapildiTarihi
-                model.oncelik = item.YapilacakOncelik
-                model.userStatus = False
-                model.aciliyet = item.Acil
-                listB.append(model)
+    #                                         where Yapildi=0 and YapilacakOncelik='B'
+    #                                         order by
+	# 											GirisTarihi desc
+    #                                     """)
+    #         listB = list()
+    #         for item in data:
+    #             model = YapilacaklarModel()
+    #             model.id = item.ID
+    #             model.gorev_sahibi_adi = item.GorevSahibiAdi
+    #             model.gorev_sahibi_id = item.GorevSahibiId
+    #             model.yapilacak = item.Yapilacak
+    #             model.gorev_veren_id = item.GorevVerenID
+    #             model.gorev_veren_adi = item.GorevVerenAdi
+    #             model.girisTarihi = item.GirisTarihi
+    #             model.yapildiTarihi = item.YapildiTarihi
+    #             model.oncelik = item.YapilacakOncelik
+    #             model.userStatus = False
+    #             model.aciliyet = item.Acil
+    #             model.ortak_gorev  = item.OrtakGorev
+                
+    #             listB.append(model)
 
-            schema = YapilacaklarSchema(many = True)
-            return schema.dump(listB)
+    #         schema = YapilacaklarSchema(many = True)
+    #         return schema.dump(listB)
 
             
             
-        except Exception as e:
-            print('getYapilacaklarYapilmadiList hata',str(e))
-            return False
+    #     except Exception as e:
+    #         print('getYapilacaklarYapilmadiList hata',str(e))
+    #         return False
         
     def getYapilacaklarYapilmadiListAllC(self):
         try:
@@ -367,7 +373,8 @@ class Yapilacaklar:
                                                 GirisTarihi,
                                                 YapildiTarihi,
                                                 YapilacakOncelik,
-                                                Acil
+                                                Acil,
+                                                OrtakGorev
 
                                             from Yapilacaklar
 
@@ -389,6 +396,8 @@ class Yapilacaklar:
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
                 model.aciliyet = item.Acil
+                model.ortak_gorev  = item.OrtakGorev
+                
                 listC.append(model)
 
             schema = YapilacaklarSchema(many = True)
@@ -415,7 +424,8 @@ class Yapilacaklar:
                                                 GirisTarihi,
                                                 YapildiTarihi,
                                                 YapilacakOncelik,
-                                                Acil
+                                                Acil,
+                                                OrtakGorev
 
                                             from Yapilacaklar
 
@@ -437,6 +447,8 @@ class Yapilacaklar:
                 model.oncelik = item.YapilacakOncelik
                 model.userStatus = False
                 model.aciliyet = item.Acil
+                model.ortak_gorev  = item.OrtakGorev
+                
                 liste.append(model)
             schema = YapilacaklarSchema(many = True)
             return schema.dump(liste)

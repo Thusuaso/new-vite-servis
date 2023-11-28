@@ -761,7 +761,7 @@ api.add_resource(NotificationIslemFollowAnsweredApi,'/notification/islemler/foll
 api.add_resource(YapilacaklarApi,'/raporlar/yapilacaklar/list',methods=['GET'])
 api.add_resource(YapilacaklarModelApi,'/yapilacaklar/model',methods=['GET'])
 api.add_resource(YapilacaklarIslemApi,'/yapilacaklar/islem',methods=['POST','PUT'])
-api.add_resource(YapilacaklarKullaniciListApi,'/yapilacaklar/kullanici/list/<int:userId>',methods=['GET'])
+api.add_resource(YapilacaklarKullaniciListApi,'/yapilacaklar/kullanici/list/<string:username>',methods=['GET'])
 api.add_resource(YapilacaklarSilApi,'/yapilacaklar/delete/<int:id>',methods=['DELETE'])
 api.add_resource(YapilacaklarChangeStatusApi,'/yapilacaklar/yapildi',methods=['PUT'])
 api.add_resource(YapilacaklarDetailApi,'/yapilacaklar/list/detail/<int:id>',methods=['GET'])

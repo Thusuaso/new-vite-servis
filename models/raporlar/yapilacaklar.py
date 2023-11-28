@@ -13,6 +13,8 @@ class YapilacaklarSchema(Schema):
     oncelik = fields.String()
     userStatus = fields.Boolean()
     aciliyet = fields.Boolean()
+    ortak_gorev = fields.String()
+    
 class YapilacaklarModel:
     id = 0
     gorev_sahibi_adi = ""
@@ -26,6 +28,7 @@ class YapilacaklarModel:
     oncelik = ""
     userStatus = False
     aciliyet = False
+    ortak_gorev = ''
 
 class YapilacaklarKullanicilarSchema(Schema):
     

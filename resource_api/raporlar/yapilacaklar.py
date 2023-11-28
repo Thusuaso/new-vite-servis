@@ -30,10 +30,10 @@ class YapilacaklarUsersModelApi(Resource):
         return jsonify(users)
     
 class YapilacaklarKullaniciListApi(Resource):
-    def get(self,userId):
+    def get(self,username):
         islem = Yapilacaklar()
-        yapildi = islem.getYapilacaklarKullaniciYapildiList(userId)
-        yapilmadi = islem.getYapilacaklarKullaniciYapilmadiList(userId)
+        yapildi = islem.getYapilacaklarKullaniciYapildiList(username)
+        yapilmadi = islem.getYapilacaklarKullaniciYapilmadiList(username)
         data = {
             'yapildi':yapildi,
             'yapilmadi':yapilmadi
@@ -81,12 +81,10 @@ class YapilacaklarAllApi(Resource):
     def get(self):
         islem = Yapilacaklar()
         yapilmadiA = islem.getYapilacaklarYapilmadiListAllA()
-        yapilmadiB = islem.getYapilacaklarYapilmadiListAllB()
         yapilmadiC = islem.getYapilacaklarYapilmadiListAllC()
         
         yapilmadi = {
             'yapilmadiA':yapilmadiA,
-            'yapilmadiB':yapilmadiB,
             'yapilmadiC':yapilmadiC
             
         }
