@@ -506,6 +506,7 @@ class TeklifMusteriler:
                 model.user = item.Kullanici
                 model.adress = item.Adress
                 model.username = item.KullaniciAdi
+                model.description = item.Description
                 liste.append(model)
                 
             schema = TeklifMusterilerSchema(many=True)
@@ -530,6 +531,7 @@ class TeklifMusteriler:
                 model.country = item.UlkeId
                 model.user = item.Kullanici
                 model.adress = item.Adress
+                model.description = item.Description
                 liste.append(model)
                 
             schema = TeklifMusterilerSchema(many=True)
@@ -540,12 +542,12 @@ class TeklifMusteriler:
     
     def setTeklifMusteriler(self,data):
         try:
-            
+            print(data)
             self.data.update_insert("""
-                                        update YeniTeklif_MusterilerTB SET MusteriAdi=?,Company=?,Mail=?,Phone=?,UlkeId=?,Adress=? where Id=?
+                                        update YeniTeklif_MusterilerTB SET MusteriAdi=?,Company=?,Mail=?,Phone=?,UlkeId=?,Adress=?,Description=? where Id=?
 
                                     
-                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['adress'],data['id'])) 
+                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['adress'],data['description'],data['id'])) 
             return True
         except Exception as e:
             print("setTeklifMusteriler hata",str(e))
@@ -555,11 +557,11 @@ class TeklifMusteriler:
         try:
             
             self.data.update_insert("""
-                                        insert into YeniTeklif_MusterilerTB(MusteriAdi,Company,Mail,Phone,UlkeId,Kullanici,Adress) VALUES(?,?,?,?,?,?,?)
+                                        insert into YeniTeklif_MusterilerTB(MusteriAdi,Company,Mail,Phone,UlkeId,Kullanici,Adress,Description) VALUES(?,?,?,?,?,?,?,?)
 
 
                                     
-                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['user'],data['adress'])) 
+                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['user'],data['adress'],data['description'])) 
             return True
         except Exception as e:
             print("setTeklifMusteriler hata",str(e))
