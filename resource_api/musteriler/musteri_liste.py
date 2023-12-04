@@ -622,9 +622,9 @@ class FuarMusteriler:
     def setFuarMusterilerKayit(self,data):
         try:
             self.data.update_insert("""
-                                        insert into FuarMusterilerTB(Customer,Company,Email,Phone,Country,Kullanici,Adress,Orderer,FilelinkOn,FilelinkArka) VALUES(?,?,?,?,?,?,?,?,?,?)
+                                        insert into FuarMusterilerTB(Customer,Company,Email,Phone,Country,Kullanici,Adress,Orderer,FilelinkOn,FilelinkArka,Fuar,Ziyaret) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)
                                     
-                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['user'],data['adress'],data['satisci'],data['linkOn'],data['linkArka']))
+                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['user'],data['adress'],data['satisci'],data['linkOn'],data['linkArka'],data['fairstatus'],data['visitstatus']))
             
             return True
         except Exception as e:
@@ -632,11 +632,12 @@ class FuarMusteriler:
             return False
 
     def setFuarMusterilerGuncelle(self,data):
+        print(data)
         try:
             self.data.update_insert("""
-                                        update FuarMusterilerTB SET Customer=?,Company=?,Email=?,Phone=?,Country=?,Adress=?,Orderer=?,FilelinkOn=?,FilelinkArka=? WHERE ID=?
+                                        update FuarMusterilerTB SET Customer=?,Company=?,Email=?,Phone=?,Country=?,Adress=?,Orderer=?,FilelinkOn=?,FilelinkArka=?,Fuar=?,Ziyaret=? WHERE ID=?
                                     
-                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['adress'],data['satisci'],data['linkOn'],data['linkArka'],data['id']))
+                                    """,(data['customer'],data['company'],data['email'],data['phone'],data['country'],data['adress'],data['satisci'],data['linkOn'],data['linkArka'],data['fairstatus'],data['visitstatus'],data['id']))
             
             return True
         except Exception as e:
@@ -671,6 +672,8 @@ from FuarMusterilerTB fm
                 model.user = item.Kullanici
                 model.adress = item.Adress
                 model.satisci = item.Orderer
+                model.fairstatus = item.Fuar
+                model.visitstatus = item.Ziyaret
                 
                 liste.append(model)
             schema = FuarMusterilerSchema(many=True)
@@ -702,6 +705,8 @@ from FuarMusterilerTB fm
                 model.satisci = item.Orderer
                 model.linkOn = item.FilelinkOn
                 model.linkArka = item.FilelinkArka
+                model.fairstatus = item.Fuar
+                model.visitstatus = item.Ziyaret
                 liste.append(model)
             schema = FuarMusterilerSchema(many=True)
             return schema.dump(liste)

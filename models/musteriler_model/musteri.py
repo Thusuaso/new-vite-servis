@@ -117,6 +117,9 @@ class FuarMusterilerSchema(Schema):
     satisci = fields.String()
     linkOn = fields.String()
     linkArka = fields.String()
+    fairstatus = fields.Boolean()
+    visitstatus = fields.Boolean()
+    
     
     
 class FuarMusterilerModel:
@@ -132,6 +135,8 @@ class FuarMusterilerModel:
     kullanici = 0
     linkOn = ""
     linkArka=""
+    fairstatus = False
+    visitstatus = False
     
 class BgpMusterilerSchema(Schema):
     id = fields.Int()

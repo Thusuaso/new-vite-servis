@@ -36,7 +36,7 @@ class ExcellCiktiIslem:
                         
                     elif(item['en']=='20,3' and item['boy']=='SET'):
                         miktar=float(round((0.494914 * kutu),2))
-                    elif(item['en'] == 'VAR') or (item['en'] == 'Various'):
+                    elif(item['en'] == 'VAR') or (item['en'] == 'Various') or (item['en'] == '1 LT'):
                         miktar = float(item['miktar'])
                     else:
                         miktar = float(item['miktar'])
@@ -52,7 +52,7 @@ class ExcellCiktiIslem:
                 kg = 0
                 
                 if(item['kenar']):
-                    if (item['kenar']=='VAR') or (item['kenar'] == 'Various') or (item['kenar'] == 'Other'):
+                    if (item['kenar']=='VAR') or (item['kenar'] == 'Various') or (item['kenar'] == 'Other' or (item['kenar'] == '1 LT')):
                         kenar = 1
                     else: 
                         kenar = item['kenar'].replace(',','.')
