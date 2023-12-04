@@ -14,7 +14,7 @@ class YapilacaklarSchema(Schema):
     userStatus = fields.Boolean()
     aciliyet = fields.Boolean()
     ortak_gorev = fields.String()
-    
+    sira = fields.Int()
 class YapilacaklarModel:
     id = 0
     gorev_sahibi_adi = ""
@@ -29,7 +29,7 @@ class YapilacaklarModel:
     userStatus = False
     aciliyet = False
     ortak_gorev = ''
-
+    sira = 0
 class YapilacaklarKullanicilarSchema(Schema):
     
     id = fields.Int()

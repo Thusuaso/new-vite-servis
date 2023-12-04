@@ -95,4 +95,16 @@ class YapilacaklarAllApi(Resource):
             'yapildi':yapildi
         }
         return jsonify(data)
-        
+
+class TodoMainApi(Resource):
+    def get(self,userid):
+        islem = Yapilacaklar()
+        results = islem.getYapilacaklarAnaList(userid)
+        return results
+    
+class TodoMainQueueChangeApi(Resource):
+    def post(self):
+        data = request.get_json()
+        islem = Yapilacaklar()
+        status = islem.setYapilacaklarAnaListSiraDegistir(data)
+        return {'status':status}

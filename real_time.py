@@ -166,6 +166,10 @@ def to_do_list_emit():
 @socketio.on('to_do_list_emit_all')
 def to_do_list_emit_all():
     emit('to_do_list_on_all',broadcast=True)
+
+@socketio.on('to_do_main_list_emit_all')
+def to_do_main_list_emit_all():
+    emit('to_do_main_list_emit_on',broadcast=True)
     
 #Socket IO Cost Error
 @socketio.on('cost_error_list_emit')

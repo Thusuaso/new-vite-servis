@@ -201,6 +201,15 @@ class Yapilacaklar:
 
     def save(self,data):
         try:
+            sira = 0
+            if data['gorev_veren_id'] == '10':
+                sira = self.sql.getStoreList("""
+                                                select top 1 Sira + 1 as Sira from Yapilacaklar y where y.GorevVerenID=? and y.Yapildi=0 order by Sira desc
+                                             """,(data['gorev_veren_id']))[0][0]
+            else:
+                sira = 0
+                
+                
             self.sql.update_insert("""
                                         insert into Yapilacaklar
                                         (
@@ -211,8 +220,9 @@ class Yapilacaklar:
                                         GirisTarihi,
                                         YapilacakOncelik,
                                         Acil,
-                                        OrtakGorev
-                                        ) VALUES(?,?,?,?,?,?,?,?)
+                                        OrtakGorev,
+                                        Sira
+                                        ) VALUES(?,?,?,?,?,?,?,?,?)
 
                                     """,(
   
@@ -223,7 +233,8 @@ class Yapilacaklar:
                                             data['girisTarihi'],
                                             data['oncelik'],
                                             data['aciliyet'],
-                                            data['ortak_gorev']
+                                            data['ortak_gorev'],
+                                            sira
                                         )
                                    )
             return True
@@ -456,4 +467,39 @@ class Yapilacaklar:
             print('getYapilacaklarYapilmadiList hata',str(e))
             return False 
     
-      
+    def getYapilacaklarAnaList(self,id):
+        try:
+            results = self.sql.getStoreList("""
+                                                select * from Yapilacaklar y where y.GorevVerenID=? and y.Yapildi=0 order by Sira
+
+                                            """,(id))
+            liste = list()
+            for item in results:
+                model = YapilacaklarModel()
+                model.id = item.ID
+                model.girisTarihi = item.GirisTarihi
+                model.yapildiTarihi = item.YapildiTarihi
+                model.gorev_veren_adi = item.GorevVerenAdi
+                model.gorev_sahibi_adi = item.GorevSahibiAdi
+                model.yapilacak = item.Yapilacak
+                model.oncelik = item.YapilacakOncelik
+                model.aciliyet = item.Acil
+                model.ortak_gorev = item.OrtakGorev
+                model.sira = item.Sira
+                liste.append(model)
+            schema = YapilacaklarSchema(many = True)
+            return schema.dump(liste)
+        except Exception as e:
+            print('getYapilacaklarAnaList hata',str(e))
+            return False
+
+    def setYapilacaklarAnaListSiraDegistir(self,data):
+        try:
+            for item in data:
+                self.sql.update_insert("""
+                                            update Yapilacaklar SET Sira=? where ID=?
+                                       """,(item['sira'],item['id']))
+            return True
+        except Exception as e:
+            print('setYapilacaklarAnaListSiraDegistir hata',str(e))
+            return False

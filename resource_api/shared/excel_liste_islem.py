@@ -25,7 +25,8 @@ class ExcellCiktiIslem:
                 sayfa.cell(satir,column=6,value=item['kenar'])
                 sayfa.cell(satir,column=7,value=item['en'])
                 sayfa.cell(satir,column=8,value=item['boy'])
-                sayfa.cell(satir,column=9,value=item['adet'])
+                sayfa.cell(satir,column=9,value=item['kutuAdet'])
+                sayfa.cell(satir,column=10,value=item['adet'])
 
                 miktar = 0
                 kutu = int(item['kutuAdet'])
@@ -48,7 +49,7 @@ class ExcellCiktiIslem:
                         miktar = '-'
                 elif (item['birimAdi'] == 'Mt'):
                     miktar=float(item['miktar'])
-                sayfa.cell(satir,column=10,value=miktar)
+                sayfa.cell(satir,column=11,value=miktar)
                 kg = 0
                 
                 if(item['kenar']):
@@ -73,8 +74,8 @@ class ExcellCiktiIslem:
                         kg=0
                     
                     
-                sayfa.cell(satir,column=11,value=item['tonaj'])
-                sayfa.cell(satir,column=12,value=float(item['tonaj']) + 30)
+                sayfa.cell(satir,column=12,value=item['tonaj'])
+                sayfa.cell(satir,column=13,value=float(item['tonaj']) + 30)
                 
                 
                 
