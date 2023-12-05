@@ -411,6 +411,7 @@ class TeklifIslem:
     
         kayitDurum = self.__teklifGuncelleme(teklif)
         
+        self.__teklifMusteriUpdate(teklif)
         
             
         if len(guncellenenUrunler) > 0:
@@ -478,6 +479,21 @@ class TeklifIslem:
         if len(result)>0:
             return True
     
+    def __teklifMusteriUpdate(self,teklif):
+        try:
+            phone = ""
+            if(teklif['phone']):
+                phone = teklif['phone']
+            else:
+                phone = ""        
+        
+            self.data.update_insert("""
+                                        update YeniTeklif_MusterilerTB SET Company=?,Mail=?,Phone=?,Adress=? where Id=?
+                                   """,(teklif['company'],teklif['email'],phone,teklif['adress'],teklif['musteriId']))
+        except Exception as e:
+            print('__teklifMusteriUpdate hata',str(e))
+            return False
+            
     
     def proformaKaydet(self,teklif):
 
@@ -760,7 +776,6 @@ class TeklifIslem:
     def __teklifGuncelleme(self,item):
         
         try:
-            print("__teklifGuncelleme",item)
             musteriId = item['musteriId']
             if musteriId == None:
                 musteriId = self.__musteriKayit(item['musteriAdi'],item['ulkeId'])
