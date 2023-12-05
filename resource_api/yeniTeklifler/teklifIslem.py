@@ -482,14 +482,14 @@ class TeklifIslem:
     def __teklifMusteriUpdate(self,teklif):
         try:
             phone = ""
-            if(teklif['phone']):
+            if(teklif['phone'] != None):
                 phone = teklif['phone']
             else:
-                phone = ""        
-        
+                phone = ""
+
             self.data.update_insert("""
                                         update YeniTeklif_MusterilerTB SET Company=?,Mail=?,Phone=?,Adress=? where Id=?
-                                   """,(teklif['company'],teklif['email'],phone,teklif['adress'],teklif['musteriId']))
+                                   """,(teklif['company'],teklif['email'],str(phone),teklif['adress'],teklif['musteriId']))
         except Exception as e:
             print('__teklifMusteriUpdate hata',str(e))
             return False
@@ -888,16 +888,12 @@ class TeklifIslem:
       try:
             self.data.update_insert(
                 """
-                update YeniTeklif_MusterilerTB set MusteriAdi=?,UlkeId=?,Company=?,Mail=?,Phone=?,Adress=?
-                where Id=?
+                    update YeniTeklif_MusterilerTB set MusteriAdi=?,UlkeId=?
+                    where Id=?
                 """,
                 (
                     item['musteriAdi'],
                     item['ulkeId'],
-                    item['company'],
-                    item['email'],
-                    item['phone'],
-                    item['adress'],
                     item['id']
                 )
             )

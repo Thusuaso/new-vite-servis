@@ -108,3 +108,9 @@ class TodoMainQueueChangeApi(Resource):
         islem = Yapilacaklar()
         status = islem.setYapilacaklarAnaListSiraDegistir(data)
         return {'status':status}
+
+class TodoMainSeeingApi(Resource):
+    def get(self,id):
+        islem = Yapilacaklar()
+        status = islem.setYapilacaklarGorulduDegistir(id)
+        return {'status':status}

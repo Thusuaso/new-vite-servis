@@ -802,6 +802,6 @@ api.add_resource(TodoMailControlApi,'/todo/mail/control',methods=['GET'])
 
 api.add_resource(TodoMainApi,'/todo/main/list/<int:userid>',methods=['GET'])
 api.add_resource(TodoMainQueueChangeApi,'/todo/main/queue/change',methods=['POST'])
-
+api.add_resource(TodoMainSeeingApi,'/todo/mailn/seeing/<int:id>',methods=['GET'])
 if __name__ == '__main__':
     app.run(port=5000,debug=True) #https://doktor-servis.mekmar.com/raporlar/listeler/uretimRaporuHepsi

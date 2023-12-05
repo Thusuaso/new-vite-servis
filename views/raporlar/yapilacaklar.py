@@ -221,8 +221,9 @@ class Yapilacaklar:
                                         YapilacakOncelik,
                                         Acil,
                                         OrtakGorev,
-                                        Sira
-                                        ) VALUES(?,?,?,?,?,?,?,?,?)
+                                        Sira,
+                                        Goruldu
+                                        ) VALUES(?,?,?,?,?,?,?,?,?,?)
 
                                     """,(
   
@@ -234,7 +235,8 @@ class Yapilacaklar:
                                             data['oncelik'],
                                             data['aciliyet'],
                                             data['ortak_gorev'],
-                                            sira
+                                            sira,
+                                            0
                                         )
                                    )
             return True
@@ -470,7 +472,8 @@ class Yapilacaklar:
     def getYapilacaklarAnaList(self,id):
         try:
             results = self.sql.getStoreList("""
-                                                select * from Yapilacaklar y where y.GorevVerenID=? and y.Yapildi=0 order by Sira
+                                                select * from Yapilacaklar y where y.GorevVerenID=? and y.Yapildi=0  and y.Goruldu = 0 order by Sira 
+
 
                                             """,(id))
             liste = list()
@@ -502,4 +505,14 @@ class Yapilacaklar:
             return True
         except Exception as e:
             print('setYapilacaklarAnaListSiraDegistir hata',str(e))
+            return False
+        
+    def setYapilacaklarGorulduDegistir(self,id):
+        try:
+            self.sql.update_insert("""
+                                        Update Yapilacaklar SET Goruldu=1 WHERE ID=?
+                                   """,(id))
+            return True
+        except Exception as e:
+            print('',str(e))
             return False
