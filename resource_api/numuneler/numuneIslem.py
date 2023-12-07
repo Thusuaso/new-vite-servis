@@ -232,15 +232,14 @@ class NumuneIslem:
         try:
             g_tarihi = item['giristarih']
             y_tarihi = item['yukleme_tarihi']
-            
-            if float(item['Euro_Alis']) >0:
+            # if float(item['Euro_Alis']) >0:
                 
-                item['kuryeAlis'] = float(item['Euro_Alis']) * float(self.__getCrossRange(g_tarihi))
-                item['TL_Alis'] = float(item['kuryeAlis']) * float(self.__getNormalRange(g_tarihi))
+            #     item['kuryeAlis'] = float(item['Euro_Alis']) * float(self.__getCrossRange(g_tarihi))
+            #     item['TL_Alis'] = float(item['kuryeAlis']) * float(self.__getNormalRange(g_tarihi))
                     
-            if float(item['kuryeSatis']) >0:
-                item['Euro_Satis'] = float(item['kuryeSatis']) / float(self.__getCrossRange(g_tarihi))
-                item['TL_Satis'] = float(item['kuryeSatis']) * float(self.__getNormalRange(g_tarihi))
+            # if float(item['kuryeSatis']) >0:
+            #     item['Euro_Satis'] = float(item['kuryeSatis']) / float(self.__getCrossRange(g_tarihi))
+            #     item['TL_Satis'] = float(item['kuryeSatis']) * float(self.__getNormalRange(g_tarihi))
             musteriId = self.__musteriKayit(item)
             self.data.update_insert(
                 """
@@ -318,14 +317,14 @@ class NumuneIslem:
         g_tarihi = item['giristarih']
         y_tarihi = item['yukleme_tarihi']
         
-        if float(item['Euro_Alis']) >0:
-            item['kuryeAlis'] = float(item['Euro_Alis']) * float(self.__getCrossRange(g_tarihi))
-            item['TL_Alis'] = float(item['kuryeAlis']) * float(self.__getNormalRange(g_tarihi))
+        # if float(item['Euro_Alis']) >0:
+        #     item['kuryeAlis'] = float(item['Euro_Alis']) * float(self.__getCrossRange(g_tarihi))
+        #     item['TL_Alis'] = float(item['kuryeAlis']) * float(self.__getNormalRange(g_tarihi))
 
         
-        if float(item['kuryeSatis']) >0:
-            item['Euro_Satis'] = float(item['kuryeSatis']) / float(self.__getCrossRange(g_tarihi))
-            item['TL_Satis'] = float(item['kuryeSatis']) * float(self.__getNormalRange(g_tarihi))
+        # if float(item['kuryeSatis']) >0:
+        #     item['Euro_Satis'] = float(item['kuryeSatis']) / float(self.__getCrossRange(g_tarihi))
+        #     item['TL_Satis'] = float(item['kuryeSatis']) * float(self.__getNormalRange(g_tarihi))
             
         forMat = '%d-%m-%Y'
         g_tarihi = datetime.datetime.strptime(g_tarihi, forMat)

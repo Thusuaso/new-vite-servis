@@ -78,8 +78,9 @@ class DovizListem:
             
             tarih = f"/{yil}/{ay}/{gun}"
             api = requests.get(api_url+tarih)
-            if(len(json.loads(api.text)) == 1):
-                gun = int(gun) - 1
+            # print(json.loads(api.text))
+            # if(len(json.loads(api.text)) == 1):
+            #     gun = int(gun) - 1
             
             if(int(gun) == int(nowDay) and int(ay) != int(nowMonth)):
                 gun = int(gun) -1
@@ -108,6 +109,11 @@ class DovizListem:
             euro = requests.get(api_url+tarih+'/EUR')            
             usd = json.loads(usd.text)
             euro = json.loads(euro.text)
+            print(euro["BanknoteBuying"])
+            print(usd["BanknoteBuying"])
+            print(api_url+tarih+'/USD')
+            print(api_url+tarih+'/EUR')
+            
             return float(euro["BanknoteBuying"]) / float(usd["BanknoteBuying"])
         except Exception as e:
             print('Doviz Kur Hatası',str(e))
