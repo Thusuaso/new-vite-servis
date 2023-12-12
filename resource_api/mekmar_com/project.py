@@ -120,4 +120,10 @@ class ProjectMainPhotosChangeApi(Resource):
         project = Project()
         status = project.setChangeMainPhotosData(data)
         return {'status':status}
-    
+
+class ProjectPhotosQueueChangeApi(Resource):
+    def post(self):
+        data = request.get_json()
+        project = Project()
+        status = project.setChangePhotosQueue(data)
+        return {'status':status}

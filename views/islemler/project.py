@@ -356,3 +356,16 @@ class Project:
         except Exception as e:
             print('setChangeMainPhotosData hata')
             return False
+        
+    def setChangePhotosQueue(self,data):
+        try:
+            for item in data:
+                
+                self.sql.update_insert("""
+                                        update MekmarCom_Project_Detail SET Queue =? where ID=?
+                                   
+                                   """,(item['queue'],item['id']))
+            return True
+        except Exception as e:
+            print('setChangePhotosQueue hata',str(e))
+            return False

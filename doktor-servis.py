@@ -797,6 +797,7 @@ api.add_resource(ProjectSuggestedApi,'/mekmarcom/project/suggested/send',methods
 api.add_resource(ProjectQueueApi,'/mekmarcom/project/queue',methods=['POST'])
 api.add_resource(ProjectMainPhotosChaneApi,'/panel/projec/main/photos',methods=['POST'])
 api.add_resource(ProjectMainPhotosChangeApi,'/panel/project/main/photos/change',methods=['POST'])
+api.add_resource(ProjectPhotosQueueChangeApi,'/panel/project/photos/queue/change',methods=['POST'])
 #Mail Control
 api.add_resource(TodoMailControlApi,'/todo/mail/control',methods=['GET'])
 
