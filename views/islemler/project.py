@@ -113,7 +113,7 @@ class Project:
     
     def getProjectDetailInformation(self,id):
         result = self.sql.getStoreList("""
-                                        select ID,ProjectId,ProjectInformation,ProjectProductName from MekmarCom_Projects_Information where ProjectId=?
+                                        select ID,ProjectId,ProjectInformation,ProjectProductName,ProjectInformation_Fr,ProjectInformation_Es from MekmarCom_Projects_Information where ProjectId=?
                                        """,(id))
         if(len(result)>0):
             liste = list()
@@ -122,6 +122,8 @@ class Project:
                 model.id = item.ID
                 model.project_id = item.ProjectId
                 model.information = item.ProjectInformation
+                model.information_fr = item.ProjectInformation_Fr
+                model.information_es = item.ProjectInformation_Es
                 model.project_product_name = item.ProjectProductName
                 liste.append(model)
             schema = ProjectInformationListDetailSchema(many = True)
@@ -207,9 +209,9 @@ class Project:
     def addInformation(self,data):
         try:
             self.sql.update_insert("""
-                                    insert into MekmarCom_Projects_Information(ProjectId,ProjectInformation,ProjectProductName) VALUES(?,?,?)
+                                    insert into MekmarCom_Projects_Information(ProjectId,ProjectInformation,ProjectProductName,ProjectInformation_Fr,ProjectInformation_Es) VALUES(?,?,?,?,?)
 
-                                   """,(data['project_id'],data['project_information'],data['project_product_name']))
+                                   """,(data['project_id'],data['project_information'],data['project_product_name'],data['project_information_fr'],data['project_information_es']))
             return True
         except Exception as e:
             print('',str(e))
@@ -220,8 +222,8 @@ class Project:
         try:
             self.sql.update_insert("""
                                    
-                                        Update MekmarCom_Projects_Information SET ProjectInformation=?,ProjectProductName=? WHERE ID=?
-                                   """,(data['information'],data['project_product_name'],data['id']))
+                                        Update MekmarCom_Projects_Information SET ProjectInformation=?,ProjectProductName=?,ProjectInformation_Fr=?,ProjectInformation_Es=? WHERE ID=?
+                                   """,(data['information'],data['project_product_name'],data['information_fr'],data['information_es'],data['id']))
             return True
         except Exception as e:
             print('updateInformation hata',str(e))

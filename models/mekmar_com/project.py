@@ -42,10 +42,14 @@ class ProjectInformationListDetailSchema(Schema):
     id = fields.Int()
     project_id = fields.Int()
     information = fields.String()
+    information_fr = fields.String()
+    information_es = fields.String()
     project_product_name = fields.String()
     
 class ProjectInformationListDetailModel:
     id = 0
     project_id = 0
     information = ""
+    information_fr = ""
+    information_es = ""
     project_product_name = ""
