@@ -121,9 +121,23 @@ class Project:
                 model = ProjectInformationListDetailModel()
                 model.id = item.ID
                 model.project_id = item.ProjectId
-                model.information = item.ProjectInformation
-                model.information_fr = item.ProjectInformation_Fr
-                model.information_es = item.ProjectInformation_Es
+                if(item.ProjectInformation == None):
+                    model.information = ""
+                else:
+                    model.information = item.ProjectInformation
+
+                if(item.ProjectInformation_Fr == None):
+                    model.information_fr = ""
+                else:
+                    model.information_fr = item.ProjectInformation_Fr
+                    
+                if(item.ProjectInformation_Es == None):
+                    model.information_es = ""
+                else:
+                    model.information_es = item.ProjectInformation_Es
+    
+            
+            
                 model.project_product_name = item.ProjectProductName
                 liste.append(model)
             schema = ProjectInformationListDetailSchema(many = True)
