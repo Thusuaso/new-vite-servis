@@ -27,7 +27,7 @@ class MusteriSchema(Schema):
     takip = fields.Boolean()
     notlar = fields.String()
     sonkullanici = fields.Boolean()
-
+    musteri_yeri = fields.String()
 class MusteriModel:
     id = None
     musteri_adi = ""
@@ -52,6 +52,7 @@ class MusteriModel:
     takip=False
     notlar = ""
     sonkullanici = False
+    musteri_yeri = ""
 
 class MusteriSiparisSchema(Schema):
 

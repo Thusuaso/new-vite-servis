@@ -55,6 +55,7 @@ class MusteriDetayIslem:
         model.takip = item.Takip
         model.notlar = item.Notlar
         model.sonkullanici = item.SonKullanici
+        model.musteri_yeri = item.MusteriYeri
 
         
 
@@ -185,11 +186,11 @@ class MusteriDetayIslem:
                         Sira,Mt_No,MusteriTemsilciId,
                         KullaniciID,MailAdresi,Telefon,
                         Devir,Ozel,Adres,MusteriOncelik,Satisci,Notlar,SonKullanici,
-						KayitTarihi
+						KayitTarihi,MusteriYeri
                     )
                     values
                     (
-                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
                     )
                 """,
                 (
@@ -198,7 +199,7 @@ class MusteriDetayIslem:
                     item['mt_no'],item['musteri_temsilci_id'],
                     item['kullanici_id'],item['mail_adresi'],
                     item['telefon'],item['devir'],item['ozel'],
-                    item['adres'],item['selectOncelik'],item['satisci'],item['notlar'],item['sonkullanici'],item['kayit_tarihi']
+                    item['adres'],item['selectOncelik'],item['satisci'],item['notlar'],item['sonkullanici'],item['kayit_tarihi'],item['musteri_yeri']
                 )
             )
 
@@ -214,11 +215,12 @@ class MusteriDetayIslem:
                 """
                 update MusterilerTB set FirmaAdi=?,Unvan=?,Adres=?,UlkeId=?,
                 Marketing=?,Sira=?,MusteriTemsilciId=?,MailAdresi=?,
-                Telefon=?,Devir=?,Ozel=? , MusteriOncelik=?,Satisci=?,Notlar=?,SonKullanici=? where ID=?
+                Telefon=?,Devir=?,Ozel=? , MusteriOncelik=?,Satisci=?,Notlar=?,SonKullanici=?,MusteriYeri=? where ID=?
                 """,(
                     item['musteri_adi'],item['unvan'],item['adres'],item['ulke_id'],
                     item['marketing'],item['sira'],item['musteri_temsilci_id'],
                     item['mail_adresi'],item['telefon'],item['devir'],item['ozel'], item['selectOncelik'],item['satisci'],item['notlar'],item['sonkullanici'],
+                    item['musteri_yeri'],
                     item['id']
                 )
             )

@@ -396,10 +396,10 @@ class YuklemeListeler:
             
             
             results = self.data.getStoreList("""
-                                                select s.MusteriID,m.FirmaAdi,s.SiparisTarihi,s.YuklemeTarihi from SiparislerTB s
+                                                select s.MusteriID,m.FirmaAdi,s.SiparisTarihi,s.YuklemeTarihi,m.MusteriYeri from SiparislerTB s
                                                             inner join MusterilerTB m on m.ID = s.MusteriID
 
-                                                            where YEAR(s.SiparisTarihi) = ? and s.SiparisDurumID=3 and m.Marketing='Mekmar' and
+                                                            where YEAR(s.SiparisTarihi) = 2023 and s.SiparisDurumID=3 and m.Marketing='Mekmar' and
                                                             (s.SiparisNo LIKE '%01' or s.SiparisNo LIKE '%01-1')
                                              """,(year))
             
@@ -415,6 +415,7 @@ class YuklemeListeler:
                     navlun,detay1,detay2,detay3 = self.__getYuklemeYeniMasraflar(item.MusteriID)
                     model.fob = self.__noneTypeControl(self.__getYuklemeYeniSatis(item.MusteriID))
                     model.dtp = model.fob + self.__noneTypeControl(navlun) + self.__noneTypeControl(detay1) + self.__noneTypeControl(detay2) + self.__noneTypeControl(detay3)
+                    model.musteri_yeri = item.MusteriYeri
                     liste.append(model)
                     
             
