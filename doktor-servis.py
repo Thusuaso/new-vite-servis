@@ -544,7 +544,10 @@ api.add_resource(BgpMusterilerModelApi,"/listeler/bgp/model",methods=['GET'])
 #raporlar
 api.add_resource(YuklemeRaporIslemApi,'/raporlar/listeler/yukleme/<int:yil>/<int:ay>',methods=['GET'])
 api.add_resource(YuklemeRaporIslemYearApi,'/raporlar/listeler/yuklemeYear/<int:year>',methods=['GET'])
-
+api.add_resource(YuklemeRaporYeniApi,'/raporlar/listeler/yukleme/yeni/<int:yil>',methods=['GET'])
+api.add_resource(YuklemeRaporYeniDetailApi,'/panel/raporlar/mekmar/new/list/detail/<int:customer_id>/<int:year>',methods=['GET'])
+api.add_resource(YuklemeRaporYeniExcelApi,'/raporlar/loading/new/customer/excel',methods=['POST','GET'])
+api.add_resource(YuklemeRaporYeniDetayExcelApi,'/raporlar/loading/new/customer/detail/excel',methods=['POST','GET'])
 
 api.add_resource(YuklemeAtlantaRaporIslemApi,'/raporlar/listeler/atlantayukleme/<int:yil>/<int:ay>',methods=['GET'])
 api.add_resource(YuklemeRaporYilListApi,'/raporlar/listeler/yuklemeYilListesi',methods=['GET'])
@@ -798,6 +801,7 @@ api.add_resource(ProjectQueueApi,'/mekmarcom/project/queue',methods=['POST'])
 api.add_resource(ProjectMainPhotosChaneApi,'/panel/projec/main/photos',methods=['POST'])
 api.add_resource(ProjectMainPhotosChangeApi,'/panel/project/main/photos/change',methods=['POST'])
 api.add_resource(ProjectPhotosQueueChangeApi,'/panel/project/photos/queue/change',methods=['POST'])
+api.add_resource(ProjectProductsNameChangeApi,'/panel/project/product/name/change',methods=['POST'])
 #Mail Control
 api.add_resource(TodoMailControlApi,'/todo/mail/control',methods=['GET'])
 

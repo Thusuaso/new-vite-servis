@@ -51,7 +51,10 @@ class Project:
                                                 ImageStatus,
                                                 VideosStatus,
                                                 Queue,
-                                                ImageName
+                                                ImageName,
+                                                ProductName,
+                                                ProductName_Fr,
+                                                ProductName_Es
                                             from MekmarCom_Project_Detail
                                             where ProjectId=? and ImageStatus=1
                                        """,(id))
@@ -68,6 +71,9 @@ class Project:
             model.video_status = item.VideosStatus
             model.queue = item.Queue
             model.image_name = item.ImageName
+            model.product_name = item.ProductName
+            model.product_name_fr = item.ProductName_Fr
+            model.product_name_es = item.ProductName_Es
             liste.append(model)
         schema = ProjectListDetailSchema(many=True)
         return schema.dump(liste)  
@@ -384,4 +390,14 @@ class Project:
             return True
         except Exception as e:
             print('setChangePhotosQueue hata',str(e))
+            return False
+        
+    def setChangeProductsName(self,data):
+        try:
+            self.sql.update_insert("""
+                                    update MekmarCom_Project_Detail SET ProductName=?,ProductName_Fr=?,ProductName_Es=? where ID=?
+                                   """,(data['product_name'],data['product_name_fr'],data['product_name_es'],data['id']))
+            return True
+        except Exception as e:
+            print('setChangeProductsName hata',str(e))
             return False

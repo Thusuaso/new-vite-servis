@@ -580,3 +580,101 @@ class ExcelCiktiIslem:
         except Exception as e:
             print('ExcelCiktiIslem urunler_uretim_excel Hata : ',str(e))
             return False     
+
+    def getYuklemeRaporMusteriBazindaYillikExcel(self,data_list):
+             
+        try:
+            source_path = 'resource_api/raporlar/sablonlar/yeni_musteri_yuklenen.xlsx'
+            target_path = 'resource_api/raporlar/dosyalar/yeni_musteri_yuklenen.xlsx'
+
+            shutil.copy2(source_path, target_path)
+
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap.get_sheet_by_name('Sayfa1')
+
+            satir = 2
+            toplamFob = 0
+            toplamDdp = 0
+            kalin = Font(bold=True,size=14)
+            for item in data_list:
+               
+                sayfa.cell(satir,column=1,value=item['musteri_adi'])
+                sayfa.cell(satir,column=2,value=item['fob'])
+                sayfa.cell(satir,column=3,value=item['dtp'])
+                toplamFob += float(item['fob'])
+                toplamDdp += float(item['dtp'])
+                
+
+                satir += 1
+            sayfa.cell(satir,column=2,value=toplamFob).font = kalin
+            sayfa.cell(satir,column=3,value=toplamDdp).font = kalin
+            
+           
+            kitap.save(target_path)
+            kitap.close()
+
+            return True
+
+        except Exception as e:
+            print('getYuklemeRaporMusteriBazindaYillikExcel yeni_musteri_yuklenen Hata : ',str(e))
+            return False 
+        
+    def getYuklemeRaporMusteriBazindaDetayYillikExcel(self,data_list):
+        try:
+            source_path = 'resource_api/raporlar/sablonlar/yeni_musteri_yuklenen_detay.xlsx'
+            target_path = 'resource_api/raporlar/dosyalar/yeni_musteri_yuklenen_detay.xlsx'
+
+            shutil.copy2(source_path, target_path)
+
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap.get_sheet_by_name('Sayfa1')
+
+            satir = 2
+            toplamFob = 0
+            toplamDdp = 0
+            toplamNavlun = 0
+            toplamDetay1 = 0
+            toplamDetay2 = 0
+            toplamDetay3 = 0
+            kalin = Font(bold=True,size=14)
+            for item in data_list:
+               
+                sayfa.cell(satir,column=1,value=item['siparis_no'])
+                sayfa.cell(satir,column=2,value=item['navlun'])
+                sayfa.cell(satir,column=3,value=item['detay_1'])
+                sayfa.cell(satir,column=4,value=item['detay_2'])
+                sayfa.cell(satir,column=5,value=item['detay_3'])
+                sayfa.cell(satir,column=6,value=item['fob'])
+                sayfa.cell(satir,column=7,value=item['dtp'])
+                
+                
+                toplamFob += float(item['fob'])
+                toplamDdp += float(item['dtp'])
+                toplamNavlun += float(item['navlun'])
+                toplamDetay1 += float(item['detay_1'])
+                toplamDetay2 += float(item['detay_2'])
+                toplamDetay3 += float(item['detay_3'])
+                
+                
+
+                satir += 1
+            sayfa.cell(satir,column=2,value=toplamNavlun).font = kalin
+            sayfa.cell(satir,column=3,value=toplamDetay1).font = kalin
+            sayfa.cell(satir,column=4,value=toplamDetay2).font = kalin
+            sayfa.cell(satir,column=5,value=toplamDetay3).font = kalin
+            sayfa.cell(satir,column=6,value=toplamFob).font = kalin
+            sayfa.cell(satir,column=7,value=toplamDdp).font = kalin
+            
+            
+            
+           
+            kitap.save(target_path)
+            kitap.close()
+
+            return True
+
+        except Exception as e:
+            print('getYuklemeRaporMusteriBazindaYillikExcel yeni_musteri_yuklenen Hata : ',str(e))
+            return False

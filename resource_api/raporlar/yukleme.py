@@ -8,7 +8,10 @@ class YuklemeListeler:
     def __init__(self):
 
         self.data = SqlConnect().data
-
+        self.satislarsql = []
+        self.masraflarsql = []
+        self.satislarDetaySql = []
+    
     
     def getYuklemeRaporAylik(self,yil,ay):
 
@@ -372,10 +375,148 @@ class YuklemeListeler:
 
         return schema.dump(liste) 
 
+    def getYuklemeRaporMusteriBazindaYillik(self,year):
+        try:
+            
+            self.satislarsql = self.data.getList("""
+                                                    select sum(su.SatisToplam) as FOB,s.MusteriID,m.FirmaAdi from SiparislerTB s
+                                                    inner join SiparisUrunTB su on su.SiparisNo = s.SiparisNo
+                                                    inner join MusterilerTB m on m.ID = s.MusteriID
+                                                    
+                                                    group by s.MusteriID,m.FirmaAdi
 
+                                              """)
+            self.masraflarsql = self.data.getList("""
+                                                select s.MusteriID,m.FirmaAdi,sum(s.NavlunSatis) as Navlun, sum(s.DetayTutar_1) as Detay1, sum(s.DetayTutar_2) as Detay2,sum(s.DetayTutar_3) as Detay3 from SiparislerTB s
+                                                inner join MusterilerTB m on m.ID = s.MusteriID
+                                                
+                                                group by s.MusteriID,m.FirmaAdi
+                                              """)
+            
+            
+            
+            results = self.data.getStoreList("""
+                                                select s.MusteriID,m.FirmaAdi,s.SiparisTarihi,s.YuklemeTarihi from SiparislerTB s
+                                                            inner join MusterilerTB m on m.ID = s.MusteriID
+
+                                                            where YEAR(s.SiparisTarihi) = ? and s.SiparisDurumID=3 and m.Marketing='Mekmar' and
+                                                            (s.SiparisNo LIKE '%01' or s.SiparisNo LIKE '%01-1')
+                                             """,(year))
+            
+            
+            liste = list()
+            for item in results:
+                if(item.MusteriID == 273 or item.MusteriID == 3446):
+                    continue
+                else:
+                    model = YuklemeYillikModel()
+                    model.musteri_adi = item.FirmaAdi
+                    model.musteriID = item.MusteriID
+                    navlun,detay1,detay2,detay3 = self.__getYuklemeYeniMasraflar(item.MusteriID)
+                    model.fob = self.__noneTypeControl(self.__getYuklemeYeniSatis(item.MusteriID))
+                    model.dtp = model.fob + self.__noneTypeControl(navlun) + self.__noneTypeControl(detay1) + self.__noneTypeControl(detay2) + self.__noneTypeControl(detay3)
+                    liste.append(model)
+                    
+            
+            
+            
+            schema = YuklemeYillikSchema(many=True)
+            return schema.dump(liste)
+            
+            
+        except Exception as e:
+            print('getYuklemeRaporMusteriBazindaYillik hata',str(e))
+            return False
+
+    
+    
+    def getYuklemeRaporMusteriBazindaYillikDetail(self,customer_id,year):
+        try:
+            self.satislarDetaySql = self.data.getStoreList("""
+                                                                select 
+                                                                    sum(su.SatisToplam) as SatisToplam,
+                                                                    s.SiparisNo
+                                                                from SiparislerTB s 
+                                                                inner join SiparisUrunTB su on su.SiparisNo = s.SiparisNo
+                                                                where s.MusteriID=? 
+                                                                group by s.SiparisNo
+                                                           
+                                                           """,(customer_id))
+            
+            results = self.data.getStoreList("""
+                                        select 
+                                        s.SiparisNo,
+                                        s.NavlunSatis,
+                                        s.DetayTutar_1,
+                                        s.DetayTutar_2,
+                                        s.DetayTutar_3,
+                                        s.YuklemeTarihi
+                                    from SiparislerTB s 
+                                    where s.MusteriID=? 
+                                   """,(customer_id))
+            
+            liste = list()
+            for item in results:
+                model = YuklemeYillikModel()
+                model.siparis_no = item.SiparisNo
+                model.navlun = self.__noneTypeControl(item.NavlunSatis)
+                model.detay_1 = self.__noneTypeControl(item.DetayTutar_1)
+                model.detay_2 = self.__noneTypeControl(item.DetayTutar_2)
+                model.detay_3 = self.__noneTypeControl(item.DetayTutar_3)
+                model.fob = self.__getYuklemeYeniSiparisDetay(item.SiparisNo)
+                model.dtp = model.navlun + model.detay_1 + model.detay_2 + model.detay_3 + model.fob
+                model.yukleme_tarihi = item.YuklemeTarihi
+                liste.append(model)
+            schema = YuklemeYillikSchema(many = True)
+            return schema.dump(liste)
+    
+        except Exception as e:
+            print('getYuklemeRaporMusteriBazindaYillikDetail hata',str(e))
+            return False
+    
+    def __getYuklemeYeniSiparisDetay(self,po):
+        try:
+            for item in self.satislarDetaySql:
+                if(item.SiparisNo == po):
+                    return self.__noneTypeControl(item.SatisToplam)
+        except Exception as e:
+            print('__getYuklemeYeniSiparis hata',str(e))
+            return False
+    
+    def __noneTypeControl(self,value):
+        if(value == None):
+            return 0
+        else:
+            return float(value)
    
                        
-           
+    def __getYuklemeYeniMasraflar(self,musteri_id):
+        try:
+            control = False
+            for item in self.masraflarsql:
+                if(item.MusteriID == musteri_id):
+                    control = True
+                    return self.__noneTypeControl(item.Navlun),self.__noneTypeControl(item.Detay1),self.__noneTypeControl(item.Detay2),self.__noneTypeControl(item.Detay3)
+            if(control == False):
+                return float(0),float(0),float(0),float(0)
+                
+        except Exception as e:
+            print('__getYuklemeYeniMasraflar',str(e))
+            return False
+        
+    def __getYuklemeYeniSatis(self,musteri_id):
+        try:
+            control = False
+            for item in self.satislarsql:
+                if(item.MusteriID == musteri_id):
+                    control = True
+                    return self.__noneTypeControl(item.FOB)
+            if(control == False):
+                return float(0)
+
+        except Exception as e:
+            print('__getYuklemeYeniSatis hata',str(e))
+            return False
     
         
     def __set(self):

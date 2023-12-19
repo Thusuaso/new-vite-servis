@@ -180,16 +180,17 @@ class MusteriDetayIslem:
             self.data.update_insert(
 
                 """
-                insert into MusterilerTB (
-                    FirmaAdi,Unvan,UlkeId,Marketing,Aktif,
-                    Sira,Mt_No,MusteriTemsilciId,
-                    KullaniciID,MailAdresi,Telefon,
-                    Devir,Ozel,Adres,MusteriOncelik,Satisci,Notlar,SonKullanici
-                )
-                values
-                (
-                    ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-                )
+                        insert into MusterilerTB (
+                        FirmaAdi,Unvan,UlkeId,Marketing,Aktif,
+                        Sira,Mt_No,MusteriTemsilciId,
+                        KullaniciID,MailAdresi,Telefon,
+                        Devir,Ozel,Adres,MusteriOncelik,Satisci,Notlar,SonKullanici,
+						KayitTarihi
+                    )
+                    values
+                    (
+                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+                    )
                 """,
                 (
                     item['musteri_adi'],item['unvan'],item['ulke_id'],
@@ -197,7 +198,7 @@ class MusteriDetayIslem:
                     item['mt_no'],item['musteri_temsilci_id'],
                     item['kullanici_id'],item['mail_adresi'],
                     item['telefon'],item['devir'],item['ozel'],
-                    item['adres'],item['selectOncelik'],item['satisci'],item['notlar'],item['sonkullanici']
+                    item['adres'],item['selectOncelik'],item['satisci'],item['notlar'],item['sonkullanici'],item['kayit_tarihi']
                 )
             )
 

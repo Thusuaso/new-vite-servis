@@ -1258,6 +1258,7 @@ class YuklemeRaporIslemApi(Resource):
         #aylik_sayim_listesi = islem.getYuklemeSayimAylik(yil,ay)
         yillik_sayim_listesi = islem.getYuklemeSayimYillik(yil,ay)
         musteribazinda_aylik =  islem.getYuklemeRaporAylikMusteriBazinda(yil,ay)
+        musteribazinda_yeni_yillik = islem.getYuklemeRaporMusteriBazindaYillik(yil)
         
         data = {
 
@@ -1265,7 +1266,8 @@ class YuklemeRaporIslemApi(Resource):
             "yillik_yukleme_listesi" : yillik_yukleme_listesi,
           #  "aylik_sayim_listesi" : aylik_sayim_listesi,
             "yillik_sayim_listesi" : yillik_sayim_listesi,
-            "musteribazinda_aylik" : musteribazinda_aylik
+            "musteribazinda_aylik" : musteribazinda_aylik,
+            "musteribazinda_yeni_yillik":musteribazinda_yeni_yillik
         }
       
         return jsonify(data)
@@ -1277,7 +1279,47 @@ class YuklemeRaporIslemYearApi(Resource):
         result = islem.getYuklemeRaporuYillik(year)
         return jsonify(result)
 
+class YuklemeRaporYeniApi(Resource):
+    def get(self,yil):
+        islem = YuklemeListeler()
+        result = islem.getYuklemeRaporMusteriBazindaYillik(yil)
+        return jsonify(result)
 
+class YuklemeRaporYeniDetailApi(Resource):
+    def get(self,customer_id,year):
+        islem = YuklemeListeler()
+        result = islem.getYuklemeRaporMusteriBazindaYillikDetail(customer_id,year)
+        return jsonify(result)
+class YuklemeRaporYeniExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        islem = ExcelCiktiIslem()
+
+        status = islem.getYuklemeRaporMusteriBazindaYillikExcel(data)
+        return {'status':status}
+
+    def get(self):
+
+        excel_path = 'resource_api/raporlar/dosyalar/yeni_musteri_yuklenen.xlsx'
+
+        return send_file(excel_path,as_attachment=True)
+
+class YuklemeRaporYeniDetayExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        islem = ExcelCiktiIslem()
+
+        status = islem.getYuklemeRaporMusteriBazindaDetayYillikExcel(data)
+        return {'status':status}
+
+    def get(self):
+
+        excel_path = 'resource_api/raporlar/dosyalar/yeni_musteri_yuklenen_detay.xlsx'
+
+        return send_file(excel_path,as_attachment=True)
+    
+    
+    
 class IstatistiklerApi(Resource):
     def get(self):
         

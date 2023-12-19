@@ -26,6 +26,9 @@ class ProjectListDetailSchema(Schema):
     video_status = fields.Boolean()
     queue = fields.Int()
     image_name = fields.String()
+    product_name = fields.String()
+    product_name_fr = fields.String()
+    product_name_es = fields.String()
     
 class ProjectListDetailModel:
     id = 0
@@ -37,6 +40,9 @@ class ProjectListDetailModel:
     video_status = 0
     queue = 0
     image_name = ""
+    product_name = ""
+    product_name_fr = ""
+    product_name_es = ""
     
 class ProjectInformationListDetailSchema(Schema):
     id = fields.Int()

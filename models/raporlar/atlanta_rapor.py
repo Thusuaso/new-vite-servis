@@ -11,6 +11,10 @@ class YuklemeAylikSchema(Schema):
    tur = fields.String()
    marketing = fields.String()
    musteriID = fields.Int()
+   navlun = fields.Float()
+   detay_1 = fields.Float()
+   detay_2 = fields.Float()
+   detay_3 = fields.Float()
 
 class YuklemeAylikModel:
 
@@ -23,8 +27,9 @@ class YuklemeAylikModel:
     marketing = ""
     musteriID=0
 
-class YuklemeYillikSchema(Schema):
 
+class YuklemeYillikSchema(Schema):
+   siparis_tarihi = fields.String()
    yukleme_tarihi = fields.String()
    siparis_no = fields.String()
    musteri_adi = fields.String()
@@ -33,9 +38,12 @@ class YuklemeYillikSchema(Schema):
    tur = fields.String()
    marketing = fields.String()
    musteriID = fields.Int()
- 
+   navlun = fields.Float()
+   detay_1 = fields.Float()
+   detay_2 = fields.Float()
+   detay_3 = fields.Float()
 class YuklemeYillikModel:
-
+    siparis_tarihi = ""
     yukleme_tarihi = ""
     siparis_no = "" 
     musteri_adi = ""
@@ -44,6 +52,10 @@ class YuklemeYillikModel:
     tur = ""
     marketing = ""
     musteriID = 0  
+    navlun = 0
+    detay_1 = 0
+    detay_2 = 0
+    detay_3 = 0
 
 
 class YuklemeAySchema(Schema):
