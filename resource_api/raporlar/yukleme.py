@@ -406,10 +406,12 @@ class YuklemeListeler:
             
             liste = list()
             for item in results:
-                if(item.MusteriID == 273 or item.MusteriID == 3446):
+                if(item.MusteriID == 273 or item.MusteriID == 3446 or item.MusteriID == 169):
                     continue
                 else:
                     model = YuklemeYillikModel()
+                    model.siparis_tarihi = item.SiparisTarihi
+                    model.yukleme_tarihi = item.YuklemeTarihi
                     model.musteri_adi = item.FirmaAdi
                     model.musteriID = item.MusteriID
                     navlun,detay1,detay2,detay3 = self.__getYuklemeYeniMasraflar(item.MusteriID)

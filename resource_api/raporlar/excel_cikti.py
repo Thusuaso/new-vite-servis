@@ -600,15 +600,16 @@ class ExcelCiktiIslem:
             for item in data_list:
                
                 sayfa.cell(satir,column=1,value=item['musteri_adi'])
-                sayfa.cell(satir,column=2,value=item['fob'])
-                sayfa.cell(satir,column=3,value=item['dtp'])
+                sayfa.cell(satir,column=2,value=item['musteri_yeri'])
+                sayfa.cell(satir,column=3,value=item['fob'])
+                sayfa.cell(satir,column=4,value=item['dtp'])
                 toplamFob += float(item['fob'])
                 toplamDdp += float(item['dtp'])
                 
 
                 satir += 1
-            sayfa.cell(satir,column=2,value=toplamFob).font = kalin
-            sayfa.cell(satir,column=3,value=toplamDdp).font = kalin
+            sayfa.cell(satir,column=3,value=toplamFob).font = kalin
+            sayfa.cell(satir,column=4,value=toplamDdp).font = kalin
             
            
             kitap.save(target_path)

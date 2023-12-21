@@ -43,6 +43,7 @@ class YuklemeYillikSchema(Schema):
    detay_2 = fields.Float()
    detay_3 = fields.Float()
    musteri_yeri = fields.String()
+
 class YuklemeYillikModel:
     siparis_tarihi = ""
     yukleme_tarihi = ""
@@ -58,6 +59,7 @@ class YuklemeYillikModel:
     detay_2 = 0
     detay_3 = 0
     musteri_yeri = ""
+    
 
 
 class YuklemeAySchema(Schema):
