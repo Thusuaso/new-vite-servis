@@ -54,7 +54,8 @@ class Project:
                                                 ImageName,
                                                 ProductName,
                                                 ProductName_Fr,
-                                                ProductName_Es
+                                                ProductName_Es,
+                                                ProductName_Ru
                                             from MekmarCom_Project_Detail
                                             where ProjectId=? and ImageStatus=1
                                        """,(id))
@@ -74,6 +75,7 @@ class Project:
             model.product_name = item.ProductName
             model.product_name_fr = item.ProductName_Fr
             model.product_name_es = item.ProductName_Es
+            model.product_name_ru = item.ProductName_Ru
             liste.append(model)
         schema = ProjectListDetailSchema(many=True)
         return schema.dump(liste)  
@@ -119,7 +121,7 @@ class Project:
     
     def getProjectDetailInformation(self,id):
         result = self.sql.getStoreList("""
-                                        select ID,ProjectId,ProjectInformation,ProjectProductName,ProjectInformation_Fr,ProjectInformation_Es from MekmarCom_Projects_Information where ProjectId=?
+                                        select ID,ProjectId,ProjectInformation,ProjectProductName,ProjectInformation_Fr,ProjectInformation_Es,ProjectInformation_Ru from MekmarCom_Projects_Information where ProjectId=?
                                        """,(id))
         if(len(result)>0):
             liste = list()
@@ -141,7 +143,11 @@ class Project:
                     model.information_es = ""
                 else:
                     model.information_es = item.ProjectInformation_Es
-    
+
+                if(item.ProjectInformation_Ru == None):
+                    model.information_ru = ""
+                else:
+                    model.information_ru = item.ProjectInformation_Ru
             
             
                 model.project_product_name = item.ProjectProductName
@@ -229,9 +235,9 @@ class Project:
     def addInformation(self,data):
         try:
             self.sql.update_insert("""
-                                    insert into MekmarCom_Projects_Information(ProjectId,ProjectInformation,ProjectProductName,ProjectInformation_Fr,ProjectInformation_Es) VALUES(?,?,?,?,?)
+                                    insert into MekmarCom_Projects_Information(ProjectId,ProjectInformation,ProjectProductName,ProjectInformation_Fr,ProjectInformation_Es,ProjectInformation_Ru) VALUES(?,?,?,?,?,N'?')
 
-                                   """,(data['project_id'],data['project_information'],data['project_product_name'],data['project_information_fr'],data['project_information_es']))
+                                   """,(data['project_id'],data['project_information'],data['project_product_name'],data['project_information_fr'],data['project_information_es'],data['project_information_ru']))
             return True
         except Exception as e:
             print('',str(e))
@@ -242,8 +248,8 @@ class Project:
         try:
             self.sql.update_insert("""
                                    
-                                        Update MekmarCom_Projects_Information SET ProjectInformation=?,ProjectProductName=?,ProjectInformation_Fr=?,ProjectInformation_Es=? WHERE ID=?
-                                   """,(data['information'],data['project_product_name'],data['information_fr'],data['information_es'],data['id']))
+                                        Update MekmarCom_Projects_Information SET ProjectInformation=?,ProjectProductName=?,ProjectInformation_Fr=?,ProjectInformation_Es=?,ProjectInformation_Ru=(?) WHERE ID=?
+                                   """,(data['information'],data['project_product_name'],data['information_fr'],data['information_es'],data['information_ru'],data['id']))
             return True
         except Exception as e:
             print('updateInformation hata',str(e))
@@ -395,8 +401,8 @@ class Project:
     def setChangeProductsName(self,data):
         try:
             self.sql.update_insert("""
-                                    update MekmarCom_Project_Detail SET ProductName=?,ProductName_Fr=?,ProductName_Es=? where ID=?
-                                   """,(data['product_name'],data['product_name_fr'],data['product_name_es'],data['id']))
+                                    update MekmarCom_Project_Detail SET ProductName=?,ProductName_Fr=?,ProductName_Es=?,ProductName_Ru=? where ID=?
+                                   """,(data['product_name'],data['product_name_fr'],data['product_name_es'],data['product_name_ru'],data['id']))
             return True
         except Exception as e:
             print('setChangeProductsName hata',str(e))

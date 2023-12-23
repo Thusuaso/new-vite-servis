@@ -29,6 +29,7 @@ class ProjectListDetailSchema(Schema):
     product_name = fields.String()
     product_name_fr = fields.String()
     product_name_es = fields.String()
+    product_name_ru = fields.String()
     
 class ProjectListDetailModel:
     id = 0
@@ -43,6 +44,7 @@ class ProjectListDetailModel:
     product_name = ""
     product_name_fr = ""
     product_name_es = ""
+    product_name_ru = ""
     
 class ProjectInformationListDetailSchema(Schema):
     id = fields.Int()
@@ -50,6 +52,7 @@ class ProjectInformationListDetailSchema(Schema):
     information = fields.String()
     information_fr = fields.String()
     information_es = fields.String()
+    information_ru = fields.String()
     project_product_name = fields.String()
     
 class ProjectInformationListDetailModel:
@@ -58,4 +61,5 @@ class ProjectInformationListDetailModel:
     information = ""
     information_fr = ""
     information_es = ""
+    information_ru = ""
     project_product_name = ""
