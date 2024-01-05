@@ -1053,7 +1053,7 @@ class SevkiyatRapor:
                 inner join UrunlerTB urun on (urun.ID = uk.UrunID)
                 inner join OlculerTB ol on (ol.ID = uk.OlcuID)
 
-                where Year(s.Tarih) in ('2023','2022')
+                where Year(s.Tarih) in (YEAR(GETDATE()),YEAR(GETDATE()) - 1)
                 order by s.Tarih desc
 
             

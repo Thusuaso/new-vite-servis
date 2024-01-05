@@ -18,6 +18,13 @@ class NumuneListApi(Resource):
             
         }
         return jsonify(numune)
+    
+class NumuneYearListApi(Resource):
+    def get(self):
+        islem = NumuneListe()
+        numuneYil = islem.getYilListesi()
+        return jsonify(numuneYil)
+
 
 class NumuneAyrintiListApi(Resource): 
 

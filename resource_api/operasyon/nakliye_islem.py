@@ -38,7 +38,7 @@ class NakliyeIslem:
         result = self.data.getList(
 
             """
-            select SiparisNo from SiparislerTB where YEAR(SiparisTarihi) in (2023,2022,2021,2020) order by SiparisTarihi desc
+            select SiparisNo from SiparislerTB where YEAR(SiparisTarihi) in (2024,2023,2022,2021,2020) order by SiparisTarihi desc
             """
         )
 

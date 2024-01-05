@@ -222,7 +222,7 @@ class DepoAnaListe:
 
                                                     from YeniDepoSatisTB s
                                                         inner join YeniDepoSatisUrunlerTB su on su.OrderNo = s.OrderNo
-                                                        where YEAR(s.Date)>=2023 and s.PaymentDate is null and s.ShippingDate is null and s.CustomersId = ?
+                                                        where YEAR(s.Date)>=2024 and s.PaymentDate is null and s.ShippingDate is null and s.CustomersId = ?
                                                         group by su.OrderNo
                                             
                                             

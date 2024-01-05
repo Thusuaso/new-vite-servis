@@ -120,7 +120,7 @@ class OcakListesiRapor:
                 inner join UrunlerTB urun on (urun.ID = uk.UrunID)
                 inner join OlculerTB ol on (ol.ID = uk.OlcuID)
 
-                where Year(s.Tarih) in (2023,2022) and MONTH(s.Tarih)=? and o.ID=?
+                where Year(s.Tarih) in (2024,2023,2022) and MONTH(s.Tarih)=? and o.ID=?
                 order by s.Tarih desc
         
         """,((month),ocak_id[0][0]))

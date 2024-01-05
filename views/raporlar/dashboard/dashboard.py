@@ -801,14 +801,14 @@ class DashboardNew:
                 r = 0
                 data1.append(r)
             dataset.append({
-                'label':'Yüklenen 2023 (DDP)',
+                'label':'Yüklenen 2024 (DDP)',
                 'backgroundColor': '#2f4860',
                 'data':data1,
                 'fiil' : False,
                 'borderColor': '#2f4860'
             },)
             dataset.append({
-                'label':'Yüklenen 2022 (DDP)',
+                'label':'Yüklenen 2023 (DDP)',
                 'backgroundColor': '#00bb7e',
                 'data':data2,
                 'fiil' : False,
@@ -878,14 +878,14 @@ class DashboardNew:
             else:
                 data1.append(0)
             dataset.append({
-                'label':'Yüklenen 2023',
+                'label':'Yüklenen 2024',
                 'backgroundColor': '#2f4860',
                 'data':data1,
                 'fiil' : False,
                 'borderColor': '#2f4860'
             },)
             dataset.append({
-                'label':'Yüklenen 2022',
+                'label':'Yüklenen 2023',
                 'backgroundColor': '#00bb7e',
                 'data':data2,
                 'fiil' : False,

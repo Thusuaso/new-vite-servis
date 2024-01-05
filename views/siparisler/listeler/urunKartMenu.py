@@ -10,6 +10,7 @@ class UrunKartMenu:
             """
             select
             ID as Id,
+			Kod,
             dbo.Get_KategoriAdi(ID) as KategoriAdi,
             dbo.Get_UrunAdi(ID) as UrunAdi,
             dbo.Get_KenarIslem(ID) as YuzeyIslem,
@@ -33,7 +34,7 @@ class UrunKartMenu:
             model.urunAdi = urun.UrunAdi
             model.sira = sira
             olculer = str(urun.YuzeyIslem).split('&')
-
+            model.kod = urun.Kod
             yuzey_1,yuzey_2,yuzey_3 =  self.__getYuzeyIslem(olculer)
             model.yuzey_1 = yuzey_1
             model.yuzey_2 = yuzey_2

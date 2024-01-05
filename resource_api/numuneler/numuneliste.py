@@ -62,6 +62,8 @@ class NumuneListe:
                 model.link = 'https://mekmar-image.fra1.digitaloceanspaces.com/personel/avatar3.png'
             elif item.temsilci == 'gizem':
                 model.link = 'https://mekmar-image.fra1.digitaloceanspaces.com/personel/avatar6.png'
+            elif item.temsilci == 'mehmet':
+                model.link = 'https://mekmar-image.fra1.digitaloceanspaces.com/personel/avatar4.png'
             else:
                 model.link = 'https://cdn.mekmarimage.com/personel/250x250/' + item.imageTag
                 

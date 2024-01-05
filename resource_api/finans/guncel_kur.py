@@ -71,7 +71,7 @@ class DovizListem:
                         continue
             return format(dolar)
         except Exception as e:
-            print(str(e))
+            print("Doviz Hata",str(e))
             return 0
         
     # def getDovizKurListe(self,yil,ay,gun):

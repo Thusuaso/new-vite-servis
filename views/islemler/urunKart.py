@@ -17,11 +17,11 @@ class UrunKart:
                 return { 'status' : False,'errorMessage' : "Bu Kart Zaten Kaydedilmiş." }
             self.data.update_insert( 
                 """
-                insert into UrunKartTB (UrunID,YuzeyID,OlcuID,KategoriID)
+                insert into UrunKartTB (UrunID,YuzeyID,OlcuID,KategoriID,Kod)
                 values
-                (?,?,?,?)
+                (?,?,?,?,?)
                 """,(
-                    kart['urunId'],kart['yuzeyId'],kart['olcuId'],kart['kategoriId']
+                    kart['urunId'],kart['yuzeyId'],kart['olcuId'],kart['kategoriId'],kart['kod']
                 )
             )
             kart['username'] = kart['username'].capitalize()
@@ -38,15 +38,14 @@ class UrunKart:
         }
 
         try:
-            
             self.data.update_insert(
                 """
                 update UrunKartTB set UrunID=?,YuzeyID=?,OlcuID=?,
-                KategoriID=? where ID=?
+                KategoriID=?,Kod=? where ID=?
                 """,(
                    self.__urunId(kart['urunAdi']),self.__yuzeyId(kart['yuzeyIslem']),
                    self.__olcuId(kart['en'],kart['boy'],kart['kenar']),
-                   self.__kategoriId(kart['kategoriAdi']),kart['id']
+                   self.__kategoriId(kart['kategoriAdi']),kart['kod'],kart['id']
                 )
             )
             result['status'] = True

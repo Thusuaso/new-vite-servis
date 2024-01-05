@@ -190,7 +190,7 @@ class EvrakListeler:
               from
                 SiparislerTB s
                 where s.SiparisDurumID!=1
-                and year(s.SiparisTarihi) in (2023,2022,2021 ,2020)
+                and year(s.SiparisTarihi) in (2024,2023,2022,2021 ,2020)
                 order by s.SiparisTarihi desc
 
             """

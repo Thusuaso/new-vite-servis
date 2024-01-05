@@ -271,7 +271,7 @@ class Teklif:
                                             inner join YeniTeklif_UlkeTB yu on yu.Id = ym.UlkeId
 
                                             where 
-                                                YEAR(yt.Tarih) = 2023
+                                                YEAR(yt.Tarih) = 2024
 
                                             group by
                                                 yu.Id,yu.UlkeAdi

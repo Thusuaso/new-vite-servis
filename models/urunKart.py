@@ -26,6 +26,7 @@ class UrunKartSchema(Schema):
     ebat = fields.String()
     username = fields.String()
     sira = fields.Int()
+    kod = fields.String()
     
 
 class UrunKartModel:
@@ -50,6 +51,7 @@ class UrunKartModel:
     yuzey_3 = ""
     username = ""
     sira = 0
+    kod = ""
     
 class UrunKartMusteriSatisSchema(Schema):
     id = fields.Int() 

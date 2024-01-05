@@ -391,7 +391,7 @@ class MusteriSiparisIslem:
 
                 where u.UrunKartID = k.ID
                 and s.SiparisNo  = u.SiparisNo
-                and Year(s.SiparisTarihi) in (2023,2022,2021)
+                and Year(s.SiparisTarihi) in (2024,2023,2022,2021)
                 and s.SiparisDurumID=3
                 and u.SatisFiyati != 0
                 order by s.SiparisTarihi desc
