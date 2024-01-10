@@ -78,12 +78,12 @@ class NumuneListe:
 
         result = self.data.getList(
             """
-            select
-            Year(Tarih) as Yil
+ select
+            Year(NumuneTarihi) as Yil
             from
-            NumuneOdemelerTB
-            group by Year(Tarih)
-            order by Year(Tarih) desc
+            NumunelerTB
+            group by Year(NumuneTarihi)
+            order by Year(NumuneTarihi) desc
 
             """
         )

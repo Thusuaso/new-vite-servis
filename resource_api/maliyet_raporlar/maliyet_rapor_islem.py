@@ -298,7 +298,6 @@ class MaliyetRaporIslem:
                     item.dis_alim_tedarikci_sayisi = 0
                     item.tedarikci_sayisi = 0
                     item.dis_alim_fatura_sayisi = 0
-                print("item",item)
                 liste.append(item)
 
 

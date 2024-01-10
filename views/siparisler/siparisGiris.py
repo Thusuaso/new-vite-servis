@@ -755,12 +755,12 @@ class SiparisGiris:
     def __siparisUrunDataKayit(self,urunler,siparisNo,marketing,musteriid):
             
             for item in urunler:
-                
                 ozelMiktar = self.decimalDegerKontrol(item['ozelMiktar'])
                 ton = self.decimalDegerKontrol(item['ton'])
-                if(marketing != 'Mekmar'):
-                        if (item['tedarikciAdi'] == 'Mekmer' or  item['tedarikciAdi'] == 'Mek-Moz'):
-                          item['alisFiyati']  = float(item['satisFiyati'] )* 0.85  
+                if(marketing == 'Mekmer'):
+                    if (item['tedarikciAdi'] == 'Mekmer' or  item['tedarikciAdi'] == 'Mek-Moz'):
+                        item['alisFiyati']  = float(item['satisFiyati'] )* 0.85  
+
                 self.data.update_insert(
                     """
                     insert into SiparisUrunTB (

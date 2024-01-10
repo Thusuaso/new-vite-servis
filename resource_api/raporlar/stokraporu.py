@@ -21,14 +21,14 @@ class StokRapor:
                                                     UretimTB ur
 
                                                 where
-                                                    ur.UrunDurumID in (1,2) and ur.Aciklama != 'bulunamadı' and ur.UrunDurumID=1
+                                                    ur.UrunDurumID =1 and ur.Bulunamadi != 1
                                                 group by 
                                                     ur.UrunKartID
                                              
                                              
                                              """)
         self.resultMiktarMekmer = self.data.getList("""
-                                                       select
+                                                        select
 
                                                             sum(ur.Miktar) as Miktar,
                                                             ur.UrunKartID as UrunID
@@ -37,7 +37,7 @@ class StokRapor:
                                                             UretimTB ur
 
                                                         where
-                                                            ur.UrunDurumID in (1,2) and ur.Aciklama != 'bulunamadı' and ur.UrunDurumID=1 and ur.TedarikciID in (1)
+                                                            ur.UrunDurumID =1 and ur.Bulunamadi != 1 and ur.TedarikciID in (1)
                                                         group by 
                                                             ur.UrunKartID 
                                                     
@@ -53,14 +53,14 @@ class StokRapor:
                                                             UretimTB ur
 
                                                         where
-                                                            ur.UrunDurumID in (1,2) and ur.Aciklama != 'bulunamadı' and ur.UrunDurumID=1 and ur.TedarikciID in (123)
+                                                            ur.UrunDurumID =1 and ur.Bulunamadi != 1 and ur.TedarikciID in (123)
                                                         group by 
                                                             ur.UrunKartID
                                                     
                                                     
                                                     """)
         self.resultMiktarOnlyMekmer = self.data.getList("""
-                                                            select
+                                                             select
 
                                                             sum(ur.Miktar) as Miktar,
                                                             ur.UrunKartID as UrunID
@@ -69,7 +69,7 @@ class StokRapor:
                                                             UretimTB ur
 
                                                         where
-                                                            ur.UrunDurumID in (1,2) and ur.Aciklama != 'bulunamadı' and ur.UrunDurumID=1 and ur.TedarikciID in (1,123) and ur.UretimTurID=1
+                                                            ur.UrunDurumID =1 and ur.Bulunamadi !=1 and  ur.TedarikciID in (1,123) and ur.UretimTurID=1
                                                         group by 
                                                             ur.UrunKartID
                                                         
@@ -87,7 +87,7 @@ class StokRapor:
                                                             UretimTB ur
 
                                                         where
-                                                            ur.UrunDurumID in (1) and ur.Aciklama != 'bulunamadı' and ur.UrunDurumID=1 and ur.TedarikciID in (1,123) and ur.SiparisAciklama = 'Stok'
+                                                            ur.UrunDurumID=1 and ur.Bulunamadi != 1  and ur.TedarikciID in (1,123) and ur.SiparisAciklama = 'Stok'
                                                         group by 
                                                             ur.UrunKartID
                                                         """)
@@ -101,12 +101,12 @@ class StokRapor:
                                                             UretimTB ur
 
                                                         where
-                                                            ur.UrunDurumID in (1) and ur.Aciklama != 'bulunamadı' and ur.UrunDurumID=1 and ur.Disarda = 1 and ur.TedarikciID not in (1,123)
+                                                            ur.UrunDurumID =1 and ur.Bulunamadi != 1  and ur.Disarda = 1 and ur.TedarikciID not in (1,123)
                                                         group by 
                                                             ur.UrunKartID
                                                         """)
         self.resultMiktarOnlyStocksDisMekmerdeOlan = self.data.getList("""
-                                                            select
+                                                             select
 
                                                             sum(ur.Miktar) as Miktar,
                                                             ur.UrunKartID as UrunID
@@ -115,7 +115,7 @@ class StokRapor:
                                                             UretimTB ur
 
                                                         where
-                                                            ur.UrunDurumID in (1) and ur.Aciklama != 'bulunamadı' and ur.UrunDurumID=1 and ur.Disarda != 1 and ur.TedarikciID not in (1,123)
+                                                            ur.UrunDurumID =1 and ur.Bulunamadi !=1  and ur.Disarda != 1 and ur.TedarikciID not in (1,123)
                                                         group by 
                                                             ur.UrunKartID
                                                         """)
@@ -263,8 +263,8 @@ class StokRapor:
                 inner join KategoriTB ktg on ktg.ID = uk.KategoriID
             where 
 
-            ur.UrunDurumID in (1,2) and 
-            ur.Aciklama != 'bulunamadı' and
+            ur.UrunDurumID = 1 and 
+             Bulunamadi!=1 and
             ur.UrunDurumID=1 and
             urn.UrunAdi=? and 
             olc.En=? and 
@@ -375,9 +375,8 @@ class StokRapor:
                 inner join KategoriTB ktg on ktg.ID = uk.KategoriID
             where 
             ur.TedarikciID = 1 and
-            ur.UrunDurumID in (1,2) and 
-            ur.Aciklama != 'bulunamadı' and
-            ur.UrunDurumID=1 and
+            ur.UrunDurumID =1 and 
+            Bulunamadi!=1 and
             urn.UrunAdi=? and 
             olc.En=? and 
             olc.Boy=? and 
@@ -489,9 +488,8 @@ class StokRapor:
                 inner join KategoriTB ktg on ktg.ID = uk.KategoriID
             where 
             ur.TedarikciID = 123 and
-            ur.UrunDurumID in (1,2) and 
-            ur.Aciklama != 'bulunamadı' and
-            ur.UrunDurumID=1 and
+            ur.UrunDurumID =1 and 
+            Bulunamadi!=1 and
             urn.UrunAdi=? and 
             olc.En=? and 
             olc.Boy=? and 
@@ -603,9 +601,8 @@ class StokRapor:
             where 
             ur.TedarikciID in (1,123) and
             ur.UretimTurID=1 and
-            ur.UrunDurumID in (1,2) and 
-            ur.Aciklama != 'bulunamadı' and
-            ur.UrunDurumID=1 and
+            ur.UrunDurumID =1 and 
+            Bulunamadi!=1 and
             urn.UrunAdi=? and 
             olc.En=? and 
             olc.Boy=? and 

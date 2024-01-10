@@ -27,7 +27,7 @@ class Siparisler:
                                                         s.SiparisNo = su.SiparisNo and 
                                                         Year(s.YuklemeTarihi)=? and 
                                                         Month(s.YuklemeTarihi)=? and 
-                                                        su.AlisFiyati in (0,Null)
+                                                        su.AlisFiyati is null
                                                                                                     
                                                                                                     
                                                    """,(yil,ay))
@@ -340,7 +340,7 @@ class Siparisler_Yil:
                                                     where 
                                                         s.SiparisNo = su.SiparisNo and 
                                                         Year(s.YuklemeTarihi)=? and 
-                                                        su.AlisFiyati in (0,Null)
+                                                        su.AlisFiyati is null
                                                                                                     
                                                                                                     
                                                    """,(yil))

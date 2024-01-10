@@ -176,6 +176,7 @@ class Project:
         
     def deletePhotos(self,data):
         try:
+            print(data)
             for item in data:
                 self.sql.update_insert("""
                                         delete MekmarCom_Project_Detail where ID = ?

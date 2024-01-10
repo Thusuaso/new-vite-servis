@@ -27,6 +27,7 @@ class AtlantaStokSchema(Schema):
     kategori = fields.String()
     ebat = fields.String()
     toplam_mekus = fields.Float()
+    kutu_sqft = fields.Float()
 
 class AtlantaStokModel:
     id = None
@@ -54,6 +55,8 @@ class AtlantaStokModel:
     kategori =  ""
     ebat = ""
     toplam_mekus = 0
+    kutu_sqft = 0
+
 class Stok_SuSchema(Schema):
 
     id = fields.Int()
