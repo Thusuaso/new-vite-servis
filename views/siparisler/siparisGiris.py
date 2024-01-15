@@ -243,10 +243,15 @@ class SiparisGiris:
             model.notlar = item.Notlar 
             model.kullaniciId = item.KullaniciID 
             model.alisFiyati = item.AlisFiyati 
-            if item.AlisFiyati > 0:
-                model.alisFiyatiKontrol = True
+            if item.AlisFiyati != None:
+                if item.AlisFiyati > 0:
+                    model.alisFiyatiKontrol = True
+                else:
+                    model.alisFiyatiKontrol = False
+                    
             else:
                 model.alisFiyatiKontrol = False
+
                 
             model.alisFiyati_Tl = item.AlisFiyati_TL
             model.siraNo = item.SiraNo 
@@ -909,11 +914,13 @@ class SiparisGiris:
     def __siparisUrunDataGuncelle(self,urunler):
         try:
             for item in urunler:
+                
                     ton = self.decimalDegerKontrol(item['ton'])
                     if(item['pazarlama'] != 'Mekmar'):
                         if (item['tedarikciAdi'] == 'Mekmer' or  item['tedarikciAdi'] == 'Mek-Moz'):
+                             if(item['AlisFiyati'] != None):
+                                item['AlisFiyati']  =  float(item['satisFiyati'] )* 0.85 
 
-                             item['AlisFiyati']  =  float(item['satisFiyati'] )* 0.85 
                     
                     self.data.update_insert(
                         """
