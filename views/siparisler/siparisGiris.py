@@ -433,6 +433,7 @@ class SiparisGiris:
     def siparisGuncelle(self,siparis,urunlerYeni,urunlerDegisenler,urunlerSilinenler,degisenMasraflar):
 
         
+        
         try:
             if(len(degisenMasraflar)>0):
                   
@@ -1300,7 +1301,12 @@ class SiparisGiris:
         
         if siparis['siparisDurumId'] == 2:
             if len(degisen)==1:
-                
+                if degismeyen[0][2] == None:
+                    degismeyen[0][2] = 0
+                    
+                if degismeyen[0][3] == None:
+                    degismeyen[0][3] = 0
+                    
                 body += f"""
                         <tr style ="background-color: #ddd;">
                             <td style ="border: 1px solid #ddd;background-color:red;color:white;padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
@@ -1457,7 +1463,10 @@ class SiparisGiris:
         elif siparis['siparisDurumId'] == 3:
  
             if len(degisen)==1:
-                
+                if degismeyen[0][2] == None:
+                    degismeyen[0][2] = 0
+                if degismeyen[0][3] == None:
+                    degismeyen[0][3] = 0
                 body += f"""
                         <tr style ="background-color: #ddd;">
                             <td style ="border: 1px solid #ddd;background-color:red;color:white;padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
