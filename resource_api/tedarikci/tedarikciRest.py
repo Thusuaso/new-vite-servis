@@ -84,3 +84,10 @@ class IcSiparisFormSilKontrol(Resource):
         islem = TedarikciIslem()
         status = islem.IcSiparisFormSilKontrol(tedarikciId,siparisNo)
         return jsonify({'status':status})
+    
+class IsfDeleteApi(Resource):
+    def post(self):
+        data = request.get_json()
+        islem = TedarikciIslem()
+        status = islem.setDeleteIsf(data)
+        return jsonify({'status':status})

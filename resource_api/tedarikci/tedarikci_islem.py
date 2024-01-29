@@ -217,6 +217,20 @@ class TedarikciIslem:
                                 """,(tedarikciId,siparisNo))
         return True
     
+    def setDeleteIsf(self,data):
+        
+        self.data.update_insert("""
+                                    delete SiparisFaturaKayitTB where ID=?
+                                """,data['faturaId'])
+        tedarikciId = self.data.getStoreList("""
+                                                select top 1 ID from TedarikciTB where FirmaAdi LIKE '%' + ? +'%'
+                                             """,(data['evrakadi']))[0][0]
+        
+        evrakId = self.data.getStoreList("""
+                                                select top 1 ID from SiparisUrunTedarikciFormTB where SiparisNo=? and TedarikciID=?
+                                             """,(data['siparisNo'],tedarikciId))[0][0]
+        self.data.update_insert("""delete SiparisUrunTedarikciFormTB where ID= ?""",evrakId)
+    
     
     def __evrakId(self,item):
 
@@ -251,6 +265,9 @@ class TedarikciIslem:
         if kontrol > 0:
             urunId = self.data.getStoreList("Select ID from YeniIcSiparisFaturaTB where  EvrakAdi=?",item['evrak'])[0].ID 
            
+    
+    
+    
            
            
           

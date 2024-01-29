@@ -57,6 +57,9 @@ class FaturaListeSchema(Schema):
     yeniEvrakAdi = fields.String()
     durum = fields.Int()
     olmayan_durum = fields.String()
+    evrakadi = fields.String()
+    tedarikciId = fields.Int()
+    siparisNo = fields.String()
 
 class FaturaListeModel:
 
@@ -71,6 +74,9 @@ class FaturaListeModel:
     yeniEvrakAdi = ""
     durum = 0
     olmayan_durum = ""
+    tedarikciId =0
+    evrakadi=""
+    siparisNo = ""
 
 class FaturaKayitSchema(Schema):
      id = fields.Int() 

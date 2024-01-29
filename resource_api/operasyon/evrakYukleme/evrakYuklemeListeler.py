@@ -321,7 +321,7 @@ class EvrakListeler:
             model.id = id
             model.yuklemeTarihi = item.EvrakYuklemeTarihi
             model.kullanici = item.kullanici
-           
+            model.siparisNo = siparisNo
             if item.YuklemeEvrakID == 1 :
               model.Draft =  f"https://file-service.mekmar.com/file/download/1/{item.SiparisNo}"
               model.adi = 'Purchase Order'
@@ -336,6 +336,8 @@ class EvrakListeler:
              model.Draft =  f"https://file-service.mekmar.com/file/download/3/{item.SiparisNo}"
              model.adi = item.EvrakAdi
              model.adi = "ISF -" + model.adi
+             model.evrakadi = item.EvrakAdi.split('-')[0]
+             model.yeniID = item.YuklemeEvrakID
           
 
             if item.YuklemeEvrakID == 3  and item.Evrak_Kontrol == 1:
@@ -344,6 +346,8 @@ class EvrakListeler:
               model.Draft =  f"https://file-service.mekmar.com/file/download/3/{item.EvrakAdi}"
               model.adi = item.EvrakAdi
               model.adi = "ISF -" + model.adi
+              model.evrakadi = item.EvrakAdi.split('-')[0]
+              model.yeniID = item.YuklemeEvrakID
 
             if item.YuklemeEvrakID == 4 :
              model.Draft =  f"https://file-service.mekmar.com/file/download/4/{item.SiparisNo}"
