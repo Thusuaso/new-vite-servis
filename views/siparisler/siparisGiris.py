@@ -914,13 +914,13 @@ class SiparisGiris:
 
     def __siparisUrunDataGuncelle(self,urunler):
         try:
+            
             for item in urunler:
-                
                     ton = self.decimalDegerKontrol(item['ton'])
                     if(item['pazarlama'] != 'Mekmar'):
                         if (item['tedarikciAdi'] == 'Mekmer' or  item['tedarikciAdi'] == 'Mek-Moz'):
-                             if(item['AlisFiyati'] != None):
-                                item['AlisFiyati']  =  float(item['satisFiyati'] )* 0.85 
+                             if(item['alisFiyati'] != None):
+                                item['alisFiyati']  =  float(item['satisFiyati'] )* 0.85 
 
                     
                     self.data.update_insert(
