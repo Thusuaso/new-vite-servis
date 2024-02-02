@@ -234,11 +234,12 @@ class Project:
             return False
         
     def addInformation(self,data):
+        print(data)
         try:
             self.sql.update_insert("""
-                                    insert into MekmarCom_Projects_Information(ProjectId,ProjectInformation,ProjectProductName,ProjectInformation_Fr,ProjectInformation_Es,ProjectInformation_Ru) VALUES(?,?,?,?,?,N'?')
+                                    insert into MekmarCom_Projects_Information(ProjectId,ProjectInformation,ProjectInformation_Fr,ProjectInformation_Es,ProjectInformation_Ru) VALUES(?,?,?,?,?)
 
-                                   """,(data['project_id'],data['project_information'],data['project_product_name'],data['project_information_fr'],data['project_information_es'],data['project_information_ru']))
+                                   """,(data['project_id'],data['project_information'],data['project_information_fr'],data['project_information_es'],data['project_information_ru']))
             return True
         except Exception as e:
             print('',str(e))
@@ -249,8 +250,8 @@ class Project:
         try:
             self.sql.update_insert("""
                                    
-                                        Update MekmarCom_Projects_Information SET ProjectInformation=?,ProjectProductName=?,ProjectInformation_Fr=?,ProjectInformation_Es=?,ProjectInformation_Ru=(?) WHERE ID=?
-                                   """,(data['information'],data['project_product_name'],data['information_fr'],data['information_es'],data['information_ru'],data['id']))
+                                        Update MekmarCom_Projects_Information SET ProjectInformation=?,ProjectInformation_Fr=?,ProjectInformation_Es=?,ProjectInformation_Ru=? WHERE ID=?
+                                   """,(data['information'],data['information_fr'],data['information_es'],data['information_ru'],data['id']))
             return True
         except Exception as e:
             print('updateInformation hata',str(e))
