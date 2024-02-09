@@ -7,6 +7,7 @@ class TemsilciOzetSchema(Schema):
     adi = fields.String()
     teklifSayisi = fields.Int()
     proformaSayisi = fields.Int()
+    teklifBSayisi = fields.Int()
 
 class TemsilciOzetModel:
     id = None 
@@ -14,3 +15,4 @@ class TemsilciOzetModel:
     adi = ""
     teklifSayisi = 0 
     proformaSayisi = 0
+    teklifBSayisi = fields.Int()

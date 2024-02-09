@@ -173,7 +173,7 @@ class OdemeIslem:
      
     def __getAyStr(self,ay):
 
-        aylar = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık']
+        aylar = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
         return aylar[ay - 1]
 

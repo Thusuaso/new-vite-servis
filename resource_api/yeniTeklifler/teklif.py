@@ -181,6 +181,7 @@ class Teklif:
             model.temsilci_id = item.ID
             model.teklifSayisi = int(self.__getTakipTeklifSayisi(item.ID))
             model.proformaSayisi = int(self.__getTeklifProformaSayisi(item.ID))
+            model.teklifBSayisi = int(self.__getTeklifBList(item.ID))
             liste.append(model)
             id += 1
 
@@ -313,6 +314,16 @@ class Teklif:
         )[0]
 
         return item.durum
+    def __getTeklifBList(self,kullaniciId):
+        item = self.data.getStoreList(
+            """
+            Select count(*) as durum from YeniTeklifTB where 
+            KullaniciId=? and TakipEt=1 and BList=1
+            """,(kullaniciId)
+        )[0]
+
+        return item.durum
+
 
     def __getTakvimDataList(self):
         result = self.data.getStoreList(

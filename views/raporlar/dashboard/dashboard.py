@@ -801,14 +801,14 @@ class DashboardNew:
                 r = 0
                 data1.append(r)
             dataset.append({
-                'label':'Yüklenen 2024 (DDP)',
+                'label':'Shipped 2024 (DDP)',
                 'backgroundColor': '#2f4860',
                 'data':data1,
                 'fiil' : False,
                 'borderColor': '#2f4860'
             },)
             dataset.append({
-                'label':'Yüklenen 2023 (DDP)',
+                'label':'Shipped 2023 (DDP)',
                 'backgroundColor': '#00bb7e',
                 'data':data2,
                 'fiil' : False,
@@ -817,7 +817,7 @@ class DashboardNew:
             
             basicDatas = {
                 
-                'labels':['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+                'labels':['January','February','March','April','May','June','July','August','September','October','November','December'],
                 'datasets':dataset
             }
             return basicDatas
@@ -1013,18 +1013,18 @@ class DashboardNew:
                 return int(i.NavlunSatis)
     def getMonth(self,monthId):
         data = {
-            1:'Ocak',
-            2:'Şubat',
-            3:'Mart',
-            4:'Nisan',
-            5:'Mayıs',
-            6:'Haziran',
-            7:'Temmuz',
-            8:'Ağustos',
-            9:'Eylül',
-            10:'Ekim',
-            11:'Kasım',
-            12:'Aralık'
+            1:'January',
+            2:'February',
+            3:'March',
+            4:'April',
+            5:'May',
+            6:'June',
+            7:'July',
+            8:'August',
+            9:'September',
+            10:'October',
+            11:'November',
+            12:'December'
         }
         return data[monthId]
     

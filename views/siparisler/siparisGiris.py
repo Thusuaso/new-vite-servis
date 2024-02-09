@@ -1093,8 +1093,11 @@ class SiparisGiris:
                     MailService(siparis_no + " Yeni Sipariş ", "info@mekmar.com",  " " +baslik + body) #gizem
                     
                     
-            if item.SiparisSahibi != 'Mehmet'  or item.SiparisSahibi != 'Gizem' : 
-                  MailService(siparis_no + " Yeni Sipariş ",item.SiparisMail , " "+ baslik + body) #satıs temsilcisi
+            MailService(siparis_no + " Yeni Sipariş ",'export1@mekmar.com' , " "+ baslik + body) #satıs temsilcisi
+            MailService(siparis_no + " Yeni Sipariş ",'export2@mekmar.com' , " "+ baslik + body) #satıs temsilcisi
+            MailService(siparis_no + " Yeni Sipariş ",'bilgiislem@mekmar.com' , " "+ baslik + body) #satıs temsilcisi
+            
+            
               
 
     def mailGonderNew(self,siparis,yeni,siparis_no):
