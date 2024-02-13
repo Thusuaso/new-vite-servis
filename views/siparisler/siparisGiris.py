@@ -355,7 +355,9 @@ class SiparisGiris:
            boy == None or
            en == None or
            en == 'özel' or
-           en == 'ozel'
+           en == 'ozel' or
+           en == 'OZEL' or
+           boy == 'OZEL'
            ):
             return 0
         else:
@@ -759,13 +761,14 @@ class SiparisGiris:
             return True
     
     def __siparisUrunDataKayit(self,urunler,siparisNo,marketing,musteriid):
-            
+            print(urunler)
             for item in urunler:
                 ozelMiktar = self.decimalDegerKontrol(item['ozelMiktar'])
                 ton = self.decimalDegerKontrol(item['ton'])
                 if(marketing == 'Mekmer'):
                     if (item['tedarikciAdi'] == 'Mekmer' or  item['tedarikciAdi'] == 'Mek-Moz'):
-                        item['alisFiyati']  = float(item['satisFiyati'] )* 0.85  
+                        if(item['alisFiyati'] != None):
+                            item['alisFiyati']  = float(item['satisFiyati'] )* 0.85  
 
                 self.data.update_insert(
                     """
@@ -788,11 +791,11 @@ class SiparisGiris:
             return True
 
     def decimalDegerKontrol(self,value):
-        try:
-            deger = float(value)
-            return deger
-        except:
-            return 0
+            if( value == None):
+                return 0
+            else:
+                return float(value)
+            
 
     def __siparisDataSil(self,siparisNo):
 
@@ -914,13 +917,12 @@ class SiparisGiris:
 
     def __siparisUrunDataGuncelle(self,urunler):
         try:
-            
             for item in urunler:
                     ton = self.decimalDegerKontrol(item['ton'])
                     if(item['pazarlama'] != 'Mekmar'):
                         if (item['tedarikciAdi'] == 'Mekmer' or  item['tedarikciAdi'] == 'Mek-Moz'):
                              if(item['alisFiyati'] != None):
-                                item['alisFiyati']  =  float(item['satisFiyati'] )* 0.85 
+                                item['alisFiyati']  =  float(item['satisFiyati']) * 0.85 
 
                     
                     self.data.update_insert(
