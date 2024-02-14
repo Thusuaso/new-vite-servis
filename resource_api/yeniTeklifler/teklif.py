@@ -513,18 +513,18 @@ class TeklifListeler:
           select
             t.Tarih,
             t.Id,
-            m.MusteriAdi,
-            u.UlkeAdi,
             t.TeklifOncelik,
-            k.KullaniciAdi,
+            					(select ym.MusteriAdi from YeniTeklif_MusterilerTB ym where ym.Id = t.MusteriId) as MusteriAdi,
+					(select (select yu.UlkeAdi from YeniTeklif_UlkeTB yu where yu.Id = ym.UlkeId) from YeniTeklif_MusterilerTB ym where ym.Id = t.MusteriId) as UlkeAdi,
+					(select k.KullaniciAdi from KullaniciTB k where k.ID = t.KullaniciId) as KullaniciAdi,
+            
             t.Goruldu,
             t.Sira
             from
-            YeniTeklifTB t,YeniTeklif_MusterilerTB m,
-            YeniTeklif_UlkeTB u,KullaniciTB k
+            YeniTeklifTB t
             where
-            t.MusteriId=m.Id and u.Id=m.UlkeId
-            and k.ID=t.KullaniciId and t.TakipEt=1
+  
+              t.TakipEt=1
             and t.BList=0  order by t.TeklifOncelik , t.Tarih,t.Sira asc
             """
         )
