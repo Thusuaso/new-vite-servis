@@ -326,7 +326,8 @@ class SiparisGiris:
            en == 'SET' or
            boy == 'MINI' or 
            boy =='SET' or
-           en =='MINI'
+           en =='MINI' or
+           en == 'SINK'
            ):
             return 0
         else:
@@ -357,7 +358,9 @@ class SiparisGiris:
            en == 'özel' or
            en == 'ozel' or
            en == 'OZEL' or
-           boy == 'OZEL'
+           boy == 'OZEL' or
+           en == 'SINK' or
+           boy == 'SINK'
            ):
             return 0
         else:
@@ -383,7 +386,8 @@ class SiparisGiris:
             boy == None or
            en == None or
            en == 'özel' or
-           en =='ozel'
+           en =='ozel' or
+           en == 'SINK'
            ):
             return 0,0
         elif (boy == 'Free' or boy == 'FREE'):
