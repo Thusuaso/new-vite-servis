@@ -765,7 +765,7 @@ class SiparisGiris:
             return True
     
     def __siparisUrunDataKayit(self,urunler,siparisNo,marketing,musteriid):
-            print(urunler)
+            print("__siparisUrunDataKayit",urunler)
             for item in urunler:
                 ozelMiktar = self.decimalDegerKontrol(item['ozelMiktar'])
                 ton = self.decimalDegerKontrol(item['ton'])
@@ -921,6 +921,7 @@ class SiparisGiris:
 
     def __siparisUrunDataGuncelle(self,urunler):
         try:
+            print(urunler)
             for item in urunler:
                     ton = self.decimalDegerKontrol(item['ton'])
                     if(item['pazarlama'] != 'Mekmar'):
@@ -1208,7 +1209,7 @@ class SiparisGiris:
   
        
     def mailGonderUpdate(self,siparis,degisen,siparis_no):
-        
+
         degismeyen = list()
         if len(degisen)==1:
             
@@ -1341,10 +1342,10 @@ class SiparisGiris:
                                 {degismeyen[0][7]} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                                {float(degismeyen[0][2])}
+                                {self.__noneControl(degismeyen[0][2])}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                                {float(degismeyen[0][3])}
+                                {self.__noneControl(degismeyen[0][3])}
                             </td>
                         </tr>
                 
@@ -1373,16 +1374,16 @@ class SiparisGiris:
                             {degismeyen[i][0][5]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {str(float(degismeyen[i][0][4]))}  
+                            {str(self.__noneControl(degismeyen[i][0][4]))}  
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                             {degismeyen[i][0][7]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {str(float(degismeyen[i][0][2]))}
+                            {str(self.__noneControl(degismeyen[i][0][2]))}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {str(float(degismeyen[i][0][3]))}
+                            {str(self.__noneControl(degismeyen[i][0][3]))}
                             </td>
                         </tr>
                 
@@ -1409,16 +1410,16 @@ class SiparisGiris:
                             {item['uretimAciklama']}
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['miktar'],sayac,degismeyen,3,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {str(float(item['miktar']))}
+                            {str(self.__noneControl(item['miktar']))}
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['urunbirimAdi'],sayac,degismeyen,8,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {item['urunbirimAdi']} 
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['alisFiyati'],sayac,degismeyen,5,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {str(float(item['alisFiyati']))}
+                            {str(self.__noneControl(item['alisFiyati']))}
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['satisFiyati'],sayac,degismeyen,6,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {str(float(item['satisFiyati']))}
+                            {str(self.__noneControl(item['satisFiyati']))}
                         </td>
                     </tr>
             
@@ -1501,10 +1502,10 @@ class SiparisGiris:
                                 {degismeyen[0][7]} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                                {float(degismeyen[0][2])}
+                                {self.__noneControl(degismeyen[0][2])}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                                {float(degismeyen[0][3])}
+                                {self.__noneControl(degismeyen[0][3])}
                             </td>
                         </tr>
                 
@@ -1531,16 +1532,16 @@ class SiparisGiris:
                             {degismeyen[i][0][5]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {float(degismeyen[i][0][4])} 
+                            {self.__noneControl(degismeyen[i][0][4])} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                             {degismeyen[i][0][7]} 
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {float(degismeyen[i][0][2])}
+                            {self.__noneControl(degismeyen[i][0][2])}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {float(degismeyen[i][0][3])}
+                            {self.__noneControl(degismeyen[i][0][3])}
                             </td>
                         </tr>
                 
@@ -1568,16 +1569,16 @@ class SiparisGiris:
                             {item['uretimAciklama']}
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['miktar'],sayac,degismeyen,3,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {float(item['miktar'])} 
+                            {self.__noneControl(item['miktar'])} 
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['urunbirimAdi'],sayac,degismeyen,8,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
                             {item['urunbirimAdi']} 
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['alisFiyati'],sayac,degismeyen,5,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {float(item['alisFiyati'])}
+                            {self.__noneControl(item['alisFiyati'])}
                         </td>
                         <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;background-color:{self.__kontrol(item['satisFiyati'],sayac,degismeyen,6,siparis_no,siparis['kayit_kisi'],siparis['faturaKesimTurId'])}">
-                            {float(item['satisFiyati'])}
+                            {self.__noneControl(item['satisFiyati'])}
                         </td>
                     </tr>
             
