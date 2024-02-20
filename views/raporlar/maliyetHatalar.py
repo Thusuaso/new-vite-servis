@@ -34,8 +34,8 @@ class MaliyetHatalari:
     def save(self,data):
         try:
             self.sql.update_insert("""
-                                        insert into MaliyetHatalariTB(Hata,Maliyet,KullaniciId,KullaniciAdi,Tarih) VALUES(?,?,?,?,?)
-                                    """,(data['hata'],data['maliyet'],data['kullanici_id'],data['kullanici_adi'],data['tarih']))
+                                        insert into MaliyetHatalariTB(Hata) VALUES(?)
+                                    """,(data['hata']))
             return True
                 
         except Exception as e:
@@ -45,8 +45,8 @@ class MaliyetHatalari:
     def update(self,data):
         try:
             self.sql.update_insert("""
-                                        update MaliyetHatalariTB SET Hata=?,Maliyet=?,KullaniciId=?,KullaniciAdi=? WHERE ID=?
-                                    """,(data['hata'],data['maliyet'],data['kullanici_id'],data['kullanici_adi'],data['id']))
+                                        update MaliyetHatalariTB SET Hata=? WHERE ID=?
+                                    """,(data['hata'],data['id']))
             return True
         except Exception as e:
             print('Maliyet Update Hata',str(e))
