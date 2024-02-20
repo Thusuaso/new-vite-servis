@@ -1800,7 +1800,6 @@ class SiparisGiris:
 	
     def __kontrol(self,item,sayac,degismeyen,durum,siparis_no,kayit_kisi,fatura_kesim_tur_id):
 
-        print("__kontrol",degismeyen)
         
         
         
@@ -1859,8 +1858,8 @@ class SiparisGiris:
                 else:
                     return "yellow"
             elif durum == 5:
-                if float(item) != float(degismeyen[sayac][2]):
-                    degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin alış fiyatı ' +  '$' + str(round(degismeyen[sayac][2],2))+ ' ==> ' + '$' + str(item) +  ' e değiştirildi'
+                if self.__noneControl(item) != self.__noneControl(degismeyen[sayac][2]):
+                    degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(self.__noneControl(degismeyen[sayac][5])) + ' kaleminin alış fiyatı ' +  '$' + str(round(self.__noneControl(degismeyen[sayac][2]),2))+ ' ==> ' + '$' + str(item) +  ' e değiştirildi'
                     degisiklikAlani = 'Siparişler'
                     fatura = str(self.__getMarketing(degismeyen[sayac][9]))
                     islem2 = DegisiklikTahmin()
