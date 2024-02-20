@@ -1209,7 +1209,6 @@ class SiparisGiris:
   
        
     def mailGonderUpdate(self,siparis,degisen,siparis_no):
-
         degismeyen = list()
         if len(degisen)==1:
             
@@ -1238,6 +1237,7 @@ class SiparisGiris:
                                                     s.TedarikciID = t.ID
                                             
                                             """,(degisen[0]['id']) )
+        
         else:
             for i in range(0,len(degisen)):
                 degismeyen.append( self.data.getStoreList("""
@@ -1311,12 +1311,6 @@ class SiparisGiris:
         
         if siparis['siparisDurumId'] == 2:
             if len(degisen)==1:
-                if degismeyen[0][2] == None:
-                    degismeyen[0][2] = 0
-                    
-                if degismeyen[0][3] == None:
-                    degismeyen[0][3] = 0
-                    
                 body += f"""
                         <tr style ="background-color: #ddd;">
                             <td style ="border: 1px solid #ddd;background-color:red;color:white;padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
@@ -1351,7 +1345,6 @@ class SiparisGiris:
                 
                 
                         """
-            
             
             else:
                 for i in range(0,len(degisen)):
@@ -1392,6 +1385,9 @@ class SiparisGiris:
 
             sayac = 0
             for item in degisen:
+
+                
+                
                 body += f"""
                     <tr style ="background-color: #ddd;">
                         <td style ="border: 1px solid #ddd;background-color:#2fc289;color:white; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
@@ -1426,6 +1422,7 @@ class SiparisGiris:
             
                 """
                 sayac += 1
+                print("degisen ",body)
 
             body = body + "</table>"
             mekmer = 0
@@ -1436,7 +1433,6 @@ class SiparisGiris:
        
         
             for item in degisen:
-               
                 if item['tedarikciAdi'] == "Mekmer":
                     
                  mekmer +=1
@@ -1473,10 +1469,7 @@ class SiparisGiris:
         elif siparis['siparisDurumId'] == 3:
  
             if len(degisen)==1:
-                if degismeyen[0][2] == None:
-                    degismeyen[0][2] = 0
-                if degismeyen[0][3] == None:
-                    degismeyen[0][3] = 0
+
                 body += f"""
                         <tr style ="background-color: #ddd;">
                             <td style ="border: 1px solid #ddd;background-color:red;color:white;padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
@@ -1807,7 +1800,7 @@ class SiparisGiris:
 	
     def __kontrol(self,item,sayac,degismeyen,durum,siparis_no,kayit_kisi,fatura_kesim_tur_id):
 
-        
+        print("__kontrol",degismeyen)
         
         
         

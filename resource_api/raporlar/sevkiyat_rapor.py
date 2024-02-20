@@ -1053,7 +1053,7 @@ class SevkiyatRapor:
                 inner join UrunlerTB urun on (urun.ID = uk.UrunID)
                 inner join OlculerTB ol on (ol.ID = uk.OlcuID)
 
-                where Year(s.Tarih) in (YEAR(GETDATE()),YEAR(GETDATE()) - 1)
+                 where Year(s.Tarih) in (YEAR(GETDATE()),YEAR(GETDATE()) - 1,YEAR(GETDATE()) - 2)
                 order by s.Tarih desc
 
             
@@ -1506,6 +1506,67 @@ class SevkiyatRapor:
 
         return schema.dump(liste)
 
+    
+    def getSevkiyatCeyreklikVeri(self,year,year2):
+        try:
+
+
+            results = self.data.getStoreList("""
+                                                select 
+
+                s.ID,
+                s.Tarih,
+                s.KasaNo,
+                u.Adet,  
+                u.KutuAdet,  
+                u.Miktar,
+                s.CikisNo,  
+                s.BirimFiyat,  
+                s.Toplam,
+                m.FirmaAdi as Kime,
+                t.FirmaAdi as Kimden,
+                o.OcakAdi as Ocak,
+                ub.BirimAdi as Birim,
+                k.KategoriAdi as Kategori,
+                yk.YuzeyIslemAdi as Islem,
+                urun.UrunAdi,
+                ol.En,
+                ol.Boy,
+                ol.Kenar,
+				u.UrunKartID,
+                u.KutuIciAdet
+
+                from 
+
+                SevkiyatTB s
+
+                inner join UretimTB u on (s.KasaNo = u.KasaNo )
+                inner join MusterilerTB m on (m.ID=s.MusteriID)
+                inner join TedarikciTB t on (t.ID=u.TedarikciID)
+                inner join UrunOcakTB o on (o.ID=u.UrunOcakID)
+                inner join UrunBirimTB ub on (ub.ID=u.UrunBirimID)
+                inner join UrunKartTB uk on (uk.ID = u.UrunKartID)
+                inner join KategoriTB k on (k.ID = uk.KategoriID)
+                inner join YuzeyKenarTB yk on (yk.ID = uk.YuzeyID) 
+                inner join UrunlerTB urun on (urun.ID = uk.UrunID)
+                inner join OlculerTB ol on (ol.ID = uk.OlcuID)
+
+				where YEAR(s.Tarih) <= ? and YEAR(s.Tarih) >= ?
+				order by s.Tarih desc
+                                             """,(year,year2))
+        
+            liste = list()  
+            for item in results:
+
+                model = self.__getModel(item)
+                liste.append(model)
+            schema = SevkiyatSchema(many=True)
+            return schema.dump(liste)
+        
+        except Exception as e:
+            print('getSevkiyatCeyreklikVeri hata',str(e))
+            return False    
+    
     
     def __getModel(self,item):
         

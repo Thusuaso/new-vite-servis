@@ -665,6 +665,8 @@ api.add_resource(SevkiyatRaporTekTarihAllApi,'/raporlar/listeler/sevkiyatRaporTe
 api.add_resource(SevkiyatRaporIkiTarihAllApi,'/raporlar/listeler/sevkiyatRaporIkiTarihAll/<string:ilk_tarih>/<string:son_tarih>',methods=['GET'])
 
 
+api.add_resource(SevkiyatRaporCeyreklikApi,'/raporlar/forwarding/reports/quarter/<int:year>/<int:year2>',methods=['GET'])
+
 
 api.add_resource(SevkiyatRaporExcelApi,'/raporlar/dosyalar/sevkiyatRaporExcelListe',methods=['GET','POST'])
 api.add_resource(StokRaporExcelApi,'/raporlar/listeler/stokRaporExcelListe',methods=['GET','POST'])

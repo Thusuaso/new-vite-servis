@@ -1686,6 +1686,12 @@ class SevkiyatRaporIkiTarihAllApi(Resource):
         sevkiyat_listesi = islem.getSevkiyatListeIkiTarihAll(ilk_tarih,son_tarih)
 
         return sevkiyat_listesi
+    
+class SevkiyatRaporCeyreklikApi(Resource):
+    def get(self,year,year2):
+        islem = SevkiyatRapor()
+        sevkiyat_listesi = islem.getSevkiyatCeyreklikVeri(year,year2)
+        return sevkiyat_listesi
 
 
 
