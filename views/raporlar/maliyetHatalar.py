@@ -14,10 +14,6 @@ class MaliyetHatalari:
                 model = MaliyetHatalarModel()
                 model.id = item.ID
                 model.hata = item.Hata
-                model.maliyet = item.Maliyet
-                model.kullanici_adi = item.KullaniciAdi
-                model.kullanici_id = item.KullaniciId
-                model.tarih = item.Tarih
                 liste.append(model)
             schema = MaliyetHatalarSchema(many=True)
             return schema.dump(liste)
