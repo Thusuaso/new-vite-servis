@@ -1367,7 +1367,7 @@ class SiparisGiris:
                             {degismeyen[i][0][5]}
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
-                            {str(self.__noneControl(degismeyen[i][0][4]))}  
+                            {str(degismeyen[i][0][4])}  
                             </td>
                             <td style ="border: 1px solid #ddd; padding: 8px;  font-family: Arial, Helvetica, sans-serif;border-collapse: collapse; width: 100px;">
                             {degismeyen[i][0][7]}
@@ -1859,7 +1859,7 @@ class SiparisGiris:
                     return "yellow"
             elif durum == 5:
                 if self.__noneControl(item) != self.__noneControl(degismeyen[sayac][2]):
-                    degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(self.__noneControl(degismeyen[sayac][5])) + ' kaleminin alış fiyatı ' +  '$' + str(round(self.__noneControl(degismeyen[sayac][2]),2))+ ' ==> ' + '$' + str(item) +  ' e değiştirildi'
+                    degisiklik = str(degismeyen[sayac][1]) + ' siparişinin ' + str(degismeyen[sayac][5]) + ' kaleminin alış fiyatı ' +  '$' + str(round(self.__noneControl(degismeyen[sayac][2]),2))+ ' ==> ' + '$' + str(item) +  ' e değiştirildi'
                     degisiklikAlani = 'Siparişler'
                     fatura = str(self.__getMarketing(degismeyen[sayac][9]))
                     islem2 = DegisiklikTahmin()
