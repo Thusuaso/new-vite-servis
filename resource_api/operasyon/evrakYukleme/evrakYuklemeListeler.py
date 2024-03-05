@@ -383,7 +383,7 @@ class EvrakListeler:
 
             if item.YuklemeEvrakID == 12 :
              model.Draft=  f"https://file-service.mekmar.com/file/download/12/{item.SiparisNo}"
-             model.adi = 'Gçb Beyannamesi'
+             model.adi = 'Gçb Beyannamesi (Export Declaration)'
 
 
 
