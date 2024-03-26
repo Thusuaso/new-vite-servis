@@ -817,4 +817,4 @@ api.add_resource(TodoMainSeeingApi,'/todo/mailn/seeing/<int:id>',methods=['GET']
 
 
 if __name__ == '__main__':
-    app.run(port=5005,debug=True) #https://doktor-servis.mekmar.com/raporlar/listeler/uretimRaporuHepsi
+    app.run(port=5000,debug=True) #https://doktor-servis.mekmar.com/raporlar/listeler/uretimRaporuHepsi
