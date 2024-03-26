@@ -15,10 +15,10 @@ class MailService:
     def mailGonder(self):
         try:
             mail = smtplib.SMTP_SSL("mail.mekmar.com",465)
-            mail.login("gozmek@mekmar.com", "w_FrBO87:3K3nz==")
+            mail.login("goz@mekmar.com", "_bwt64h-3SR_-G2O")
 
             mesaj = MIMEMultipart()
-            mesaj["From"] = "gozmek@mekmar.com"           # Gönderen
+            mesaj["From"] = "goz@mekmar.com"           # Gönderen
             mesaj["Subject"] = self.subject
 
             mesaj["To"] = self.to

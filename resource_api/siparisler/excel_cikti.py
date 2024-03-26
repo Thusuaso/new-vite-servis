@@ -90,6 +90,7 @@ class ExcelCiktiIslem:
 
 
     def uretimCikti(self,data_list):     
+        print(data_list)
         try:
             source_path = 'resource_api/siparisler/sablonlar/Uretim_list.xlsx'
             target_path = 'resource_api/siparisler/dosyalar/Uretim_list.xlsx'

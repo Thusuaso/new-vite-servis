@@ -61,6 +61,7 @@ def products_detail_supplier_update_emit():
 #Socket IO Selection
 @socketio.on('selection_update_emit')
 def selection_update_emit():
+    print('selection_update_emit')
     emit('selection_update_on',broadcast=True)
 
 #Socket IO Finance
